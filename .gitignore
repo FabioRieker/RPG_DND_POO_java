@@ -1,0 +1,15 @@
+# Ignorar archivos compilados de Java
+*.class
+
+# Ignorar la carpeta bin donde Eclipse guarda sus compilados por defecto
+bin/
+build/
+
+# Ignorar archivos de configuración específicos de Eclipse 
+.classpath
+.project
+.settings/
+
+# Ignorar archivos de configuración de MacOS/Windows
+.DS_Store
+Thumbs.db
