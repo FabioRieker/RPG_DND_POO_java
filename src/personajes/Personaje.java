@@ -14,8 +14,6 @@ public abstract class Personaje {
   protected int defensaBase;
   protected boolean vivo;
 
-  protected Arma armaEquipada;
-
   public Personaje(String nombre, Raza raza, TipoClase tipoClase, int fue, int des, int con, int intel, int defBase) {
     this.nombre = nombre;
     this.raza = raza;
@@ -53,4 +51,55 @@ public abstract class Personaje {
     System.out.println(" Vivo: " + (vivo ? "SÍ" : "NO"));
     System.out.println("------------------------------------------");
   }
+
+  public void recibirDaño(int cantidad) {
+
+    int mitigacion = this.defensaBase / 2;
+    int dañoFinal = cantidad - mitigacion;
+
+    if (dañoFinal < 0) {
+      dañoFinal = 0;
+    }
+
+    this.vidaActual -= dañoFinal;
+    if (this.vidaActual <= 0) {
+      this.vidaActual = 0;
+      this.vivo = false;
+      System.out.println(this.nombre + " ha caído en combate.");
+    } else {
+      System.out.println(
+          this.nombre + " recibe " + dañoFinal + " de daño. (Vida: " + this.vidaActual + "/" + this.vidaMax + ")");
+    }
+  }
+
+  protected Arma armaEquipada;
+
+  public void equiparArma(Arma arma) {
+    this.armaEquipada = arma;
+  }
+
+  public Arma getArma() {
+    return this.armaEquipada;
+  }
+
+  public int getFuerza() {
+    return fuerza;
+  }
+
+  public int getDestreza() {
+    return destreza;
+  }
+
+  public int getInteligencia() {
+    return inteligencia;
+  }
+
+  public String getNombre() {
+    return nombre;
+  }
+
+  public boolean estaVivo() {
+    return this.vidaActual > 0;
+  }
+
 }
