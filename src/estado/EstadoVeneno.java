@@ -1,11 +1,13 @@
 package estado;
 
+import java.util.Random;
+
 import personajes.Personaje;
 
 public class EstadoVeneno extends Estado {
     
     public EstadoVeneno(int turnos, int potencia) {
-        super("Veneno", turnos, potencia);
+    	super("Veneno", new Random().nextInt(3, 6), potencia);
     }
 
     @Override

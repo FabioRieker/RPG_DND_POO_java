@@ -1,6 +1,7 @@
 package personajes;
 
 import armas.Arma;
+import estado.Estado;
 import java.util.ArrayList;
 
 public abstract class Personaje {
@@ -13,6 +14,11 @@ public abstract class Personaje {
   protected int vidaMax, vidaActual, manaMax, manaActual, energiaMax, energiaActual;
   protected int defensaBase;
   protected boolean vivo;
+  protected ArrayList<Estado> estadosActivos = new ArrayList<>();
+  
+  public void aplicarEstado(Estado nuevoEstado) {
+	    this.estadosActivos.add(nuevoEstado);
+	}
 
   public Personaje(String nombre, Raza raza, TipoClase tipoClase, int fue, int des, int con, int intel, int defBase) {
     this.nombre = nombre;
