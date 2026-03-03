@@ -24,4 +24,8 @@ public abstract class Estado {
     public void reducirTurno() {
         turnosRestantes--;
     }
+    
+    public String getNombre() {
+        return nombre;
+    }
 }

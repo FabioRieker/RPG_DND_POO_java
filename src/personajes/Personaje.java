@@ -108,4 +108,13 @@ public abstract class Personaje {
     return this.vidaActual > 0;
   }
 
+  // compruebo si un personae ya tiene aplicado un estado con el mismo nombre
+  public boolean tieneEstado(String nombreEstado) {
+	    for (Estado e : estadosActivos) {
+	        if (e.getNombre().equals(nombreEstado)) {
+	            return true;
+	        }
+	    }
+	    return false;
+	}
 }
