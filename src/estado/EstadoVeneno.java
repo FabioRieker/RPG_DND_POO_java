@@ -11,13 +11,13 @@ public class EstadoVeneno extends Estado {
     }
 
     @Override
-    public void alPasarTurno(Personaje obj) {
+    public void alPasarTurnoEstado(Personaje obj) {
         System.out.println("[ESTADO] El veneno afecta a " + obj.getNombre());
         obj.recibirDaño(potencia); 
     }
 
     @Override
-    public void alTerminar(Personaje obj) {
+    public void alTerminarEstado(Personaje obj) {
         System.out.println("[ESTADO] El veneno se ha disipado de " + obj.getNombre());
     }
 }

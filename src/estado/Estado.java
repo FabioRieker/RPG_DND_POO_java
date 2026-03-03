@@ -13,8 +13,8 @@ public abstract class Estado {
         this.potencia = potencia;
     }
 
-    public abstract void alPasarTurno(Personaje obj);
-    public abstract void alTerminar(Personaje obj);
+    public abstract void alPasarTurnoEstado(Personaje obj);
+    public abstract void alTerminarEstado(Personaje obj);
 
     
     public boolean estaActivo() {

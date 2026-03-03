@@ -39,17 +39,8 @@ public class Main {
 
     kaelen.equiparArma(armeria.get("Hacha"));
     elara.equiparArma(armeria.get("Ballesta"));
-
-    System.out.println("\n--- COMIENZA EL DUELO DE PRUEBA ---");
-
-    int dañoKaelen = kaelen.getArma().calcularDaño(kaelen, elara);
-    elara.recibirDaño(dañoKaelen);
-
-    System.out.println("-------------------------------------");
-
-    if (elara.estaVivo()) {
-      int dañoElara = elara.getArma().calcularDaño(elara, kaelen);
-      kaelen.recibirDaño(dañoElara);
-    }
   }
 }
+
+    
+
