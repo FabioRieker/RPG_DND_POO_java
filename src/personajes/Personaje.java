@@ -136,4 +136,45 @@ public abstract class Personaje {
 			}
 		}
 	}
+	
+	public void atacar(Personaje objetivo) {
+	   //compruebo q ambos estén vivos
+		if (!this.vivo || !objetivo.estaVivo()) {
+	        return;
+	    }
+
+	    // calculo daño
+	    int daño;
+	    if (this.armaEquipada != null) {
+	        daño = this.armaEquipada.calcularDaño(this, objetivo);
+	    } else {
+	        daño = this.fuerza / 2;
+	    }
+
+	    String mensaje = "\n" + this.nombre + " ataca a " + objetivo.getNombre();
+	    if (this.armaEquipada != null) {
+	        mensaje += " con " + this.armaEquipada.getNombre();
+	    } else {
+	        mensaje += " a puñetazos";
+	    }
+	    System.out.println(mensaje);
+	    
+	    // aplico daño al objetivo
+	    objetivo.recibirDaño(daño);
+
+	    // para cuando configuremos mejor q arma tiene qué efecto
+	    if (this.armaEquipada != null) {
+	        this.aplicarEfectoDeArma(objetivo);
+	    }
+	}
+
+	//hasta q esté lo de las armas, de momento pongo aquí esto para forzar el veneno en la prueba
+	private void aplicarEfectoDeArma(Personaje objetivo) {
+	    if (!objetivo.tieneEstado("Veneno")) {
+	        objetivo.aplicarEstado(new estado.EstadoVeneno(3, 5));
+	        System.out.println("-- Se ha envenenado al enemigo!");
+	    } else {
+	        System.out.println("-- " + objetivo.getNombre() + " ya está evnvenenado");
+	    }
+	}
 }
