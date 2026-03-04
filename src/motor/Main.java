@@ -16,6 +16,7 @@ public class Main {
     armeria.put("Espada", new ArmaCuerpoACuerpo("Espada Larga", 1, 8));
     armeria.put("Hacha", new ArmaCuerpoACuerpo("Hacha de Batalla", 1, 12));
     armeria.put("Daga", new ArmaCuerpoACuerpo("Daga de Asesino", 1, 4));
+    armeria.put("Maza", new ArmaCuerpoACuerpo("Maza potententos", 80, 120));
 
     // ARMAS A DISTANCIA
     armeria.put("Arco", new ArmaADistancia("Arco Corto", 1, 8));
@@ -35,9 +36,9 @@ public class Main {
     Paladin cirric = new Paladin("Cirric", Raza.HUMANO, 14, 10, 16, 14, 18);
 
     kaelen.mostrarInfo();
-    vex.mostrarInfo();
+    elara.mostrarInfo();
 
-    kaelen.equiparArma(armeria.get("Hacha"));
+    kaelen.equiparArma(armeria.get("Maza"));
     elara.equiparArma(armeria.get("Ballesta"));
 
     System.out.println("\n--- COMIENZA EL DUELO DE PRUEBA ---");

@@ -2,6 +2,7 @@ package personajes;
 
 import armas.Arma;
 import java.util.ArrayList;
+import java.util.List;
 
 public abstract class Personaje {
   protected String nombre;
@@ -65,7 +66,7 @@ public abstract class Personaje {
     if (this.vidaActual <= 0) {
       this.vidaActual = 0;
       this.vivo = false;
-      System.out.println(this.nombre + " ha caído en combate.");
+      System.out.println(this.nombre + "Ha caido en combate");
     } else {
       System.out.println(
           this.nombre + " recibe " + dañoFinal + " de daño. (Vida: " + this.vidaActual + "/" + this.vidaMax + ")");
