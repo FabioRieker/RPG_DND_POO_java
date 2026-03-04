@@ -1,7 +1,7 @@
 package armas;
 
 public enum CategoriaArma {
-  melemelee,
+  melee,
   distancia
 
 }
