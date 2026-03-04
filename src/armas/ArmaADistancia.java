@@ -5,7 +5,7 @@ import personajes.Personaje;
 public class ArmaADistancia extends Arma {
 
   public ArmaADistancia(String nombre, int cantidadDados, int carasDado) {
-    super(nombre, cantidadDados, carasDado);
+    super(nombre, cantidadDados, carasDado, CategoriaArma.distancia);
   }
 
   @Override
