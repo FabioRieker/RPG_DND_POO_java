@@ -12,11 +12,12 @@ public class Main {
 
 		Map<String, Arma> armeria = new HashMap<>();
 
+		// TODO: sacar armas del main
 		// ARMAS CUERPO A CUERPO
 		armeria.put("Espada", new ArmaCuerpoACuerpo("Espada Larga", 1, 8));
 		armeria.put("Hacha", new ArmaCuerpoACuerpo("Hacha de Batalla", 1, 12));
 		armeria.put("Daga", new ArmaCuerpoACuerpo("Daga de Asesino", 1, 4));
-		armeria.put("Maza", new ArmaCuerpoACuerpo("Maza potententos", 80, 120));
+		armeria.put("Maza", new ArmaCuerpoACuerpo("Maza Potententosa", 8, 12));
 
 		// ARMAS A DISTANCIA
 		armeria.put("Arco", new ArmaADistancia("Arco Corto", 1, 8));
@@ -45,23 +46,29 @@ public class Main {
 		System.out.println("\n--- COMIENZA EL DUELO DE PRUEBA ---");
 
 		for (int i = 1; i <= 3; i++) {
-			System.out.println("\n======= TURNO " + i + " =======");
+		    System.out.println("\n======= TURNO " + i + " =======");
+		    
+		    kaelen.mostrarInfoBreve();
+		    elara.mostrarInfoBreve();
 
-			kaelen.pasarTurnoDeEstados();
-			elara.pasarTurnoDeEstados();
+		    kaelen.pasarTurnoDeEstados();
+		    elara.pasarTurnoDeEstados();
 
-			if (kaelen.estaVivo() && elara.estaVivo()) {
-				kaelen.atacar(elara);
-			}
+		    if (kaelen.estaVivo() == true && elara.estaVivo() == true) {
+		        kaelen.atacar(elara);
+		    }
 
-			if (elara.estaVivo() && kaelen.estaVivo()) {
-				elara.atacar(kaelen);
-			}
+		    if (elara.estaVivo() == true && kaelen.estaVivo() == true) {
+		        elara.atacar(kaelen);
+		    }
 
-			if (!kaelen.estaVivo() || !elara.estaVivo())
-				break;
-			// TODO añadir mensaje de derrota
+		    System.out.println("\n--- Resumen Turno " + i + " ---");
+		    kaelen.mostrarInfoBreve();
+		    elara.mostrarInfoBreve();
+
+		    if (kaelen.estaVivo() == false || elara.estaVivo() == false) {
+		        break;
+		    }
 		}
-		System.out.println("\n--- FIN DEL COMBATE ---");
 	}
 }

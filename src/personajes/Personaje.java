@@ -67,6 +67,12 @@ public abstract class Personaje {
 		System.out.println("------------------------------------------");
 	}
 
+	// para antes o después de un turno, mostrar solo lo imprescindible
+	public void mostrarInfoBreve() {
+		System.out.println("   > " + nombre + ": " + vidaActual + "/" + vidaMax + " HP | Estados: "
+				+ (estadosActivos.isEmpty() ? "Ninguno" : estadosActivos.get(0).getNombre()));
+	}
+
 	public void equiparArma(Arma arma) {
 		if (this.armasPermitidas.contains(arma.getCategoria())) {
 			this.armaEquipada = arma;
@@ -200,9 +206,8 @@ public abstract class Personaje {
 		}
 	}
 
-	
-	//-----ESTADOS-----
-	
+	// -----ESTADOS-----
+
 	// he creado después la de tiene estado para q no aplique el mismo varias veces
 	public void aplicarEstado(Estado nuevoEstado) {
 		this.estadosActivos.add(nuevoEstado);
