@@ -13,3 +13,4 @@ build/
 # Ignorar archivos de configuración de MacOS/Windows
 .DS_Store
 Thumbs.db
+/bin1/
