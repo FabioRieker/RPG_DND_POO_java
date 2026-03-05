@@ -67,22 +67,37 @@ public abstract class Personaje {
 		System.out.println("------------------------------------------");
 	}
 
-	public void recibirDaño(int cantidad) {
-		int mitigacion = this.getDefensaTotal() / 2;
-		int dañoFinal = cantidad - mitigacion;
+	public void recibirDaño(int cantidad, boolean esDañoPuro) {
+	    if (!this.vivo) return;
 
-		if (dañoFinal < 0) {
-			dañoFinal = 0;
-		}
+	    int dañoFinal;
 
-		this.vidaActual -= dañoFinal;
-		if (this.vidaActual <= 0) {
-			this.vidaActual = 0;
-			this.vivo = false;
-			System.out.println(this.nombre + " ha caído en combate.");
-		} else {
-			System.out.println(this.nombre + " recibe " + dañoFinal + " de daño. (Vida: " + this.vidaActual + "/" + this.vidaMax + ")");
-		}
+	    // para estados o ataques especiales q se salten la mitigación
+	    if (esDañoPuro) {
+	        dañoFinal = cantidad;
+	    } else {
+	        int mitigacion = this.getDefensaTotal() / 2;
+	        dañoFinal = cantidad - mitigacion;
+	    }
+
+	    // evita q el daño negativo cure al personaje
+	    if (dañoFinal < 0) {
+	        dañoFinal = 0;
+	    }
+
+	    this.vidaActual -= dañoFinal;
+
+	    if (this.vidaActual <= 0) {
+	        this.vidaActual = 0;
+	        this.vivo = false;
+	        System.out.println(this.nombre + " ha caído en combate.");
+	    } else {
+	        String tipo = "";
+	        if (esDañoPuro) {
+	            tipo = "[PURO] ";
+	        }
+	        System.out.println(tipo + this.nombre + " recibe " + dañoFinal + " de daño. (Vida: " + this.vidaActual + "/" + this.vidaMax + ")");
+	    }
 	}
 
 	public void equiparArma(Arma arma) {
@@ -103,12 +118,21 @@ public abstract class Personaje {
 		}
 	}
 
+	// cambio ternarios (?) por if-else (me lía menos)
 	public int getDefensaTotal() {
-		return (armaduraEquipada != null) ? defensaBase + armaduraEquipada.getBonoDefensa() : defensaBase;
+	    if (armaduraEquipada != null) {
+	        return defensaBase + armaduraEquipada.getBonoDefensa();
+	    } else {
+	        return defensaBase;
+	    }
 	}
 
 	public int getDestrezaTotal() {
-		return (armaduraEquipada != null) ? destreza - armaduraEquipada.getPenalizacionDestreza() : destreza;
+	    if (armaduraEquipada != null) {
+	        return destreza - armaduraEquipada.getPenalizacionDestreza();
+	    } else {
+	        return destreza;
+	    }
 	}
 
 	public Arma getArma() { return this.armaEquipada; }
@@ -164,7 +188,7 @@ public abstract class Personaje {
 		System.out.println(mensaje);
 		
 		// aplico daño al objetivo
-		objetivo.recibirDaño(daño);
+		objetivo.recibirDaño(daño, false);
 
 		// para cuando configuremos mejor q arma tiene qué efecto
 		if (this.armaEquipada != null) {
