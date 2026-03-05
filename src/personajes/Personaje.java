@@ -36,7 +36,7 @@ public abstract class Personaje {
 		this.defensaBase = defBase;
 		this.vivo = true;
 
-		// Fórmulas de recursos
+		// formulas de recursos
 		this.vidaMax = (this.constitucion * 5) + 50;
 		this.vidaActual = this.vidaMax;
 		this.manaMax = (this.inteligencia * 5) + 20;
@@ -118,10 +118,12 @@ public abstract class Personaje {
 	public String getNombre() { return nombre; }
 	public boolean estaVivo() { return this.vidaActual > 0; }
 
+	// he creado después la de tiene estado para q no aplique el mismo varias veces
 	public void aplicarEstado(Estado nuevoEstado) {
 		this.estadosActivos.add(nuevoEstado);
 	}
 
+	// compruebo si un personae ya tiene aplicado un estado con el mismo nombre
 	public boolean tieneEstado(String nombreEstado) {
 		for (Estado e : estadosActivos) {
 			if (e.getNombre().equals(nombreEstado)) return true;
@@ -129,6 +131,7 @@ public abstract class Personaje {
 		return false;
 	}
 
+	//uso iterator en vez de bucle for para no generar problemas al borrar (por si por ejemplo se cura un estado antes de tiempo)
 	public void pasarTurnoDeEstados() {
 		if (!this.vivo || estadosActivos.isEmpty()) return;
 
@@ -146,24 +149,36 @@ public abstract class Personaje {
 	}
 
 	public void atacar(Personaje objetivo) {
+		// compruebo q ambos estén vivos
 		if (!this.vivo || !objetivo.estaVivo()) return;
 
+		// calculo daño
 		int daño = (this.armaEquipada != null) ? this.armaEquipada.calcularDaño(this, objetivo) : this.fuerza / 2;
 
-		System.out.println("\n" + this.nombre + " ataca a " + objetivo.getNombre() + 
-				(this.armaEquipada != null ? " con " + this.armaEquipada.getNombre() : " a puñetazos"));
+		String mensaje = "\n" + this.nombre + " ataca a " + objetivo.getNombre();
+		if (this.armaEquipada != null) {
+			mensaje += " con " + this.armaEquipada.getNombre();
+		} else {
+			mensaje += " a puñetazos";
+		}
+		System.out.println(mensaje);
 		
+		// aplico daño al objetivo
 		objetivo.recibirDaño(daño);
 
+		// para cuando configuremos mejor q arma tiene qué efecto
 		if (this.armaEquipada != null) {
 			this.aplicarEfectoDeArma(objetivo);
 		}
 	}
 
+	// hasta q esté lo de las armas, de momento pongo aquí esto para forzar el veneno en la prueba
 	private void aplicarEfectoDeArma(Personaje objetivo) {
 		if (!objetivo.tieneEstado("Veneno")) {
 			objetivo.aplicarEstado(new estado.EstadoVeneno(3, 5));
 			System.out.println("-- Se ha envenenado al enemigo!");
+		} else {
+			System.out.println("-- " + objetivo.getNombre() + " ya está envenenado");
 		}
 	}
 }
