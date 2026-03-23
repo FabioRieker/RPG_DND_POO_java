@@ -17,6 +17,7 @@ public abstract class Arma {
     this.cantidadDados = cantidadDados;
     this.carasDado = carasDado;
     this.dado = new Random();
+    this.categoria = categoria; //para q no de error al asignar armas
   }
 
   public String getNombre() {
