@@ -5,6 +5,7 @@ import armas.CategoriaArma;
 import armaduras.Armadura;
 import armaduras.CategoriaArmadura;
 import estado.Estado;
+import habilidad.AccionCombate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +25,7 @@ public abstract class Personaje {
 	protected Armadura armaduraEquipada;
 	protected List<CategoriaArma> armasPermitidas;
 	protected List<CategoriaArmadura> armadurasPermitidas;
+	protected ArrayList<AccionCombate> habilidades = new ArrayList<>();
 
 	public Personaje(String nombre, Raza raza, TipoClase tipoClase, int fue, int des, int con, int intel, int defBase) {
 		this.nombre = nombre;
@@ -239,5 +241,28 @@ public abstract class Personaje {
 				it.remove();
 			}
 		}
+	}
+
+	// -----HABILIDADES-----
+
+	public ArrayList<AccionCombate> getHabilidades() {
+		return habilidades;
+	}
+
+	public void agregarHabilidad(AccionCombate h) {
+		this.habilidades.add(h);
+	}
+
+	public boolean tieneRecursos(int energia, int mana) {
+		return this.energiaActual >= energia && this.manaActual >= mana;
+	}
+
+	public void consumirRecursos(int energia, int mana) {
+		this.energiaActual -= energia;
+		this.manaActual -= mana;
+	}
+
+	public int getConstitucion() {
+		return constitucion;
 	}
 }
