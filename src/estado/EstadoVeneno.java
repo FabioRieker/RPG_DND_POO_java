@@ -7,7 +7,7 @@ import personajes.Personaje;
 public class EstadoVeneno extends Estado {
     
     public EstadoVeneno(int turnos, int potencia) {
-    	super("Veneno", new Random().nextInt(3, 6), potencia);
+    	super("Veneno", turnos, potencia);
     }
 
     @Override

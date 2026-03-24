@@ -5,6 +5,7 @@ import armas.CategoriaArma;
 import armaduras.Armadura;
 import armaduras.CategoriaArmadura;
 import estado.Estado;
+import estado.EstadoVeneno;
 import habilidad.AccionCombate;
 import java.util.ArrayList;
 import java.util.List;
@@ -201,7 +202,7 @@ public abstract class Personaje {
 	// veneno en la prueba
 	private void aplicarEfectoDeArma(Personaje objetivo) {
 		if (!objetivo.tieneEstado("Veneno")) {
-			objetivo.aplicarEstado(new estado.EstadoVeneno(3, 5));
+			objetivo.aplicarEstado(new EstadoVeneno(3, 5));
 			System.out.println("-- Se ha envenenado al enemigo!");
 		} else {
 			System.out.println("-- " + objetivo.getNombre() + " ya está envenenado");
@@ -262,7 +263,39 @@ public abstract class Personaje {
 		this.manaActual -= mana;
 	}
 
+	public ArrayList<Estado> getEstadosActivos() {
+		return estadosActivos;
+	}
+
 	public int getConstitucion() {
 		return constitucion;
+	}
+
+	public int getVidaActual() {
+		return vidaActual;
+	}
+
+	public int getVidaMax() {
+		return vidaMax;
+	}
+
+	public void curar(int cantidad) {
+		this.vidaActual += cantidad;
+		if (this.vidaActual > vidaMax) {
+			this.vidaActual = vidaMax;
+		}
+		System.out.println(this.nombre + " se ha curado " + cantidad + " puntos de vida.");
+	}
+
+	public void recuperarRecursos(int cantidad) {
+		this.energiaActual += cantidad;
+		this.manaActual += cantidad;
+		if (this.energiaActual > energiaMax) {
+			this.energiaActual = energiaMax;
+		}
+		if (this.manaActual > manaMax) {
+			this.manaActual = manaMax;
+		}
+		System.out.println(this.nombre + " recupera " + cantidad + " SP y MP.");
 	}
 }
