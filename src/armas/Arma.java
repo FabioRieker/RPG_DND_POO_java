@@ -3,8 +3,6 @@ package armas;
 import personajes.Personaje;
 import java.util.Random;
 
-import armaduras.CategoriaArmadura;
-
 public abstract class Arma {
   protected String nombre;
   protected int cantidadDados;

@@ -1,6 +1,7 @@
 package habilidad;
 
 import personajes.Personaje;
+import estado.EstadoFuria;
 import java.util.ArrayList;
 
 // Habilidades que usan tanto energia como mana
@@ -52,6 +53,11 @@ public class HabilidadHibrida extends AccionCombate {
             case ROBO_VIDA:
                 usuario.curar(daño);
                 System.out.println("-- " + usuario.getNombre() + " roba " + daño + " HP!");
+                break;
+            case BUFF_ALIADOS:
+                System.out.println("-- " + objetivo.getNombre() + " recibe +" + daño + " de daño temporal!");
+                objetivo.setBonoDañoTemporal(daño);
+                objetivo.aplicarEstado(new EstadoFuria(3, daño));
                 break;
             case NINGUNO:
             default:
