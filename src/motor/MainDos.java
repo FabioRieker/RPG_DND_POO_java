@@ -1,9 +1,6 @@
 package motor;
 
 import personajes.*;
-import armas.*;
-import habilidad.*;
-import armaduras.CategoriaArmadura;
 import java.util.List;
 
 public class MainDos {
@@ -14,50 +11,16 @@ public class MainDos {
     System.out.println("    COMBATE: HEROES vs ENEMIGOS + JEFE");
     System.out.println("===========================================\n");
 
-    // CREAR HEROES
-    Guerrero heroe1 = new Guerrero("Thorin", Raza.ENANO, 16, 10, 16, 8, 12);
-    Mago heroe2 = new Mago("Elara", Raza.ELFO, 6, 14, 8, 18, 10);
-    Picaro heroe3 = new Picaro("Vex", Raza.HUMANO, 10, 16, 10, 12, 14);
-    Paladin heroe4 = new Paladin("Marcus", Raza.HUMANO, 14, 10, 14, 12, 14);
-
-    // EQUIPAR ARMADURAS A HEROES
-    heroe1.equiparArmadura(CategoriaArmadura.PESADA);
-    heroe2.equiparArmadura(CategoriaArmadura.LIGERA);
-    heroe3.equiparArmadura(CategoriaArmadura.LIGERA);
-    heroe4.equiparArmadura(CategoriaArmadura.PESADA);
-
-    // EQUIPAR ARMAS A HEROES
-    Armeria armeria = new Armeria(); 
-    heroe1.equiparArma(armeria.get("Hacha"));
-    heroe2.equiparArma(armeria.get("Ballesta"));
-    heroe3.equiparArma(armeria.get("Daga"));
-    heroe4.equiparArma(armeria.get("Espada"));
-
-    // AÑADIR HABILIDADES A HEROES
-    heroe1.agregarHabilidad(new GolpeSanguinario());
-    heroe1.agregarHabilidad(new Rompecraneos());
-    heroe1.agregarHabilidad(new TajoSismico());
-
-    heroe2.agregarHabilidad(new BolaFuego());
-    heroe2.agregarHabilidad(new RafagaGlacial());
-    heroe2.agregarHabilidad(new Ventisca());
-
-    heroe3.agregarHabilidad(new HojaPonzoñosa());
-    heroe3.agregarHabilidad(new AtaqueFurtivo());
-    heroe3.agregarHabilidad(new TiroRodilla());
-
-    heroe4.agregarHabilidad(new LuzSagrada());
-    heroe4.agregarHabilidad(new Purificacion());
-    heroe4.agregarHabilidad(new GritoGuerra());
-
+    // LLAMAR HEROES 
+    List<Personaje> listaHeroes = FabricaHeroes.crearEquipoInicial();
+   
     // OBTENER SALA 6 DE LA FABRICA
     System.out.println("Entrando en la Sala 6...");
     Sala salaActual = FabricaSalas.generarSala(6);
     List<Personaje> listaEnemigos = salaActual.getEnemigos();
 
-    // LISTAS DE COMBATE
-    Personaje[] heroes = {heroe1, heroe2, heroe3, heroe4};
-    // Convertimos la lista de la sala a array para mantener la compatibilidad con el resto del Main
+    // ESTA ES LA ÚNICA PARTE QUE NECESITAS (Convertir a array para el resto del Main)
+    Personaje[] heroes = listaHeroes.toArray(new Personaje[0]);
     Personaje[] enemigos = listaEnemigos.toArray(new Personaje[0]);
 
     // MOSTRAR INFO
