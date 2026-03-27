@@ -9,23 +9,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Personaje {
+	// --- ATRIBUTOS DE IDENTIDAD ---
 	protected String nombre;
 	protected Raza raza;
 	protected TipoClase tipoClase;
+	protected boolean vivo;
+	protected String mensajePreparacion;
 
-	// Stats y Recursos
+	// --- STATS Y RECURSOS ---
 	protected int fuerza, destreza, constitucion, inteligencia;
 	protected int vidaMax, vidaActual, manaMax, manaActual, energiaMax, energiaActual;
 	protected int defensaBase;
-	protected boolean vivo;
 
-	protected ArrayList<Estado> estadosActivos = new ArrayList<>();
+	// --- EQUIPO Y COLECCIONES ---
 	protected Arma armaEquipada;
 	protected CategoriaArmadura armaduraEquipada = CategoriaArmadura.NADA;
 	protected List<CategoriaArma> armasPermitidas;
 	protected List<CategoriaArmadura> armadurasPermitidas;
+	protected ArrayList<Estado> estadosActivos = new ArrayList<>();
 	protected ArrayList<AccionCombate> habilidades = new ArrayList<>();
 
+	// --- CONSTRUCTOR ---
 	public Personaje(String nombre, Raza raza, TipoClase tipoClase, int fue, int des, int con, int intel, int defBase) {
 		this.nombre = nombre;
 		this.raza = raza;
@@ -47,8 +51,11 @@ public abstract class Personaje {
 
 		this.armasPermitidas = new ArrayList<>();
 		this.armadurasPermitidas = new ArrayList<>();
+
+		this.mensajePreparacion = "está preparándose...";
 	}
 
+	// --- SECCIÓN: INFORMACIÓN ---
 	public void mostrarInfo() {
 		System.out.println("------------------------------------------");
 		System.out.println("PERSONAJE: " + nombre + " [" + tipoClase + " " + raza + "]");
@@ -74,6 +81,7 @@ public abstract class Personaje {
 				+ (estadosActivos.isEmpty() ? "Ninguno" : estadosActivos.get(0).getNombre()));
 	}
 
+	// --- SECCIÓN: EQUIPO ---
 	public void equiparArma(Arma arma) {
 		if (this.armasPermitidas.contains(arma.getCategoria())) {
 			this.armaEquipada = arma;
@@ -93,16 +101,17 @@ public abstract class Personaje {
 		}
 	}
 
+	public Arma getArma() {
+		return this.armaEquipada;
+	}
+
+	// --- SECCIÓN: ESTADÍSTICAS Y RECURSOS ---
 	public int getDefensaTotal() {
 		return defensaBase + armaduraEquipada.bonoDefensa;
 	}
 
 	public int getDestrezaTotal() {
 		return destreza + armaduraEquipada.modificadorDestreza;
-	}
-
-	public Arma getArma() {
-		return this.armaEquipada;
 	}
 
 	public int getFuerza() {
@@ -117,14 +126,56 @@ public abstract class Personaje {
 		return inteligencia;
 	}
 
+	public int getConstitucion() {
+		return constitucion;
+	}
+
 	public String getNombre() {
 		return nombre;
+	}
+
+	public int getVidaActual() {
+		return vidaActual;
+	}
+
+	public int getVidaMax() {
+		return vidaMax;
 	}
 
 	public boolean estaVivo() {
 		return this.vidaActual > 0;
 	}
 
+	public void curar(int cantidad) {
+		this.vidaActual += cantidad;
+		if (this.vidaActual > vidaMax) {
+			this.vidaActual = vidaMax;
+		}
+		System.out.println(this.nombre + " se ha curado " + cantidad + " puntos de vida.");
+	}
+
+	public void recuperarRecursos(int cantidad) {
+		this.energiaActual += cantidad;
+		this.manaActual += cantidad;
+		if (this.energiaActual > energiaMax) {
+			this.energiaActual = energiaMax;
+		}
+		if (this.manaActual > manaMax) {
+			this.manaActual = manaMax;
+		}
+		System.out.println(this.nombre + " recupera " + cantidad + " SP y MP.");
+	}
+
+	public boolean tieneRecursos(int energia, int mana) {
+		return this.energiaActual >= energia && this.manaActual >= mana;
+	}
+
+	public void consumirRecursos(int energia, int mana) {
+		this.energiaActual -= energia;
+		this.manaActual -= mana;
+	}
+
+	// --- SECCIÓN: COMBATE ---
 	public void atacar(Personaje objetivo) {
 		// compruebo q ambos personajes estén vivos
 		if (this.vivo == false || objetivo.estaVivo() == false) {
@@ -194,8 +245,15 @@ public abstract class Personaje {
 		}
 	}
 
-	// -----ESTADOS-----
+	public int getBonoDañoTotal() {
+		int bonoTotal = 0;
+		for (Estado e : estadosActivos) {
+			bonoTotal += e.getModificadorDaño();
+		}
+		return bonoTotal;
+	}
 
+	// --- SECCIÓN: ESTADOS ---
 	// he creado después la de tiene estado para q no aplique el mismo varias veces
 	public void aplicarEstado(Estado nuevoEstado) {
 		this.estadosActivos.add(nuevoEstado);
@@ -237,8 +295,11 @@ public abstract class Personaje {
 		}
 	}
 
-	// -----HABILIDADES-----
+	public ArrayList<Estado> getEstadosActivos() {
+		return estadosActivos;
+	}
 
+	// --- SECCIÓN: HABILIDADES ---
 	public ArrayList<AccionCombate> getHabilidades() {
 		return habilidades;
 	}
@@ -247,56 +308,8 @@ public abstract class Personaje {
 		this.habilidades.add(h);
 	}
 
-	public boolean tieneRecursos(int energia, int mana) {
-		return this.energiaActual >= energia && this.manaActual >= mana;
-	}
-
-	public void consumirRecursos(int energia, int mana) {
-		this.energiaActual -= energia;
-		this.manaActual -= mana;
-	}
-
-	public ArrayList<Estado> getEstadosActivos() {
-		return estadosActivos;
-	}
-
-	public int getConstitucion() {
-		return constitucion;
-	}
-
-	public int getVidaActual() {
-		return vidaActual;
-	}
-
-	public int getVidaMax() {
-		return vidaMax;
-	}
-
-	public void curar(int cantidad) {
-		this.vidaActual += cantidad;
-		if (this.vidaActual > vidaMax) {
-			this.vidaActual = vidaMax;
-		}
-		System.out.println(this.nombre + " se ha curado " + cantidad + " puntos de vida.");
-	}
-
-	public void recuperarRecursos(int cantidad) {
-		this.energiaActual += cantidad;
-		this.manaActual += cantidad;
-		if (this.energiaActual > energiaMax) {
-			this.energiaActual = energiaMax;
-		}
-		if (this.manaActual > manaMax) {
-			this.manaActual = manaMax;
-		}
-		System.out.println(this.nombre + " recupera " + cantidad + " SP y MP.");
-	}
-
-	public int getBonoDañoTotal() {
-		int bonoTotal = 0;
-		for (Estado e : estadosActivos) {
-			bonoTotal += e.getModificadorDaño();
-		}
-		return bonoTotal;
+	// Nuevo método unificado
+	public void lanzarHechizo() {
+		System.out.println(nombre + " " + mensajePreparacion);
 	}
 }

@@ -1,0 +1,77 @@
+.
+├── ./armaduras
+│   └── ./armaduras/CategoriaArmadura.java
+├── ./armas
+│   ├── ./armas/ArmaADistancia.java
+│   ├── ./armas/ArmaCuerpoACuerpo.java
+│   ├── ./armas/Arma.java
+│   ├── ./armas/Armeria.java
+│   ├── ./armas/CategoriaArma.java
+│   ├── ./armas/ColmilloArana.java
+│   └── ./armas/HojaFenix.java
+├── ./consumibles
+│   ├── ./consumibles/Bomba.java
+│   ├── ./consumibles/CuchilloArrojadizo.java
+│   ├── ./consumibles/PocionCuracion.java
+│   └── ./consumibles/PocionRecurso.java
+├── ./estado
+│   ├── ./estado/EstadoAturdimiento.java
+│   ├── ./estado/EstadoCongelado.java
+│   ├── ./estado/EstadoFuria.java
+│   ├── ./estado/Estado.java
+│   ├── ./estado/EstadoLisiado.java
+│   ├── ./estado/EstadoQuemadura.java
+│   ├── ./estado/EstadoRenovar.java
+│   ├── ./estado/EstadoSangrado.java
+│   └── ./estado/EstadoVeneno.java
+├── ./estructura.txt
+├── ./habilidad
+│   ├── ./habilidad/AccionCombate.java
+│   ├── ./habilidad/AtaqueFurtivo.java
+│   ├── ./habilidad/BolaFuego.java
+│   ├── ./habilidad/Efecto.java
+│   ├── ./habilidad/Ejecucion.java
+│   ├── ./habilidad/ExplosionArcana.java
+│   ├── ./habilidad/FintaRapida.java
+│   ├── ./habilidad/GolpeSanguinario.java
+│   ├── ./habilidad/GritoGuerra.java
+│   ├── ./habilidad/HabilidadFisica.java
+│   ├── ./habilidad/HabilidadHibrida.java
+│   ├── ./habilidad/HechizoMagico.java
+│   ├── ./habilidad/HojaPonzoñosa.java
+│   ├── ./habilidad/LluviaFlechas.java
+│   ├── ./habilidad/LuzSagrada.java
+│   ├── ./habilidad/MuroPiedra.java
+│   ├── ./habilidad/NubeToxica.java
+│   ├── ./habilidad/Purificacion.java
+│   ├── ./habilidad/RafagaGlacial.java
+│   ├── ./habilidad/RayoEncadenado.java
+│   ├── ./habilidad/Rompecraneos.java
+│   ├── ./habilidad/TajoSismico.java
+│   ├── ./habilidad/TiroRodilla.java
+│   ├── ./habilidad/ToqueVampirico.java
+│   └── ./habilidad/Ventisca.java
+├── ./motor
+│   ├── ./motor/MainCombate.java
+│   ├── ./motor/Main.java
+│   └── ./motor/MainPrueba.java
+└── ./personajes
+    ├── ./personajes/Bardo.java
+    ├── ./personajes/Brujo.java
+    ├── ./personajes/Guerrero.java
+    ├── ./personajes/JefeDemonio.java
+    ├── ./personajes/JefeDragon.java
+    ├── ./personajes/JefeGigante.java
+    ├── ./personajes/Jefe.java
+    ├── ./personajes/JefeLich.java
+    ├── ./personajes/Mago.java
+    ├── ./personajes/Monje.java
+    ├── ./personajes/Monstruo.java
+    ├── ./personajes/Paladin.java
+    ├── ./personajes/Personaje.java
+    ├── ./personajes/Picaro.java
+    ├── ./personajes/Raza.java
+    ├── ./personajes/TipoClase.java
+    └── ./personajes/TipoJefe.java
+
+8 directories, 67 files
