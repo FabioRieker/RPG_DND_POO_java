@@ -5,7 +5,7 @@ package habilidad;
 // Cura al usuario según el daño causado
 public class GolpeSanguinario extends HabilidadHibrida {
 
-  public GolpeSanguinario() {
-    super("Golpe Sanguinario", 15, 10, 1, 8, Estadistica.FUERZA, Efecto.CURAR_VIDA);
-  }
+	public GolpeSanguinario() {
+		super("Golpe Sanguinario", 15, 10, 1, 8, Estadistica.FUERZA, Efecto.CURAR_VIDA);
+	}
 }

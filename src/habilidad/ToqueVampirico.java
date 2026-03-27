@@ -5,7 +5,7 @@ package habilidad;
 // Cura al usuario según el daño causado
 public class ToqueVampirico extends HabilidadHibrida {
 
-  public ToqueVampirico() {
-    super("Toque Vampírico", 10, 15, 1, 4, Estadistica.INTELIGENCIA, Efecto.ROBO_VIDA);
-  }
+	public ToqueVampirico() {
+		super("Toque Vampírico", 10, 15, 1, 4, Estadistica.INTELIGENCIA, Efecto.ROBO_VIDA);
+	}
 }

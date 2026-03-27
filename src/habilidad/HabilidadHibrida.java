@@ -8,65 +8,49 @@ import java.util.ArrayList;
 // Útiles para clases híbridas como el Paladín
 public class HabilidadHibrida extends AccionCombate {
 
-    private Efecto efecto;
+	private Efecto efecto;
 
-    public HabilidadHibrida(String nombre, int costeEnergia, int costeMana, int dadosCantidad, int dadosCaras,
-        Estadistica estadistica, Efecto efecto) {
-        super(nombre, costeEnergia, costeMana, dadosCantidad, dadosCaras, estadistica);
-        this.efecto = efecto;
-    }
+	public HabilidadHibrida(String nombre, int costeEnergia, int costeMana, int dadosCantidad, int dadosCaras,
+			Estadistica estadistica, Efecto efecto) {
+		super(nombre, costeEnergia, costeMana, dadosCantidad, dadosCaras, estadistica);
+		this.efecto = efecto;
+	}
 
-    @Override
-    public void ejecutar(Personaje usuario, Personaje objetivo) {
-        if (!usuario.tieneRecursos(costeEnergia, costeMana)) {
-            System.out.println(usuario.getNombre() + " no tiene suficientes recursos.");
-            return;
-        }
+	@Override
+	protected void aplicarEfectoImpacto(Personaje usuario, Personaje objetivo, int bono) {
+		int daño = tirarDados() + bono;
+		System.out.println("¡IMPACTO! " + objetivo.getNombre() + " recibe " + daño + " de daño.");
 
-        usuario.consumirRecursos(costeEnergia, costeMana);
+		// Explosion Arcana hace daño puro
+		boolean esPuro = this.nombre.equals("Explosión Arcana");
+		objetivo.recibirDaño(daño, esPuro);
 
-        int tirada = dado.nextInt(20) + 1;
-        int bono = getModificador(usuario) / 2;
-        int totalImpacto = tirada + bono;
+		aplicarEfectoEspecial(usuario, objetivo, daño);
+	}
 
-        System.out.println(usuario.getNombre() + " usa " + nombre + "...");
-        System.out.println("Coste: " + costeEnergia + " SP + " + costeMana + " MP");
-        System.out.println("Tirada: " + tirada + " + " + bono + " = " + totalImpacto);
+	private void aplicarEfectoEspecial(Personaje usuario, Personaje objetivo, int daño) {
+		switch (efecto) {
+		case CURAR_VIDA:
+			usuario.curar(daño);
+			System.out.println("-- " + usuario.getNombre() + " se cura " + daño + " HP!");
+			break;
+		case ROBO_VIDA:
+			usuario.curar(daño);
+			System.out.println("-- " + usuario.getNombre() + " roba " + daño + " HP!");
+			break;
+		case BUFF_ALIADOS:
+			System.out.println("-- " + objetivo.getNombre() + " recibe +" + daño + " de daño temporal!");
+			objetivo.aplicarEstado(new EstadoFuria(3, daño));
+			break;
+		case NINGUNO:
+		default:
+			break;
+		}
+	}
 
-        if (totalImpacto >= objetivo.getDefensaTotal()) {
-            int daño = tirarDados() + bono;
-            System.out.println("¡IMPACTO! " + objetivo.getNombre() + " recibe " + daño + " de daño.");
-            objetivo.recibirDaño(daño, false);
-            aplicarEfecto(usuario, objetivo, daño);
-        } else {
-            System.out.println("¡FALLO! El ataque no atraviesa la defensa.");
-        }
-    }
-
-    // Aplica efecto especial después de impactar
-    private void aplicarEfecto(Personaje usuario, Personaje objetivo, int daño) {
-        switch (efecto) {
-            case CURAR_VIDA:
-                usuario.curar(daño);
-                System.out.println("-- " + usuario.getNombre() + " se cura " + daño + " HP!");
-                break;
-            case ROBO_VIDA:
-                usuario.curar(daño);
-                System.out.println("-- " + usuario.getNombre() + " roba " + daño + " HP!");
-                break;
-            case BUFF_ALIADOS:
-                System.out.println("-- " + objetivo.getNombre() + " recibe +" + daño + " de daño temporal!");
-                objetivo.aplicarEstado(new EstadoFuria(3, daño));
-                break;
-            case NINGUNO:
-            default:
-                break;
-        }
-    }
-
-    public void ejecutar(Personaje usuario, ArrayList<Personaje> objetivos) {
-        for (Personaje objetivo : objetivos) {
-            ejecutar(usuario, objetivo);
-        }
-    }
+	public void ejecutar(Personaje usuario, ArrayList<Personaje> objetivos) {
+		for (Personaje objetivo : objetivos) {
+			ejecutar(usuario, objetivo);
+		}
+	}
 }

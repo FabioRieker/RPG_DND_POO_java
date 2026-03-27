@@ -8,46 +8,27 @@ import estado.EstadoQuemadura;
 // Aplica Quemadura y sinergiza con Veneno
 public class BolaFuego extends HechizoMagico {
 
-    public BolaFuego() {
-        super("Bola de Fuego", 25, 3, 6, "QUEMA");
-    }
+	public BolaFuego() {
+		super("Bola de Fuego", 25, 3, 6, "QUEMA");
+	}
 
-    @Override
-    public void ejecutar(Personaje usuario, Personaje objetivo) {
-        if (!usuario.tieneRecursos(costeEnergia, costeMana)) {
-            System.out.println(usuario.getNombre() + " no tiene suficientes recursos.");
-            return;
-        }
+	@Override
+	protected void aplicarEfectoImpacto(Personaje usuario, Personaje objetivo, int bono) {
+		int daño = tirarDados() + bono;
 
-        usuario.consumirRecursos(costeEnergia, costeMana);
+		// Sinergia fuego + veneno
+		if (objetivo.tieneEstado("Veneno")) {
+			daño *= 2;
+			System.out.println("¡SINERGIA! Fuego contra Veneno - DAÑO x2!");
+		}
 
-        int tirada = dado.nextInt(20) + 1;
-        int bono = usuario.getInteligencia() / 2;
-        int totalImpacto = tirada + bono;
+		System.out.println("¡IMPACTO! " + objetivo.getNombre() + " recibe " + daño + " de daño.");
+		objetivo.recibirDaño(daño, false);
 
-        System.out.println(usuario.getNombre() + " lanza " + nombre + "...");
-        System.out.println("Tirada: " + tirada + " + " + bono + " = " + totalImpacto);
-
-        if (totalImpacto >= objetivo.getDefensaTotal()) {
-            int daño = tirarDados() + bono;
-
-            // Sinergia fuego + veneno
-            boolean sinergiaVeneno = objetivo.tieneEstado("Veneno");
-            if (sinergiaVeneno) {
-                daño *= 2;
-                System.out.println("¡SINERGIA! Fuego contra Veneno - DAÑO x2!");
-            }
-
-            System.out.println("¡IMPACTO! " + objetivo.getNombre() + " recibe " + daño + " de daño.");
-            objetivo.recibirDaño(daño, false);
-
-            // Aplica quemadura
-            if (!objetivo.tieneEstado("Quemadura")) {
-                objetivo.aplicarEstado(new EstadoQuemadura(3, 5));
-                System.out.println("-- ¡" + objetivo.getNombre() + " está en llamas!");
-            }
-        } else {
-            System.out.println("¡FALLO! El hechizo no atraviesa la defensa.");
-        }
-    }
+		// Aplica quemadura
+		if (!objetivo.tieneEstado("Quemadura")) {
+			objetivo.aplicarEstado(new EstadoQuemadura(3, 5));
+			System.out.println("-- ¡" + objetivo.getNombre() + " está en llamas!");
+		}
+	}
 }
