@@ -5,38 +5,38 @@ import armas.ArmaCuerpoACuerpo;
 import armas.Armeria;
 
 public class FabricaSalas {
-    
-    private static Armeria armeria = new Armeria();
 
-    public static Sala generarSala(int numero) {
-        Sala sala = new Sala(numero);
+	private static Armeria armeria = new Armeria();
 
-        switch (numero) {
-            case 6:
-                // defino los enemigos fijos de la Sala 6 (sacados de MainCombate)
-                Monstruo orco = new Monstruo("Grumsh", Raza.ORCO, 14, 8, 14, 6, 10);
-                orco.equiparArma(armeria.get("Maza"));
+	public static Sala generarSala(int numero) {
+		Sala sala = new Sala(numero);
 
-                Monstruo goblin = new Monstruo("Snitch", Raza.GOBLIN, 8, 14, 8, 6, 8);
-                goblin.equiparArma(armeria.get("Arco"));
+		switch (numero) {
+		case 6:
+			// defino los enemigos fijos de la Sala 6 (sacados de MainCombate)
+			Monstruo orco = new Monstruo("Grumsh", Raza.ORCO, 14, 8, 14, 6, 10);
+			orco.equiparArma(armeria.get("Maza"));
 
-                Monstruo bestia = new Monstruo("Garra", Raza.BESTIA, 12, 12, 12, 4, 10);
-                bestia.equiparArma(new ArmaCuerpoACuerpo("Garras", 1, 6));
+			Monstruo goblin = new Monstruo("Snitch", Raza.GOBLIN, 8, 14, 8, 6, 8);
+			goblin.equiparArma(armeria.get("Arco"));
 
-                JefeDragon dragon = new JefeDragon("Valdrax el Devorador", 18, 10, 20, 12, 14);
-                dragon.equiparArma(new ArmaCuerpoACuerpo("Colmillos de Dragón", 2, 8));
+			Monstruo bestia = new Monstruo("Garra", Raza.BESTIA, 12, 12, 12, 4, 10);
+			bestia.equiparArma(new ArmaCuerpoACuerpo("Garras", 1, 6));
 
-                sala.agregarEnemigo(orco);
-                sala.agregarEnemigo(goblin);
-                sala.agregarEnemigo(bestia);
-                sala.agregarEnemigo(dragon);
-                break;
+			JefeDragon dragon = new JefeDragon("Valdrax el Devorador", 18, 10, 20, 12, 14);
+			dragon.equiparArma(new ArmaCuerpoACuerpo("Colmillos de Dragón", 2, 8));
 
-            default:
-                System.out.println("La sala " + numero + " aún no ha sido diseñada.");
-                break;
-        }
+			sala.agregarEnemigo(orco);
+			sala.agregarEnemigo(goblin);
+			sala.agregarEnemigo(bestia);
+			sala.agregarEnemigo(dragon);
+			break;
 
-        return sala;
-    }
+		default:
+			System.out.println("La sala " + numero + " aún no ha sido diseñada.");
+			break;
+		}
+
+		return sala;
+	}
 }

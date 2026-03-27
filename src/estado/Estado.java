@@ -3,33 +3,33 @@ package estado;
 import personajes.Personaje;
 
 public abstract class Estado {
-    protected String nombre;
-    protected int turnosRestantes;
-    protected int potencia;
+	protected String nombre;
+	protected int turnosRestantes;
+	protected int potencia;
 
-    public Estado(String nombre, int turnos, int potencia) {
-        this.nombre = nombre;
-        this.turnosRestantes = turnos;
-        this.potencia = potencia;
-    }
+	public Estado(String nombre, int turnos, int potencia) {
+		this.nombre = nombre;
+		this.turnosRestantes = turnos;
+		this.potencia = potencia;
+	}
 
-    public abstract void alPasarTurnoEstado(Personaje obj);
-    public abstract void alTerminarEstado(Personaje obj);
+	public abstract void alPasarTurnoEstado(Personaje obj);
 
-    
-    public boolean estaActivo() {
-        return turnosRestantes > 0;
-    }
+	public abstract void alTerminarEstado(Personaje obj);
 
-    public void reducirTurno() {
-        turnosRestantes--;
-    }
-    
-    public String getNombre() {
-        return nombre;
-    }
-    
-    public int getModificadorDaño() {
-        return 0; // por defecto un estado no altera el daño
-    }
+	public boolean estaActivo() {
+		return turnosRestantes > 0;
+	}
+
+	public void reducirTurno() {
+		turnosRestantes--;
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public int getModificadorDaño() {
+		return 0; // por defecto un estado no altera el daño
+	}
 }

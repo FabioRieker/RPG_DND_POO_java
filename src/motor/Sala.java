@@ -5,23 +5,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Sala {
-    private int numero;
-    private List<Personaje> enemigos;
+	private int numero;
+	private List<Personaje> enemigos;
 
-    public Sala(int numero) {
-        this.numero = numero;
-        this.enemigos = new ArrayList<>();
-    }
+	public Sala(int numero) {
+		this.numero = numero;
+		this.enemigos = new ArrayList<>();
+	}
 
-    public void agregarEnemigo(Personaje enemigo) {
-        this.enemigos.add(enemigo);
-    }
+	public void agregarEnemigo(Personaje enemigo) {
+		this.enemigos.add(enemigo);
+	}
 
-    public List<Personaje> getEnemigos() {
-        return enemigos;
-    }
+	public List<Personaje> getEnemigos() {
+		return enemigos;
+	}
 
-    public int getNumero() {
-        return numero;
-    }
+	public int getNumero() {
+		return numero;
+	}
 }

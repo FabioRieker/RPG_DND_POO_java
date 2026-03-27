@@ -24,36 +24,36 @@ public class Main {
 		kaelen.mostrarInfo();
 		elara.mostrarInfo();
 
-		kaelen.equiparArma(armeria.get("Maza")); 
-        elara.equiparArma(armeria.get("Ballesta"));
+		kaelen.equiparArma(armeria.get("Maza"));
+		elara.equiparArma(armeria.get("Ballesta"));
 
 //He cambiado bastante el combate de prueba, hay varias cosas q no actuan correctamente, las corrijo mañana
 		System.out.println("\n--- COMIENZA EL DUELO DE PRUEBA ---");
 
 		for (int i = 1; i <= 3; i++) {
-		    System.out.println("\n======= TURNO " + i + " =======");
-		    
-		    kaelen.mostrarInfoBreve();
-		    elara.mostrarInfoBreve();
+			System.out.println("\n======= TURNO " + i + " =======");
 
-		    kaelen.pasarTurnoDeEstados();
-		    elara.pasarTurnoDeEstados();
+			kaelen.mostrarInfoBreve();
+			elara.mostrarInfoBreve();
 
-		    if (kaelen.estaVivo() == true && elara.estaVivo() == true) {
-		        kaelen.atacar(elara);
-		    }
+			kaelen.pasarTurnoDeEstados();
+			elara.pasarTurnoDeEstados();
 
-		    if (elara.estaVivo() == true && kaelen.estaVivo() == true) {
-		        elara.atacar(kaelen);
-		    }
+			if (kaelen.estaVivo() == true && elara.estaVivo() == true) {
+				kaelen.atacar(elara);
+			}
 
-		    System.out.println("\n--- Resumen Turno " + i + " ---");
-		    kaelen.mostrarInfoBreve();
-		    elara.mostrarInfoBreve();
+			if (elara.estaVivo() == true && kaelen.estaVivo() == true) {
+				elara.atacar(kaelen);
+			}
 
-		    if (kaelen.estaVivo() == false || elara.estaVivo() == false) {
-		        break;
-		    }
+			System.out.println("\n--- Resumen Turno " + i + " ---");
+			kaelen.mostrarInfoBreve();
+			elara.mostrarInfoBreve();
+
+			if (kaelen.estaVivo() == false || elara.estaVivo() == false) {
+				break;
+			}
 		}
 	}
 }
