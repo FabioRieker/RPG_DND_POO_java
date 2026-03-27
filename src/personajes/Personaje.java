@@ -133,6 +133,12 @@ public abstract class Personaje {
     if (this.vivo == false || objetivo.estaVivo() == false) {
       return;
     }
+    
+ // compruebo si sufre algun estado que le impide atacar
+    if (tieneEstado("Aturdimiento") || tieneEstado("Congelado")) {
+        System.out.println("! " + this.nombre + " intenta atacar pero está incapacitado.");
+        return; 
+    }
 
     // calculo daño
     int daño = 0;
