@@ -5,6 +5,7 @@ import armas.CategoriaArma;
 import armaduras.CategoriaArmadura;
 import estado.Estado;
 import habilidad.AccionCombate;
+import consumibles.Consumible;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +29,7 @@ public abstract class Personaje {
 	protected List<CategoriaArmadura> armadurasPermitidas;
 	protected ArrayList<Estado> estadosActivos = new ArrayList<>();
 	protected ArrayList<AccionCombate> habilidades = new ArrayList<>();
+	protected ArrayList<Consumible> inventario = new ArrayList<>();
 
 	// --- CONSTRUCTOR ---
 	public Personaje(String nombre, Raza raza, TipoClase tipoClase, int fue, int des, int con, int intel, int defBase) {
@@ -140,6 +142,10 @@ public abstract class Personaje {
 
 	public int getVidaMax() {
 		return vidaMax;
+	}
+	
+	public TipoClase getTipoClase() {
+	    return this.tipoClase;
 	}
 
 	public boolean estaVivo() {
@@ -310,5 +316,13 @@ public abstract class Personaje {
 
 	public void lanzarHechizo() {
 		System.out.println(nombre + " " + mensajePreparacion);
+	}
+
+	public void agregarItem(Consumible item) {
+		this.inventario.add(item);
+	}
+
+	public ArrayList<Consumible> getInventario() {
+		return inventario;
 	}
 }

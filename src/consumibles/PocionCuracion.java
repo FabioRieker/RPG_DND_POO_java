@@ -2,27 +2,21 @@ package consumibles;
 
 import personajes.Personaje;
 
-public class PocionCuracion {
+public class PocionCuracion extends Consumible {
 
-    private String nombre = "Poción de Curación";
-    private int cantidad;
+	public PocionCuracion(int cantidad) {
+		super("Poción de Curación", cantidad);
+	}
 
-    public PocionCuracion(int cantidad) {
-        this.cantidad = cantidad;
-    }
+	@Override
+	public void usar(Personaje usuario, Personaje objetivo) {
+		if (cantidad <= 0) {
+			System.out.println("No quedan " + nombre + ".");
+			return;
+		}
 
-    public void usar(Personaje usuario) {
-        if (cantidad <= 0) {
-            System.out.println("No quedan " + nombre + ".");
-            return;
-        }
-
-        cantidad--;
-        usuario.curar(50);
-        System.out.println(usuario.getNombre() + " usa " + nombre + ". Restaura 50 HP.");
-    }
-
-    public int getCantidad() {
-        return cantidad;
-    }
+		cantidad--;
+		usuario.curar(50); 
+		System.out.println(usuario.getNombre() + " usa " + nombre + ".");
+	}
 }

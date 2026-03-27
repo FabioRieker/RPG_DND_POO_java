@@ -15,6 +15,7 @@ public class Armeria {
 		listaArmas.put("Arco", new ArmaADistancia("Arco Corto", 1, 8));
 		listaArmas.put("Ballesta", new ArmaADistancia("Ballesta Pesada", 1, 10));
 		listaArmas.put("Jabalina", new ArmaADistancia("Jabalina de Caza", 1, 6));
+		listaArmas.put("Cetro", new ArmaADistancia("Cetro de Almas", 2, 10));
 
 		listaArmas.put("Hoja Fénix", new HojaFenix());
 		listaArmas.put("Colmillo", new ColmilloArana());

@@ -21,6 +21,7 @@ public class FabricaHeroes {
 		thorin.agregarHabilidad(new GolpeSanguinario());
 		thorin.agregarHabilidad(new Rompecraneos());
 		thorin.agregarHabilidad(new TajoSismico());
+		thorin.agregarHabilidad(new Ejecucion());
 		equipo.add(thorin);
 
 		// --- ELARA (MAGO) ---
@@ -30,6 +31,8 @@ public class FabricaHeroes {
 		elara.agregarHabilidad(new BolaFuego());
 		elara.agregarHabilidad(new RafagaGlacial());
 		elara.agregarHabilidad(new Ventisca());
+		elara.agregarHabilidad(new ToqueVampirico());
+		elara.agregarHabilidad(new Purificacion());
 		equipo.add(elara);
 
 		// --- VEX (PICARO) ---
@@ -50,7 +53,25 @@ public class FabricaHeroes {
 		marcus.agregarHabilidad(new GritoGuerra());
 		equipo.add(marcus);
 
-		// escalable, se pueden añadir más que se unan durante la aventura
 		return equipo;
+	}
+
+	// Personajes rescatados del primer main (los usaré como reclutables)
+	public static Personaje crearKallista() {
+		Brujo kallista = new Brujo("Kallista", Raza.TIEFLING, 8, 14, 14, 18, 14);
+		kallista.equiparArmadura(CategoriaArmadura.LIGERA);
+		kallista.equiparArma(armeria.get("Ballesta"));
+		kallista.agregarHabilidad(new ToqueVampirico());
+		kallista.agregarHabilidad(new NubeToxica());
+		return kallista;
+	}
+
+	public static Personaje crearCirric() {
+		Paladin cirric = new Paladin("Cirric", Raza.HUMANO, 14, 10, 16, 14, 18);
+		cirric.equiparArmadura(CategoriaArmadura.PESADA);
+		cirric.equiparArma(armeria.get("Espada"));
+		cirric.agregarHabilidad(new LuzSagrada());
+		cirric.agregarHabilidad(new Purificacion());
+		return cirric;
 	}
 }

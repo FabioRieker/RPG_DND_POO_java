@@ -32,6 +32,13 @@ public class FabricaSalas {
 			sala.agregarEnemigo(dragon);
 			break;
 
+		case 7:
+			JefeLich lich = new JefeLich("Malakor el Exánime", 10, 12, 16, 20, 12);
+			lich.equiparArma(armeria.get("Cetro"));
+			
+			sala.agregarEnemigo(lich);
+			break;
+
 		default:
 			System.out.println("La sala " + numero + " aún no ha sido diseñada.");
 			break;
