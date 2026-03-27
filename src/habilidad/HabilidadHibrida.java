@@ -56,7 +56,6 @@ public class HabilidadHibrida extends AccionCombate {
                 break;
             case BUFF_ALIADOS:
                 System.out.println("-- " + objetivo.getNombre() + " recibe +" + daño + " de daño temporal!");
-                objetivo.setBonoDañoTemporal(daño);
                 objetivo.aplicarEstado(new EstadoFuria(3, daño));
                 break;
             case NINGUNO:

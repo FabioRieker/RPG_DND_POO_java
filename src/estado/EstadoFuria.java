@@ -14,10 +14,13 @@ public class EstadoFuria extends Estado {
     public void alPasarTurnoEstado(Personaje obj) {
         System.out.println("[ESTADO] " + obj.getNombre() + " está enfurecido con +" + potencia + " de daño!");
     }
+    
+    public int getModificadorDaño() {
+        return this.potencia; // 
+    }
 
     @Override
     public void alTerminarEstado(Personaje obj) {
         System.out.println("[ESTADO] La furia de " + obj.getNombre() + " se ha calmado.");
-        obj.setBonoDañoTemporal(0);
     }
 }

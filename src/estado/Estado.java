@@ -28,4 +28,8 @@ public abstract class Estado {
     public String getNombre() {
         return nombre;
     }
+    
+    public int getModificadorDaño() {
+        return 0; // por defecto un estado no altera el daño
+    }
 }
