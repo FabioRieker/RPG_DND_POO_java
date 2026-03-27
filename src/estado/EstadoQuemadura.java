@@ -1,6 +1,5 @@
 package estado;
 
-import java.util.Random;
 import personajes.Personaje;
 
 public class EstadoQuemadura extends Estado {

@@ -1,8 +1,5 @@
 package personajes;
 
-import armas.CategoriaArma;
-import armaduras.CategoriaArmadura;
-
 public abstract class Jefe extends Personaje {
 
   protected TipoJefe tipo;
@@ -16,5 +13,5 @@ public abstract class Jefe extends Personaje {
     return tipo;
   }
 
-  public abstract void habilidadEspecial();
+  public abstract void habilidadEspecial(Personaje objetivo);
 }

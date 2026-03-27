@@ -26,10 +26,11 @@ public class MainCombate {
     heroe4.equiparArmadura(CategoriaArmadura.PESADA);
 
     // EQUIPAR ARMAS A HEROES
-    heroe1.equiparArma(new ArmaCuerpoACuerpo("Hacha de Batalla", 1, 10));
-    heroe2.equiparArma(new ArmaADistancia("Ballesta", 1, 8));
-    heroe3.equiparArma(new ArmaCuerpoACuerpo("Daga", 1, 4));
-    heroe4.equiparArma(new ArmaCuerpoACuerpo("Espada Larga", 1, 8));
+    Armeria armeria = new Armeria(); 
+    heroe1.equiparArma(armeria.get("Hacha"));
+    heroe2.equiparArma(armeria.get("Ballesta"));
+    heroe3.equiparArma(armeria.get("Daga"));
+    heroe4.equiparArma(armeria.get("Espada"));
 
     // AÑADIR HABILIDADES A HEROES
     heroe1.agregarHabilidad(new GolpeSanguinario());
@@ -54,8 +55,8 @@ public class MainCombate {
     Monstruo bestia = new Monstruo("Garra", Raza.BESTIA, 12, 12, 12, 4, 10);
 
     // EQUIPAR ARMAS A MONSTRUOS
-    orco.equiparArma(new ArmaCuerpoACuerpo("Garrote", 1, 8));
-    goblin.equiparArma(new ArmaADistancia("Arco", 1, 6));
+    orco.equiparArma(armeria.get("Maza")); // Cambiado a Armeria para mayor consistencia
+    goblin.equiparArma(armeria.get("Arco"));
     bestia.equiparArma(new ArmaCuerpoACuerpo("Garras", 1, 6));
 
     // CREAR JEFE
@@ -116,10 +117,16 @@ public class MainCombate {
         Personaje enemigo = enemigos[i];
         if (enemigo.estaVivo() && hayVivos(heroes)) {
           Personaje objetivo = obtenerObjetivoAleatorio(heroes);
+          
+          // El ataque normal ya comprueba estados de incapacidad internamente
           enemigo.atacar(objetivo);
-          // Si es jefe, usar habilidad especial
+
+          // Si es jefe, usar habilidad especial (Corregido con objetivo y chequeo de estado)
           if (enemigo instanceof Jefe && Math.random() < 0.3) {
-            ((Jefe) enemigo).habilidadEspecial();
+            // Comprobamos si el Jefe puede actuar (Problema #1)
+            if (!enemigo.tieneEstado("Aturdimiento") && !enemigo.tieneEstado("Congelado")) {
+                ((Jefe) enemigo).habilidadEspecial(objetivo);
+            }
           }
         }
       }

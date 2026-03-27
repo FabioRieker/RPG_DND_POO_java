@@ -17,7 +17,6 @@ public abstract class Personaje {
 	protected int fuerza, destreza, constitucion, inteligencia;
 	protected int vidaMax, vidaActual, manaMax, manaActual, energiaMax, energiaActual;
 	protected int defensaBase;
-	protected int bonoDañoTemporal;
 	protected boolean vivo;
 
 	protected ArrayList<Estado> estadosActivos = new ArrayList<>();
@@ -143,9 +142,9 @@ public abstract class Personaje {
 		// para habilidades o estados que afectan al daño (como furia)
 		int bonoDeEstados = this.getBonoDañoTotal();
 		if (this.armaEquipada != null) {
-		    daño = this.armaEquipada.calcularDaño(this, objetivo) + bonoDeEstados;
+			daño = this.armaEquipada.calcularDaño(this, objetivo) + bonoDeEstados;
 		} else {
-		    daño = (this.fuerza / 2) + bonoDeEstados;
+			daño = (this.fuerza / 2) + bonoDeEstados;
 		}
 
 		System.out.println("\n" + this.nombre + " ataca a " + objetivo.getNombre());
@@ -201,7 +200,7 @@ public abstract class Personaje {
 	public void aplicarEstado(Estado nuevoEstado) {
 		this.estadosActivos.add(nuevoEstado);
 	}
-	
+
 	// para aplicar estados alterados (resuelve el problema del veneno siempre
 	// aplicándose)
 	private void aplicarEfectoDeArma(Personaje objetivo) {
@@ -218,8 +217,6 @@ public abstract class Personaje {
 		}
 		return false;
 	}
-	
-	
 
 	// uso iterator en vez de bucle for para no generar problemas al borrar (por si
 	// por ejemplo se cura un estado antes de tiempo)
@@ -295,12 +292,11 @@ public abstract class Personaje {
 		System.out.println(this.nombre + " recupera " + cantidad + " SP y MP.");
 	}
 
-	
 	public int getBonoDañoTotal() {
-	    int bonoTotal = 0;
-	    for (Estado e : estadosActivos) {
-	        bonoTotal += e.getModificadorDaño(); 
-	    }
-	    return bonoTotal;
+		int bonoTotal = 0;
+		for (Estado e : estadosActivos) {
+			bonoTotal += e.getModificadorDaño();
+		}
+		return bonoTotal;
 	}
 }
