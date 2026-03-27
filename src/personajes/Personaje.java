@@ -79,8 +79,26 @@ public abstract class Personaje {
 
 	// para antes o después de un turno, mostrar solo lo imprescindible
 	public void mostrarInfoBreve() {
-		System.out.println("   > " + nombre + ": " + vidaActual + "/" + vidaMax + " HP | Estados: "
-				+ (estadosActivos.isEmpty() ? "Ninguno" : estadosActivos.get(0).getNombre()));
+		System.out.println(
+				"   > " + nombre + ": " + vidaActual + "/" + vidaMax + " HP | Estados: " + getEstadosNombres());
+	}
+
+	// para que se muestren múltiples estados
+	private String getEstadosNombres() {
+		if (this.estadosActivos.isEmpty()) {
+			return "Ninguno";
+		}
+
+		String nombres = "";
+		for (int i = 0; i < estadosActivos.size(); i++) {
+			nombres = nombres + estadosActivos.get(i).getNombre();
+
+			// Si no es el último elemento, añadimos una coma
+			if (i < estadosActivos.size() - 1) {
+				nombres = nombres + ", ";
+			}
+		}
+		return nombres;
 	}
 
 	// --- SECCIÓN: EQUIPO ---
@@ -143,9 +161,9 @@ public abstract class Personaje {
 	public int getVidaMax() {
 		return vidaMax;
 	}
-	
+
 	public TipoClase getTipoClase() {
-	    return this.tipoClase;
+		return this.tipoClase;
 	}
 
 	public boolean estaVivo() {
