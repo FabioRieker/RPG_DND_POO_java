@@ -63,10 +63,10 @@ public class MotorCombate {
 					boolean haUsadoItem = false;
 					if (enemigo.getVidaActual() < (enemigo.getVidaMax() * 0.3)) {
 						for (Consumible c : enemigo.getInventario()) {
-							if (c instanceof PocionCuracion && c.getCantidad() > 0) {
-								c.usar(enemigo, enemigo);
-								haUsadoItem = true;
-								break;
+							if (c.getNombre().equals("Poción de Curación") && c.getCantidad() > 0) {
+							    c.usar(enemigo, enemigo);
+							    haUsadoItem = true;
+							    break;
 							}
 						}
 					}
@@ -80,7 +80,7 @@ public class MotorCombate {
 						// si es jefe, usar habilidad especial (Corregido con objetivo y chequeo de
 						// estado)
 						if (enemigo.getTipoClase() == TipoClase.JEFE && Math.random() < 0.3) {
-						    if (!enemigo.tieneEstado("Aturdimiento") && !enemigo.tieneEstado("Congelado")) {
+						    if (!enemigo.tieneEstado("Aturdimiento") && !enemigo.tieneEstado("Congelado") && !enemigo.tieneEstado("Lisiado")) {
 						        ((Jefe) enemigo).habilidadEspecial(objetivo);
 						    }
 						}

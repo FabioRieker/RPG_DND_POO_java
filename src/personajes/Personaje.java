@@ -207,7 +207,7 @@ public abstract class Personaje {
 		}
 
 		// compruebo si sufre algun estado que le impide atacar
-		if (tieneEstado("Aturdimiento") || tieneEstado("Congelado")) {
+		if (tieneEstado("Aturdimiento") || tieneEstado("Congelado") || tieneEstado("Lisiado")) {
 			System.out.println("! " + this.nombre + " intenta atacar pero está incapacitado.");
 			return;
 		}
