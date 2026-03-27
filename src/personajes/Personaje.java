@@ -308,7 +308,6 @@ public abstract class Personaje {
 		this.habilidades.add(h);
 	}
 
-	// Nuevo método unificado
 	public void lanzarHechizo() {
 		System.out.println(nombre + " " + mensajePreparacion);
 	}

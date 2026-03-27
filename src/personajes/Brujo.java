@@ -13,10 +13,7 @@ public class Brujo extends Personaje {
     this.armasPermitidas.add(CategoriaArma.distancia);
     // armadura ligera
     this.armadurasPermitidas.add(CategoriaArmadura.LIGERA);
-  }
 
-  public void lanzarHechizo() {
-    System.out.println(nombre + " está canalizando energía demoniaca...");
+    this.mensajePreparacion = "está canalizando energía demoniaca...";
   }
-
 }
