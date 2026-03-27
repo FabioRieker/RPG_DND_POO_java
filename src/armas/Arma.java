@@ -35,4 +35,10 @@ public abstract class Arma {
   }
 
   public abstract int calcularDaño(Personaje atacante, Personaje defensor);
+
+
+
+public void aplicarEfectosEspeciales(Personaje defensor) {
+ // para aplicar estados. No lo pongo abstract ya que no todas aplican efectos
+}
 }

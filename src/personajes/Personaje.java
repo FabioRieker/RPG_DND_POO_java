@@ -195,16 +195,12 @@ public abstract class Personaje {
     }
   }
 
-  // hasta q esté lo de las armas, de momento pongo aquí esto para forzar el
-  // veneno en la prueba
-  private void aplicarEfectoDeArma(Personaje objetivo) {
-    if (!objetivo.tieneEstado("Veneno")) {
-      objetivo.aplicarEstado(new EstadoVeneno(3, 5));
-      System.out.println("-- Se ha envenenado al enemigo!");
-    } else {
-      System.out.println("-- " + objetivo.getNombre() + " ya está envenenado");
-    }
-  }
+  // para aplicar estados alterados (resuelve el problema del veneno siempre aplicándose)
+private void aplicarEfectoDeArma(Personaje objetivo) {
+   if (this.armaEquipada != null) {
+       this.armaEquipada.aplicarEfectosEspeciales(objetivo);
+   }
+}
 
   // -----ESTADOS-----
 
