@@ -200,39 +200,51 @@ public abstract class Personaje {
 	}
 
 	// --- SECCIÓN: COMBATE ---
-	public void atacar(Personaje objetivo) {
-		// compruebo q ambos personajes estén vivos
-		if (this.vivo == false || objetivo.estaVivo() == false) {
-			return;
+		public void atacar(Personaje objetivo) {
+			// compruebo q ambos personajes estén vivos
+			if (this.vivo == false || objetivo.estaVivo() == false) {
+				return;
+			}
+
+			// compruebo si sufre algun estado que le impide atacar
+			if (tieneEstado("Aturdimiento") || tieneEstado("Congelado") || tieneEstado("Lisiado")) {
+				System.out.println("! " + this.nombre + " intenta atacar pero está incapacitado.");
+				return;
+			}
+
+			// calculo daño
+			int daño = 0;
+			// para habilidades o estados que afectan al daño (como furia)
+			int bonoDeEstados = this.getBonoDañoTotal();
+			
+			// variable para construir el mensaje de ataque
+			String modo = "a puñetazos";
+			
+			if (this.armaEquipada != null) {
+				daño = this.armaEquipada.calcularDaño(this, objetivo) + bonoDeEstados;
+				
+				// detecto si es cuerpo a cuerpo o distancia para el texto
+				String tipo = "cuerpo a cuerpo";
+				if (this.armaEquipada.getCategoria() == armas.CategoriaArma.distancia) {
+					tipo = "a distancia";
+				}
+				modo = tipo + " con " + this.armaEquipada.getNombre();
+			} else {
+				daño = (this.fuerza / 2) + bonoDeEstados;
+			}
+
+			// mensaje unificado en una sola línea
+			System.out.println(this.nombre + " ataca " + modo + " a " + objetivo.getNombre());
+
+			// aplico efecto del arma antes del daño (arregla situaciones como q el
+			// personaje muera y se envenene después)
+			if (this.armaEquipada != null) {
+				this.aplicarEfectoDeArma(objetivo);
+			}
+
+			// aplico daño
+			objetivo.recibirDaño(daño, false);
 		}
-
-		// compruebo si sufre algun estado que le impide atacar
-		if (tieneEstado("Aturdimiento") || tieneEstado("Congelado") || tieneEstado("Lisiado")) {
-			System.out.println("! " + this.nombre + " intenta atacar pero está incapacitado.");
-			return;
-		}
-
-		// calculo daño
-		int daño = 0;
-		// para habilidades o estados que afectan al daño (como furia)
-		int bonoDeEstados = this.getBonoDañoTotal();
-		if (this.armaEquipada != null) {
-			daño = this.armaEquipada.calcularDaño(this, objetivo) + bonoDeEstados;
-		} else {
-			daño = (this.fuerza / 2) + bonoDeEstados;
-		}
-
-		System.out.println("\n" + this.nombre + " ataca a " + objetivo.getNombre());
-
-		// aplico efecto del arma antes del daño (arregla situaciones como q el
-		// personaje muera y se envenene después)
-		if (this.armaEquipada != null) {
-			this.aplicarEfectoDeArma(objetivo);
-		}
-
-		// aplico daño
-		objetivo.recibirDaño(daño, false);
-	}
 
 	public void recibirDaño(int cantidad, boolean esDañoPuro) {
 		if (this.vivo == false) {

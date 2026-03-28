@@ -15,7 +15,6 @@ public class ArmaCuerpoACuerpo extends Arma {
     int dañoBase = tirarDados();
     // Dividimos para balancear y que no este to chetado xd
     int bonoFuerza = atacante.getFuerza() / 2;
-    System.out.println(atacante.getNombre() + " ataca cuerpo a cuerpo con " + this.nombre);
     return dañoBase + bonoFuerza;
   }
 }

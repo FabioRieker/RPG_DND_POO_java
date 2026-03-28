@@ -14,7 +14,6 @@ public class ArmaADistancia extends Arma {
     int dañoBase = tirarDados();
     int bonoDestreza = atacante.getDestreza() / 2;
 
-    System.out.println(atacante.getNombre() + " ataca a distancia con " + this.nombre);
     return dañoBase + bonoDestreza;
   }
 }
