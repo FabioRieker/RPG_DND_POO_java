@@ -10,18 +10,18 @@ public class Armeria {
 		listaArmas.put("Espada", new ArmaCuerpoACuerpo("Espada Larga", 1, 8));
 		listaArmas.put("Hacha", new ArmaCuerpoACuerpo("Hacha de Batalla", 1, 12));
 		listaArmas.put("Daga", new ArmaCuerpoACuerpo("Daga de Asesino", 1, 4));
-		listaArmas.put("Maza", new ArmaCuerpoACuerpo("Maza Potententosa", 8, 12));
-
+		listaArmas.put("Maza", new ArmaCuerpoACuerpo("Maza Pesada", 2, 8)); // Balanceada
 		listaArmas.put("Arco", new ArmaADistancia("Arco Corto", 1, 8));
 		listaArmas.put("Ballesta", new ArmaADistancia("Ballesta Pesada", 1, 10));
 		listaArmas.put("Jabalina", new ArmaADistancia("Jabalina de Caza", 1, 6));
 		listaArmas.put("Cetro", new ArmaADistancia("Cetro de Almas", 2, 10));
-
-		listaArmas.put("Hoja Fénix", new HojaFenix());
-		listaArmas.put("Colmillo", new ColmilloArana());
 	}
 
 	public Arma get(String nombre) {
+		if (nombre.equals("Hoja Fénix"))
+			return new HojaFenix();
+		if (nombre.equals("Colmillo de Araña"))
+			return new ColmilloArana();
 		return listaArmas.get(nombre);
 	}
 }

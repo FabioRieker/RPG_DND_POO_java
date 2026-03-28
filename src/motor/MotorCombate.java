@@ -2,11 +2,17 @@ package motor;
 
 import personajes.*;
 import consumibles.*;
+import armas.Arma;
+import armas.Armeria;
+import java.util.ArrayList;
 
 public class MotorCombate {
 
-	// Variable para rastrear quién fue el último en golpear a un jefe
+	// variable para rastrear quién fue el último en golpear a un jefe
 	private static Personaje ultimoAtacanteJefe = null;
+
+	// mochula común a todo el equipo
+	public static ArrayList<Arma> mochilaComun = new ArrayList<>();
 
 	public static void iniciarCombate(Personaje[] heroes, Personaje[] enemigos) {
 		// COMBATE POR TURNOS
@@ -18,7 +24,7 @@ public class MotorCombate {
 		while (hayVivos(heroes) && hayVivos(enemigos) && turno <= 10) {
 			System.out.println("======= TURNO " + turno + " =======");
 
-			// Proceso de estados de heroes
+			// proceso de estados de heroes
 			for (int i = 0; i < heroes.length; i++) {
 				Personaje h = heroes[i];
 				if (h.estaVivo()) {
@@ -26,7 +32,7 @@ public class MotorCombate {
 				}
 			}
 
-			// Proceso de estados de enemigos
+			// proceso de estados de enemigos
 			for (int i = 0; i < enemigos.length; i++) {
 				Personaje e = enemigos[i];
 				if (e.estaVivo()) {
@@ -84,7 +90,7 @@ public class MotorCombate {
 					continue;
 				}
 
-				// identificamos si es héroe para aplicar su lógica
+				// identifio si es héroe para aplicar su lógica
 				boolean esHeroe = false;
 				for (int j = 0; j < heroes.length; j++) {
 					if (heroes[j] == p) {
@@ -109,7 +115,7 @@ public class MotorCombate {
 					if (haUsadoItem == false) {
 						Personaje objetivo = seleccionarObjetivoInteligente(p, enemigos);
 
-						// Si el objetivo es un jefe, guardamos quién le ataca para su venganza
+						// si el objetivo es un jefe, guarda quién le ataca para su venganza
 						if (objetivo != null && objetivo.getTipoClase() == TipoClase.JEFE) {
 							ultimoAtacanteJefe = p;
 						}
@@ -147,13 +153,13 @@ public class MotorCombate {
 				}
 
 				// prueba del sleep, se implementará mejor después
-				try {
-					Thread.sleep(800);
-				} catch (InterruptedException ex) {
-				}
+				// try {
+				// Thread.sleep(800);
+				// } catch (InterruptedException ex) {
+				// }
 			}
 
-			// Mostrar estado
+			// mostrar estado
 			System.out.println("\n--- Estado tras turno " + turno + " ---");
 			System.out.println("Heroes:");
 			for (int i = 0; i < heroes.length; i++) {
@@ -175,6 +181,10 @@ public class MotorCombate {
 
 		if (hayVivos(heroes) == true) {
 			System.out.println("¡VICTORIA! Los heroes han ganado.");
+			// producir botín automático de los enemigos derrotados
+			for (Personaje e : enemigos) {
+				procesarAutoLoot(heroes, e);
+			}
 		} else if (hayVivos(enemigos) == true) {
 			System.out.println("¡DERROTA! Los enemigos han ganado.");
 		} else {
@@ -192,6 +202,37 @@ public class MotorCombate {
 		System.out.println("\n===========================================");
 		System.out.println("         COMBATE FINALIZADO");
 		System.out.println("===========================================\n");
+	}
+
+	private static void procesarAutoLoot(Personaje[] heroes, Personaje enemigo) {
+		double chance = Math.random();
+		double limite = (enemigo.getTipoClase() == TipoClase.JEFE) ? 1.0 : 0.70;
+
+		if (chance <= limite && enemigo.getArma() != null) {
+			Arma loot = enemigo.getArma();
+
+			if (enemigo instanceof JefeDragon)
+				loot = new Armeria().get("Hoja Fénix");
+			if (enemigo instanceof JefeLich)
+				loot = new Armeria().get("Colmillo de Araña");
+
+			System.out.println("[BOTÍN] " + enemigo.getNombre() + " ha soltado: " + loot.getNombre());
+
+			boolean equipado = false;
+			for (Personaje h : heroes) {
+				// solo equipa automáticamente si no tiene arma equipada
+				if (h.estaVivo() && h.getArma() == null && h.getArmasPermitidas().contains(loot.getCategoria())) {
+					h.equiparArma(loot);
+					equipado = true;
+					break;
+				}
+			}
+
+			if (!equipado) {
+				mochilaComun.add(loot);
+				System.out.println("[SISTEMA] " + loot.getNombre() + " se ha guardado en la mochila común.");
+			}
+		}
 	}
 
 	public static boolean hayVivos(Personaje[] grupo) {
@@ -258,7 +299,6 @@ public class MotorCombate {
 					debil = vivos.get(i);
 				}
 			}
-			// (Este es el táctico, no imprime mensaje extra para no saturar)
 			return debil;
 		}
 	}

@@ -56,7 +56,6 @@ public class FabricaHeroes {
 		return equipo;
 	}
 
-	// Personajes rescatados del primer main (los usaré como reclutables)
 	public static Personaje crearKallista() {
 		Brujo kallista = new Brujo("Kallista", Raza.TIEFLING, 8, 14, 14, 18, 14);
 		kallista.equiparArmadura(CategoriaArmadura.LIGERA);
@@ -66,12 +65,20 @@ public class FabricaHeroes {
 		return kallista;
 	}
 
-	public static Personaje crearCirric() {
-		Paladin cirric = new Paladin("Cirric", Raza.HUMANO, 14, 10, 16, 14, 18);
-		cirric.equiparArmadura(CategoriaArmadura.PESADA);
-		cirric.equiparArma(armeria.get("Espada"));
-		cirric.agregarHabilidad(new LuzSagrada());
-		cirric.agregarHabilidad(new Purificacion());
-		return cirric;
+	public static Personaje crearMonjeKwai() {
+		Monje kwai = new Monje("Kwai Chang", Raza.HUMANO, 14, 16, 12, 10, 12);
+		// El monje no usa armadura por clase [cite: 753]
+		kwai.agregarHabilidad(new FintaRapida());
+		kwai.agregarHabilidad(new GolpeSanguinario());
+		return kwai;
+	}
+
+	public static Personaje crearBardoLulu() {
+		Bardo lulu = new Bardo("Lulu Nightingale", Raza.MEDIANO, 10, 14, 12, 16, 10);
+		lulu.equiparArmadura(CategoriaArmadura.MEDIA);
+		lulu.equiparArma(armeria.get("Jabalina"));
+		lulu.agregarHabilidad(new GritoGuerra());
+		lulu.agregarHabilidad(new Purificacion());
+		return lulu;
 	}
 }

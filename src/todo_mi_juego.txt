@@ -1,0 +1,2739 @@
+==================================================
+RUTA: ./estado/EstadoSangrado.java
+==================================================
+package estado;
+
+import personajes.Personaje;
+
+public class EstadoSangrado extends Estado {
+
+    public EstadoSangrado(int turnos, int potencia) {
+        super("Sangrado", turnos, potencia);
+    }
+
+    @Override
+    public void alPasarTurnoEstado(Personaje obj) {
+        System.out.println("[ESTADO] " + obj.getNombre() + " pierde sangre.");
+        obj.recibirDaño(potencia, true);
+    }
+
+    @Override
+    public void alTerminarEstado(Personaje obj) {
+        System.out.println("[ESTADO] El sangrado de " + obj.getNombre() + " se ha detenido.");
+    }
+}
+-e 
+
+
+==================================================
+RUTA: ./estado/EstadoFuria.java
+==================================================
+package estado;
+
+import personajes.Personaje;
+
+// Estado que da bonus de daño temporal
+// Se aplica cuando un aliado usa BUFF_ALIADOS
+public class EstadoFuria extends Estado {
+
+    public EstadoFuria(int turnos, int potencia) {
+        super("Furia", turnos, potencia);
+    }
+
+    @Override
+    public void alPasarTurnoEstado(Personaje obj) {
+        System.out.println("[ESTADO] " + obj.getNombre() + " está enfurecido con +" + potencia + " de daño!");
+    }
+    
+    public int getModificadorDaño() {
+        return this.potencia; // 
+    }
+
+    @Override
+    public void alTerminarEstado(Personaje obj) {
+        System.out.println("[ESTADO] La furia de " + obj.getNombre() + " se ha calmado.");
+    }
+}
+-e 
+
+
+==================================================
+RUTA: ./estado/EstadoCongelado.java
+==================================================
+package estado;
+
+import personajes.Personaje;
+
+public class EstadoCongelado extends Estado {
+
+  public EstadoCongelado(int turnos, int potencia) {
+    super("Congelado", turnos, potencia);
+  }
+
+  @Override
+  public void alPasarTurnoEstado(Personaje obj) {
+    System.out.println("[ESTADO] El frío hiela a " + obj.getNombre());
+    obj.recibirDaño(potencia, true);
+  }
+
+  @Override
+  public void alTerminarEstado(Personaje obj) {
+    System.out.println("[ESTADO] " + obj.getNombre() + " se ha descongelado.");
+  }
+}
+-e 
+
+
+==================================================
+RUTA: ./estado/Estado.java
+==================================================
+package estado;
+
+import personajes.Personaje;
+
+public abstract class Estado {
+	protected String nombre;
+	protected int turnosRestantes;
+	protected int potencia;
+
+	public Estado(String nombre, int turnos, int potencia) {
+		this.nombre = nombre;
+		this.turnosRestantes = turnos;
+		this.potencia = potencia;
+	}
+
+	public abstract void alPasarTurnoEstado(Personaje obj);
+
+	public abstract void alTerminarEstado(Personaje obj);
+
+	public boolean estaActivo() {
+		return turnosRestantes > 0;
+	}
+
+	public void reducirTurno() {
+		turnosRestantes--;
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public int getModificadorDaño() {
+		return 0; // por defecto un estado no altera el daño
+	}
+}-e 
+
+
+==================================================
+RUTA: ./estado/EstadoRenovar.java
+==================================================
+package estado;
+
+import personajes.Personaje;
+
+public class EstadoRenovar extends Estado {
+
+  public EstadoRenovar(int turnos, int potencia) {
+    super("Renovar", turnos, potencia);
+  }
+
+  @Override
+  public void alPasarTurnoEstado(Personaje obj) {
+    System.out.println("[ESTADO] La luz sana a " + obj.getNombre());
+    obj.curar(potencia);
+  }
+
+  @Override
+  public void alTerminarEstado(Personaje obj) {
+    System.out.println("[ESTADO] El efecto de renovación termina en " + obj.getNombre());
+  }
+}
+-e 
+
+
+==================================================
+RUTA: ./estado/EstadoAturdimiento.java
+==================================================
+package estado;
+
+import personajes.Personaje;
+
+public class EstadoAturdimiento extends Estado {
+
+    public EstadoAturdimiento(int turnos) {
+        super("Aturdimiento", turnos, 0);
+    }
+
+    @Override
+    public void alPasarTurnoEstado(Personaje obj) {
+        System.out.println("[ESTADO] " + obj.getNombre() + " esta aturdido y no puede actuar!");
+    }
+
+    @Override
+    public void alTerminarEstado(Personaje obj) {
+        System.out.println("[ESTADO] " + obj.getNombre() + " ya no esta aturdido.");
+    }
+}
+-e 
+
+
+==================================================
+RUTA: ./estado/EstadoLisiado.java
+==================================================
+package estado;
+
+import personajes.Personaje;
+
+public class EstadoLisiado extends Estado {
+
+    public EstadoLisiado(int turnos, int potencia) {
+        super("Lisiado", turnos, potencia);
+    }
+
+    @Override
+    public void alPasarTurnoEstado(Personaje obj) {
+        System.out.println("[ESTADO] " + obj.getNombre() + " esta lisiado y se mueve con dificultad.");
+    }
+
+    @Override
+    public void alTerminarEstado(Personaje obj) {
+        System.out.println("[ESTADO] " + obj.getNombre() + " ya no esta lisiado.");
+    }
+}
+-e 
+
+
+==================================================
+RUTA: ./estado/EstadoVeneno.java
+==================================================
+package estado;
+
+import personajes.Personaje;
+
+public class EstadoVeneno extends Estado {
+
+	public EstadoVeneno(int turnos, int potencia) {
+		super("Veneno", turnos, potencia);
+	}
+
+	@Override
+	public void alPasarTurnoEstado(Personaje obj) {
+		System.out.println("[ESTADO] El veneno afecta a " + obj.getNombre());
+		obj.recibirDaño(potencia, true);
+	}
+
+	@Override
+	public void alTerminarEstado(Personaje obj) {
+		System.out.println("[ESTADO] El veneno se ha disipado de " + obj.getNombre());
+	}
+}-e 
+
+
+==================================================
+RUTA: ./estado/EstadoQuemadura.java
+==================================================
+package estado;
+
+import personajes.Personaje;
+
+public class EstadoQuemadura extends Estado {
+
+    public EstadoQuemadura(int turnos, int potencia) {
+        super("Quemadura", turnos, potencia);
+    }
+
+    @Override
+    public void alPasarTurnoEstado(Personaje obj) {
+        System.out.println("[ESTADO] El fuego arde en " + obj.getNombre());
+        obj.recibirDaño(potencia, true);
+    }
+
+    @Override
+    public void alTerminarEstado(Personaje obj) {
+        System.out.println("[ESTADO] Las llamas se han extinguido en " + obj.getNombre());
+    }
+}
+-e 
+
+
+==================================================
+RUTA: ./motor/FabricaSalas.java
+==================================================
+package motor;
+
+import personajes.*;
+import armas.ArmaCuerpoACuerpo;
+import armas.Armeria;
+
+public class FabricaSalas {
+
+	private static Armeria armeria = new Armeria();
+
+	public static Sala generarSala(int numero) {
+		Sala sala = new Sala(numero);
+
+		switch (numero) {
+		case 6:
+			// defino los enemigos fijos de la Sala 6 (sacados de MainCombate)
+			Monstruo orco = new Monstruo("Grumsh", Raza.ORCO, 14, 8, 14, 6, 10);
+			orco.equiparArma(armeria.get("Maza"));
+
+			Monstruo goblin = new Monstruo("Snitch", Raza.GOBLIN, 8, 14, 8, 6, 8);
+			goblin.equiparArma(armeria.get("Arco"));
+
+			Monstruo bestia = new Monstruo("Garra", Raza.BESTIA, 12, 12, 12, 4, 10);
+			bestia.equiparArma(new ArmaCuerpoACuerpo("Garras", 1, 6));
+
+			JefeDragon dragon = new JefeDragon("Valdrax el Devorador", 18, 10, 20, 12, 14);
+			dragon.equiparArma(new ArmaCuerpoACuerpo("Colmillos de Dragón", 2, 8));
+
+			sala.agregarEnemigo(orco);
+			sala.agregarEnemigo(goblin);
+			sala.agregarEnemigo(bestia);
+			sala.agregarEnemigo(dragon);
+			break;
+
+		case 7:
+			JefeLich lich = new JefeLich("Malakor el Exánime", 10, 12, 16, 20, 12);
+			lich.equiparArma(armeria.get("Cetro"));
+			
+			sala.agregarEnemigo(lich);
+			break;
+
+		default:
+			System.out.println("La sala " + numero + " aún no ha sido diseñada.");
+			break;
+		}
+
+		return sala;
+	}
+}-e 
+
+
+==================================================
+RUTA: ./motor/MotorCombate.java
+==================================================
+package motor;
+
+import personajes.*;
+import consumibles.*;
+
+public class MotorCombate {
+
+	public static void iniciarCombate(Personaje[] heroes, Personaje[] enemigos) {
+		// COMBATE POR TURNOS
+		System.out.println("\n===========================================");
+		System.out.println("            ¡COMBATE COMIENZA!");
+		System.out.println("===========================================\n");
+
+		int turno = 1;
+		while (hayVivos(heroes) && hayVivos(enemigos) && turno <= 10) {
+			System.out.println("======= TURNO " + turno + " =======");
+
+			// Proceso de estados de heroes
+			for (int i = 0; i < heroes.length; i++) {
+				Personaje h = heroes[i];
+				if (h.estaVivo()) {
+					h.pasarTurnoDeEstados();
+				}
+			}
+
+			// Proceso de estados de enemigos
+			for (int i = 0; i < enemigos.length; i++) {
+				Personaje e = enemigos[i];
+				if (e.estaVivo()) {
+					e.pasarTurnoDeEstados();
+				}
+			}
+
+			// creo una lista con todos los combatientes para calcular la iniciativa
+			java.util.ArrayList<Personaje> todos = new java.util.ArrayList<Personaje>();
+			
+			for (int i = 0; i < heroes.length; i++) {
+				Personaje h = heroes[i];
+				if (h.estaVivo()) {
+					todos.add(h);
+				}
+			}
+			
+			for (int i = 0; i < enemigos.length; i++) {
+				Personaje e = enemigos[i];
+				if (e.estaVivo()) {
+					todos.add(e);
+				}
+			}
+
+			// ordeno por destreza total de mayor a menor
+			todos.sort((p1, p2) -> Integer.compare(p2.getDestrezaTotal(), p1.getDestrezaTotal()));
+
+			// genero la lista de orden de ataque para mostrar por pantalla
+			String listaOrdenada = "";
+			for (int i = 0; i < todos.size(); i++) {
+				Personaje pActual = todos.get(i);
+				
+				// compruebo si es heroe o enemigo para poner una marca indicativa
+				String marca = " [E]";
+				for (int j = 0; j < heroes.length; j++) {
+					if (heroes[j] == pActual) {
+						marca = " [H]";
+					}
+				}
+				
+				listaOrdenada = listaOrdenada + pActual.getNombre() + marca;
+				
+				// añado coma si no es el último de la lista
+				if (i < todos.size() - 1) {
+					listaOrdenada = listaOrdenada + ", ";
+				}
+			}
+			
+			System.out.println("   [DESTREZA] El orden de batalla segun la agilidad es: " + listaOrdenada);
+
+			for (int i = 0; i < todos.size(); i++) {
+				Personaje p = todos.get(i);
+				
+				if (p.estaVivo() == false || hayVivos(heroes) == false || hayVivos(enemigos) == false) {
+					continue;
+				}
+
+				// identificamos si es héroe para aplicar su lógica
+				boolean esHeroe = false;
+				for (int j = 0; j < heroes.length; j++) {
+					if (heroes[j] == p) {
+						esHeroe = true;
+					}
+				}
+
+				if (esHeroe == true) {
+					// Turno de Heroes
+					boolean haUsadoItem = false;
+					if (p.getVidaActual() < (p.getVidaMax() * 0.3)) {
+						for (int j = 0; j < p.getInventario().size(); j++) {
+							Consumible c = p.getInventario().get(j);
+							if (c.getNombre().equals("Poción de Curación") && c.getCantidad() > 0) {
+								c.usar(p, p);
+								haUsadoItem = true;
+								break;
+							}
+						}
+					}
+
+					if (haUsadoItem == false) {
+						Personaje objetivo = obtenerObjetivoAleatorio(enemigos);
+						p.atacar(objetivo);
+					}
+				} else {
+					// Turno de Enemigos
+					boolean haUsadoItem = false;
+					if (p.getVidaActual() < (p.getVidaMax() * 0.3)) {
+						for (int j = 0; j < p.getInventario().size(); j++) {
+							Consumible c = p.getInventario().get(j);
+							if (c.getNombre().equals("Poción de Curación") && c.getCantidad() > 0) {
+								c.usar(p, p);
+								haUsadoItem = true;
+								break;
+							}
+						}
+					}
+
+					if (haUsadoItem == false) {
+						Personaje objetivo = obtenerObjetivoAleatorio(heroes);
+
+						// el ataque normal ya comprueba estados de incapacidad internamente
+						p.atacar(objetivo);
+
+						// si es jefe, usar habilidad especial
+						if (p.getTipoClase() == TipoClase.JEFE && Math.random() < 0.3) {
+							if (p.tieneEstado("Aturdimiento") == false && p.tieneEstado("Congelado") == false && p.tieneEstado("Lisiado") == false) {
+								((Jefe) p).habilidadEspecial(objetivo);
+							}
+						}
+					}
+				}
+				
+				// Pausa para que el combate sea legible
+				try { Thread.sleep(800); } catch (InterruptedException ex) {}
+			}
+
+			// Mostrar estado
+			System.out.println("\n--- Estado tras turno " + turno + " ---");
+			System.out.println("Heroes:");
+			for (int i = 0; i < heroes.length; i++) {
+				heroes[i].mostrarInfoBreve();
+			}
+			System.out.println("Enemigos:");
+			for (int i = 0; i < enemigos.length; i++) {
+				enemigos[i].mostrarInfoBreve();
+			}
+
+			System.out.println("");
+			turno++;
+		}
+
+		// RESULTADO
+		System.out.println("===========================================");
+		System.out.println("            RESULTADO");
+		System.out.println("===========================================");
+
+		if (hayVivos(heroes) == true) {
+			System.out.println("¡VICTORIA! Los heroes han ganado.");
+		} else if (hayVivos(enemigos) == true) {
+			System.out.println("¡DERROTA! Los enemigos han ganado.");
+		} else {
+			System.out.println("¡EMPATE!");
+		}
+
+		System.out.println("\n--- Estado Final ---");
+		for (int i = 0; i < heroes.length; i++) {
+			heroes[i].mostrarInfo();
+		}
+		for (int i = 0; i < enemigos.length; i++) {
+			enemigos[i].mostrarInfo();
+		}
+
+		System.out.println("\n===========================================");
+		System.out.println("         COMBATE FINALIZADO");
+		System.out.println("===========================================\n");
+	}
+
+	public static boolean hayVivos(Personaje[] grupo) {
+		for (int i = 0; i < grupo.length; i++) {
+			if (grupo[i].estaVivo() == true) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public static Personaje obtenerObjetivoAleatorio(Personaje[] grupo) {
+		Personaje[] vivos = new Personaje[grupo.length];
+		int count = 0;
+		for (int i = 0; i < grupo.length; i++) {
+			if (grupo[i].estaVivo() == true) {
+				vivos[count] = grupo[i];
+				count++;
+			}
+		}
+		if (count == 0) {
+			return null;
+		}
+		int indiceAleatorio = (int) (Math.random() * count);
+		return vivos[indiceAleatorio];
+	}
+}-e 
+
+
+==================================================
+RUTA: ./motor/Sala.java
+==================================================
+package motor;
+
+import personajes.Personaje;
+import java.util.ArrayList;
+import java.util.List;
+
+public class Sala {
+	private int numero;
+	private List<Personaje> enemigos;
+
+	public Sala(int numero) {
+		this.numero = numero;
+		this.enemigos = new ArrayList<>();
+	}
+
+	public void agregarEnemigo(Personaje enemigo) {
+		this.enemigos.add(enemigo);
+	}
+
+	public List<Personaje> getEnemigos() {
+		return enemigos;
+	}
+
+	public int getNumero() {
+		return numero;
+	}
+}-e 
+
+
+==================================================
+RUTA: ./motor/FabricaHeroes.java
+==================================================
+package motor;
+
+import personajes.*;
+import armas.*;
+import habilidad.*;
+import armaduras.CategoriaArmadura;
+import java.util.ArrayList;
+import java.util.List;
+
+public class FabricaHeroes {
+
+	private static Armeria armeria = new Armeria();
+
+	public static List<Personaje> crearEquipoInicial() {
+		List<Personaje> equipo = new ArrayList<>();
+
+		// --- THORIN (GUERRERO) ---
+		Guerrero thorin = new Guerrero("Thorin", Raza.ENANO, 16, 10, 16, 8, 12);
+		thorin.equiparArmadura(CategoriaArmadura.PESADA);
+		thorin.equiparArma(armeria.get("Hacha"));
+		thorin.agregarHabilidad(new GolpeSanguinario());
+		thorin.agregarHabilidad(new Rompecraneos());
+		thorin.agregarHabilidad(new TajoSismico());
+		thorin.agregarHabilidad(new Ejecucion());
+		equipo.add(thorin);
+
+		// --- ELARA (MAGO) ---
+		Mago elara = new Mago("Elara", Raza.ELFO, 6, 14, 8, 18, 10);
+		elara.equiparArmadura(CategoriaArmadura.LIGERA);
+		elara.equiparArma(armeria.get("Ballesta"));
+		elara.agregarHabilidad(new BolaFuego());
+		elara.agregarHabilidad(new RafagaGlacial());
+		elara.agregarHabilidad(new Ventisca());
+		elara.agregarHabilidad(new ToqueVampirico());
+		elara.agregarHabilidad(new Purificacion());
+		equipo.add(elara);
+
+		// --- VEX (PICARO) ---
+		Picaro vex = new Picaro("Vex", Raza.HUMANO, 10, 16, 10, 12, 14);
+		vex.equiparArmadura(CategoriaArmadura.LIGERA);
+		vex.equiparArma(armeria.get("Daga"));
+		vex.agregarHabilidad(new HojaPonzoñosa());
+		vex.agregarHabilidad(new AtaqueFurtivo());
+		vex.agregarHabilidad(new TiroRodilla());
+		equipo.add(vex);
+
+		// --- MARCUS (PALADIN) ---
+		Paladin marcus = new Paladin("Marcus", Raza.HUMANO, 14, 10, 14, 12, 14);
+		marcus.equiparArmadura(CategoriaArmadura.PESADA);
+		marcus.equiparArma(armeria.get("Espada"));
+		marcus.agregarHabilidad(new LuzSagrada());
+		marcus.agregarHabilidad(new Purificacion());
+		marcus.agregarHabilidad(new GritoGuerra());
+		equipo.add(marcus);
+
+		return equipo;
+	}
+
+	// Personajes rescatados del primer main (los usaré como reclutables)
+	public static Personaje crearKallista() {
+		Brujo kallista = new Brujo("Kallista", Raza.TIEFLING, 8, 14, 14, 18, 14);
+		kallista.equiparArmadura(CategoriaArmadura.LIGERA);
+		kallista.equiparArma(armeria.get("Ballesta"));
+		kallista.agregarHabilidad(new ToqueVampirico());
+		kallista.agregarHabilidad(new NubeToxica());
+		return kallista;
+	}
+
+	public static Personaje crearCirric() {
+		Paladin cirric = new Paladin("Cirric", Raza.HUMANO, 14, 10, 16, 14, 18);
+		cirric.equiparArmadura(CategoriaArmadura.PESADA);
+		cirric.equiparArma(armeria.get("Espada"));
+		cirric.agregarHabilidad(new LuzSagrada());
+		cirric.agregarHabilidad(new Purificacion());
+		return cirric;
+	}
+}-e 
+
+
+==================================================
+RUTA: ./motor/Main.java
+==================================================
+package motor;
+
+import personajes.*;
+import java.util.List;
+
+public class Main {
+
+	public static void main(String[] args) {
+
+		System.out.println("===========================================");
+		System.out.println("    COMBATE: HEROES vs ENEMIGOS + JEFE");
+		System.out.println("===========================================\n");
+
+		// LLAMAR HEROES
+		List<Personaje> listaHeroes = FabricaHeroes.crearEquipoInicial();
+		Personaje[] heroes = listaHeroes.toArray(new Personaje[0]);
+
+		int[] ordenSalas = {7, 6}; // TODO: añadir el resto de salas y un random que determine el orden
+
+		for (int numSala : ordenSalas) {
+			if (!MotorCombate.hayVivos(heroes)) {
+				break;
+			}
+
+			// OBTENER SALAS DE LA FABRICA
+			System.out.println("Entrando en la Sala " + numSala + "...");
+			Sala salaActual = FabricaSalas.generarSala(numSala);
+			List<Personaje> listaEnemigos = salaActual.getEnemigos();
+
+			Personaje[] enemigos = listaEnemigos.toArray(new Personaje[0]);
+
+			// MOSTRAR INFO
+			System.out.println("=== HEROES ===");
+			for (Personaje h : heroes) {
+				h.mostrarInfo();
+			}
+
+			System.out.println("\n=== ENEMIGOS ===");
+			for (Personaje e : enemigos) {
+				e.mostrarInfo();
+			}
+
+			// EJECUTAR COMBATE
+			MotorCombate.iniciarCombate(heroes, enemigos);
+		}
+	}
+}-e 
+
+
+==================================================
+RUTA: ./armas/ArmaCuerpoACuerpo.java
+==================================================
+package armas;
+
+import personajes.Personaje;
+
+public class ArmaCuerpoACuerpo extends Arma {
+
+  public ArmaCuerpoACuerpo(String nombre, int cantidadDados, int carasDado) {
+    // La categoria de arma hace qu se diferencie el tipo de arma
+    super(nombre, cantidadDados, carasDado, CategoriaArma.melee);
+  }
+
+  @Override
+  public int calcularDaño(Personaje atacante, Personaje defensor) {
+    // Tirada de arma + Modificador de Fuerza
+    int dañoBase = tirarDados();
+    // Dividimos para balancear y que no este to chetado xd
+    int bonoFuerza = atacante.getFuerza() / 2;
+    return dañoBase + bonoFuerza;
+  }
+}
+-e 
+
+
+==================================================
+RUTA: ./armas/HojaFenix.java
+==================================================
+package armas;
+
+import personajes.Personaje;
+import estado.EstadoQuemadura;
+
+public class HojaFenix extends ArmaCuerpoACuerpo {
+    public HojaFenix() {
+        super("Hoja Fénix", 1, 8);
+    }
+
+    @Override
+    public void aplicarEfectosEspeciales(Personaje defensor) {
+        if (!defensor.tieneEstado("Quemadura")) {
+            // aplicamos estado quemadura: 3 turnos, 4 de daño por turno
+            defensor.aplicarEstado(new EstadoQuemadura(3, 4));
+            System.out.println("La Hoja Fénix prende fuego a " + defensor.getNombre());
+        }
+    }
+}-e 
+
+
+==================================================
+RUTA: ./armas/Arma.java
+==================================================
+package armas;
+
+import personajes.Personaje;
+import java.util.Random;
+
+public abstract class Arma {
+	protected String nombre;
+	protected int cantidadDados;
+	protected int carasDado;
+	protected Random dado;
+	protected CategoriaArma categoria;
+
+	public Arma(String nombre, int cantidadDados, int carasDado, CategoriaArma categoria) {
+		this.nombre = nombre;
+		this.cantidadDados = cantidadDados;
+		this.carasDado = carasDado;
+		this.dado = new Random();
+		this.categoria = categoria; // para q no de error al asignar armas
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public CategoriaArma getCategoria() {
+		return categoria;
+	}
+
+	protected int tirarDados() {
+		int total = 0;
+		for (int i = 0; i < cantidadDados; i++) {
+			total += dado.nextInt(carasDado) + 1;
+		}
+		return total;
+	}
+
+	public abstract int calcularDaño(Personaje atacante, Personaje defensor);
+
+	public void aplicarEfectosEspeciales(Personaje defensor) {
+		// para aplicar estados. No lo pongo abstract ya que no todas aplican efectos
+	}
+}
+-e 
+
+
+==================================================
+RUTA: ./armas/ArmaADistancia.java
+==================================================
+package armas;
+
+import personajes.Personaje;
+
+public class ArmaADistancia extends Arma {
+
+  public ArmaADistancia(String nombre, int cantidadDados, int carasDado) {
+    super(nombre, cantidadDados, carasDado, CategoriaArma.distancia);
+  }
+
+  @Override
+  public int calcularDaño(Personaje atacante, Personaje defensor) {
+    // Tirada de arma + Modificador de Destreza
+    int dañoBase = tirarDados();
+    int bonoDestreza = atacante.getDestreza() / 2;
+
+    return dañoBase + bonoDestreza;
+  }
+}
+-e 
+
+
+==================================================
+RUTA: ./armas/Armeria.java
+==================================================
+package armas;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class Armeria {
+	private Map<String, Arma> listaArmas = new HashMap<>();
+
+	public Armeria() {
+		listaArmas.put("Espada", new ArmaCuerpoACuerpo("Espada Larga", 1, 8));
+		listaArmas.put("Hacha", new ArmaCuerpoACuerpo("Hacha de Batalla", 1, 12));
+		listaArmas.put("Daga", new ArmaCuerpoACuerpo("Daga de Asesino", 1, 4));
+		listaArmas.put("Maza", new ArmaCuerpoACuerpo("Maza Potententosa", 8, 12));
+
+		listaArmas.put("Arco", new ArmaADistancia("Arco Corto", 1, 8));
+		listaArmas.put("Ballesta", new ArmaADistancia("Ballesta Pesada", 1, 10));
+		listaArmas.put("Jabalina", new ArmaADistancia("Jabalina de Caza", 1, 6));
+		listaArmas.put("Cetro", new ArmaADistancia("Cetro de Almas", 2, 10));
+
+		listaArmas.put("Hoja Fénix", new HojaFenix());
+		listaArmas.put("Colmillo", new ColmilloArana());
+	}
+
+	public Arma get(String nombre) {
+		return listaArmas.get(nombre);
+	}
+}-e 
+
+
+==================================================
+RUTA: ./armas/CategoriaArma.java
+==================================================
+package armas;
+
+public enum CategoriaArma {
+  melee,
+  distancia
+
+}
+-e 
+
+
+==================================================
+RUTA: ./armas/ColmilloArana.java
+==================================================
+package armas;
+
+import personajes.Personaje;
+import estado.EstadoVeneno;
+
+public class ColmilloArana extends ArmaCuerpoACuerpo {
+	public ColmilloArana() {
+		super("Colmillo de Araña", 1, 4);
+	}
+
+	@Override
+	public void aplicarEfectosEspeciales(Personaje defensor) {
+		if (!defensor.tieneEstado("Veneno")) {
+			// aplico estado veneno: 3 turnos, 5 de daño por turno
+			defensor.aplicarEstado(new EstadoVeneno(3, 5));
+			System.out.println("! El Colmillo de Araña inyecta veneno en " + defensor.getNombre());
+		}
+	}
+}-e 
+
+
+==================================================
+RUTA: ./armaduras/CategoriaArmadura.java
+==================================================
+package armaduras;
+
+public enum CategoriaArmadura {
+  NADA("Sin armadura", 0, 2),
+  LIGERA("Armadura Ligera", 3, 1),
+  MEDIA("Armadura Media", 6, 0),
+  PESADA("Armadura Pesada", 10, -5);
+
+  public final String nombre;
+  public final int bonoDefensa;
+  public final int modificadorDestreza;
+
+  CategoriaArmadura(String nombre, int defensa, int destreza) {
+    this.nombre = nombre;
+    this.bonoDefensa = defensa;
+    this.modificadorDestreza = destreza;
+  }
+}
+-e 
+
+
+==================================================
+RUTA: ./habilidad/NubeToxica.java
+==================================================
+package habilidad;
+
+import personajes.Personaje;
+import estado.EstadoVeneno;
+import java.util.ArrayList;
+
+// Nube venenosa que afecta a todos los enemigos
+// Daño: 1d6, Coste: 35 PM
+// Aplica Veneno a todos los objetivos
+public class NubeToxica extends HechizoMagico {
+
+	public NubeToxica() {
+		super("Nube Tóxica", 35, 1, 6, null);
+	}
+
+	@Override
+	public void ejecutar(Personaje usuario, Personaje objetivo) {
+		System.out.println(usuario.getNombre() + " quiere usar " + nombre + "...");
+		System.out.println("Este hechizo afecta a múltiples objetivos. Usa la versión con lista de enemigos.");
+	}
+
+	@Override
+	public void ejecutar(Personaje usuario, ArrayList<Personaje> objetivos) {
+		if (!usuario.tieneRecursos(costeEnergia, costeMana)) {
+			System.out.println(usuario.getNombre() + " no tiene suficientes recursos.");
+			return;
+		}
+
+		usuario.consumirRecursos(costeEnergia, costeMana);
+
+		int bono = usuario.getInteligencia() / 2;
+
+		System.out.println(usuario.getNombre() + " lanza " + nombre + "...");
+		System.out.println("--- NUBE TÓXICA ---");
+
+		for (Personaje obj : objetivos) {
+			int tirada = dado.nextInt(20) + 1;
+			int totalImpacto = tirada + bono;
+
+			System.out.println("-> " + obj.getNombre() + " - Tirada: " + tirada + " + " + bono + " = " + totalImpacto);
+
+			if (totalImpacto >= obj.getDefensaTotal()) {
+				aplicarEfectoImpacto(usuario, obj, bono);
+			} else {
+				System.out.println("  ¡FALLO! El hechizo no atraviesa la defensa.");
+			}
+		}
+	}
+
+	@Override
+	protected void aplicarEfectoImpacto(Personaje usuario, Personaje objetivo, int bono) {
+		int daño = tirarDados() + bono;
+		System.out.println("  ¡IMPACTO! " + objetivo.getNombre() + " recibe " + daño + " de daño.");
+		objetivo.recibirDaño(daño, false);
+
+		// Solo aplica veneno si impactó
+		if (!objetivo.tieneEstado("Veneno")) {
+			objetivo.aplicarEstado(new EstadoVeneno(3, 5));
+			System.out.println("  -- ¡" + objetivo.getNombre() + " está envenenado!");
+		}
+	}
+}-e 
+
+
+==================================================
+RUTA: ./habilidad/ToqueVampirico.java
+==================================================
+package habilidad;
+
+// Toque que roba vida
+// Daño: 1d4, Coste: 10 PE + 15 PM, Escalado: INT
+// Cura al usuario según el daño causado
+public class ToqueVampirico extends HabilidadHibrida {
+
+	public ToqueVampirico() {
+		super("Toque Vampírico", 10, 15, 1, 4, Estadistica.INTELIGENCIA, Efecto.ROBO_VIDA);
+	}
+}-e 
+
+
+==================================================
+RUTA: ./habilidad/LluviaFlechas.java
+==================================================
+package habilidad;
+
+// Lluvia de flechas contra múltiples enemigos
+// Daño: 1d8, Coste: 40 PE, Escalado: DES
+// Golpea a todos los enemigos
+public class LluviaFlechas extends HabilidadFisica {
+	public LluviaFlechas() {
+		super("Lluvia de Flechas", 40, 1, 8, Estadistica.DESTREZA, null);
+	}
+}-e 
+
+
+==================================================
+RUTA: ./habilidad/HechizoMagico.java
+==================================================
+package habilidad;
+
+import personajes.Personaje;
+import estado.EstadoQuemadura;
+import estado.EstadoCongelado;
+import estado.EstadoRenovar;
+
+// Hechizos mágicos: consumen mana, escalan con INT
+// Incluyen efectos como Quemadura, Congelar, Renovar
+public abstract class HechizoMagico extends AccionCombate {
+
+	protected String efectoEspecial;
+
+	public HechizoMagico(String nombre, int costeMana, int dadosCantidad, int dadosCaras, String efecto) {
+		super(nombre, 0, costeMana, dadosCantidad, dadosCaras, Estadistica.INTELIGENCIA);
+		this.efectoEspecial = efecto;
+	}
+
+	@Override
+	protected void aplicarEfectoImpacto(Personaje usuario, Personaje objetivo, int bono) {
+		int daño = tirarDados() + bono;
+
+		// Sinergia: fuego contra veneno = daño doble y limpia el veneno
+		if ("QUEMA".equals(efectoEspecial) && objetivo.tieneEstado("Veneno")) {
+			daño *= 2;
+			System.out.println("¡SINERGIA! Fuego contra Veneno - DAÑO x2");
+			System.out.println("-- El veneno se ha limpiado con el fuego.");
+		}
+
+		System.out.println("¡IMPACTO! " + objetivo.getNombre() + " recibe " + daño + " de daño.");
+		objetivo.recibirDaño(daño, false);
+
+		aplicarEfecto(objetivo);
+	}
+
+	// Aplica efecto secundario según el tipo
+	protected void aplicarEfecto(Personaje objetivo) {
+		if (efectoEspecial == null)
+			return;
+
+		switch (efectoEspecial) {
+		case "QUEMA":
+			if (!objetivo.tieneEstado("Quemadura")) {
+				objetivo.aplicarEstado(new EstadoQuemadura(3, 5));
+				System.out.println("-- ¡" + objetivo.getNombre() + " está en llamas!");
+			}
+			break;
+		case "CONGELA":
+			if (!objetivo.tieneEstado("Congelado")) {
+				objetivo.aplicarEstado(new EstadoCongelado(2, 3));
+				System.out.println("-- ¡" + objetivo.getNombre() + " está congelado!");
+			}
+			break;
+		case "RENOVAR":
+			objetivo.aplicarEstado(new EstadoRenovar(3, 8));
+			System.out.println("-- ¡" + objetivo.getNombre() + " recibe efectos regenerativos!");
+			break;
+		case "MULTI":
+			System.out.println("-- ¡El rayo salta a objetivos cercanos!");
+			break;
+		case "DEFENSA_MAS":
+			System.out.println("-- ¡" + objetivo.getNombre() + " recibe +4 de defensa!");
+			break;
+		}
+	}
+
+	// Ejecuta contra varios objetivos a la vez
+	public void ejecutar(Personaje usuario, java.util.ArrayList<Personaje> objetivos) {
+		for (Personaje objetivo : objetivos) {
+			ejecutar(usuario, objetivo);
+		}
+	}
+}-e 
+
+
+==================================================
+RUTA: ./habilidad/ExplosionArcana.java
+==================================================
+package habilidad;
+
+import personajes.Personaje;
+
+// Explosión de energía arcana
+// Daño: 3d8, Coste: 15 PE + 15 PM
+public class ExplosionArcana extends HabilidadHibrida {
+
+	public ExplosionArcana() {
+		super("Explosión Arcana", 15, 15, 3, 8, Estadistica.INTELIGENCIA, Efecto.NINGUNO);
+	}
+}-e 
+
+
+==================================================
+RUTA: ./habilidad/MuroPiedra.java
+==================================================
+package habilidad;
+
+import personajes.Personaje;
+
+// Crea un muro de piedra protector
+// Daño: ninguno, Coste: 15 PM
+// Da +4 de defensa al objetivo durante 3 turnos
+public class MuroPiedra extends HechizoMagico {
+
+	public MuroPiedra() {
+		super("Muro de Piedra", 15, 0, 0, null);
+	}
+
+	@Override
+	protected void aplicarEfectoImpacto(Personaje usuario, Personaje objetivo, int bono) {
+		System.out.println(usuario.getNombre() + " lanza " + nombre + "...");
+		System.out.println("¡IMPACTO! " + objetivo.getNombre() + " recibe +4 de defensa por 3 turnos!");
+		System.out.println("-- ¡" + objetivo.getNombre() + " está protegido por un muro de piedra!");
+	}
+}-e 
+
+
+==================================================
+RUTA: ./habilidad/HabilidadHibrida.java
+==================================================
+package habilidad;
+
+import personajes.Personaje;
+import estado.EstadoFuria;
+import java.util.ArrayList;
+
+// Habilidades que usan tanto energia como mana
+// Útiles para clases híbridas como el Paladín
+public class HabilidadHibrida extends AccionCombate {
+
+	private Efecto efecto;
+
+	public HabilidadHibrida(String nombre, int costeEnergia, int costeMana, int dadosCantidad, int dadosCaras,
+			Estadistica estadistica, Efecto efecto) {
+		super(nombre, costeEnergia, costeMana, dadosCantidad, dadosCaras, estadistica);
+		this.efecto = efecto;
+	}
+
+	@Override
+	protected void aplicarEfectoImpacto(Personaje usuario, Personaje objetivo, int bono) {
+		int daño = tirarDados() + bono;
+		System.out.println("¡IMPACTO! " + objetivo.getNombre() + " recibe " + daño + " de daño.");
+
+		// Explosion Arcana hace daño puro
+		boolean esPuro = this.nombre.equals("Explosión Arcana");
+		objetivo.recibirDaño(daño, esPuro);
+
+		aplicarEfectoEspecial(usuario, objetivo, daño);
+	}
+
+	private void aplicarEfectoEspecial(Personaje usuario, Personaje objetivo, int daño) {
+		switch (efecto) {
+		case CURAR_VIDA:
+			usuario.curar(daño);
+			System.out.println("-- " + usuario.getNombre() + " se cura " + daño + " HP!");
+			break;
+		case ROBO_VIDA:
+			usuario.curar(daño);
+			System.out.println("-- " + usuario.getNombre() + " roba " + daño + " HP!");
+			break;
+		case BUFF_ALIADOS:
+			System.out.println("-- " + objetivo.getNombre() + " recibe +" + daño + " de daño temporal!");
+			objetivo.aplicarEstado(new EstadoFuria(3, daño));
+			break;
+		case NINGUNO:
+		default:
+			break;
+		}
+	}
+
+	public void ejecutar(Personaje usuario, ArrayList<Personaje> objetivos) {
+		for (Personaje objetivo : objetivos) {
+			ejecutar(usuario, objetivo);
+		}
+	}
+}-e 
+
+
+==================================================
+RUTA: ./habilidad/TiroRodilla.java
+==================================================
+package habilidad;
+
+// Tiro en las rodillas
+// Daño: 1d6, Coste: 20 PE, Escalado: DES
+// Ledia al objetivo
+public class TiroRodilla extends HabilidadFisica {
+	public TiroRodilla() {
+		super("Tiro a la Rodilla", 20, 1, 6, Estadistica.DESTREZA, "LISIADO");
+	}
+}-e 
+
+
+==================================================
+RUTA: ./habilidad/RafagaGlacial.java
+==================================================
+package habilidad;
+
+// Ráfaga de hielo
+// Daño: 2d6, Coste: 20 PM
+// Aplica Congelar al objetivo
+public class RafagaGlacial extends HechizoMagico {
+
+	public RafagaGlacial() {
+		super("Ráfaga Glacial", 20, 2, 6, "CONGELA");
+	}
+}-e 
+
+
+==================================================
+RUTA: ./habilidad/HabilidadFisica.java
+==================================================
+package habilidad;
+
+import personajes.Personaje;
+import estado.EstadoVeneno;
+import estado.EstadoAturdimiento;
+import estado.EstadoSangrado;
+import estado.EstadoLisiado;
+
+// Habilidades físicas: consumen energia, escalan con FUE o DES
+// Incluyen efectos como Veneno, Aturdir, Sangrado, Lisiado
+public abstract class HabilidadFisica extends AccionCombate {
+
+	protected String efectoEspecial; // Tipo de efecto secundario
+
+	public HabilidadFisica(String nombre, int costeEnergia, int dadosCantidad, int dadosCaras, Estadistica estadistica,
+			String efecto) {
+		super(nombre, costeEnergia, 0, dadosCantidad, dadosCaras, estadistica);
+		this.efectoEspecial = efecto;
+	}
+
+	@Override
+	protected void aplicarEfectoImpacto(Personaje usuario, Personaje objetivo, int bono) {
+		int daño = tirarDados() + bono;
+		System.out.println("¡IMPACTO! " + objetivo.getNombre() + " recibe " + daño + " de daño");
+		objetivo.recibirDaño(daño, false);
+		aplicarEfectoSecundario(objetivo);
+	}
+
+	// Aplica el efecto secundario según el tipo
+	protected void aplicarEfectoSecundario(Personaje objetivo) {
+		if (efectoEspecial == null)
+			return;
+
+		switch (efectoEspecial) {
+		case "VENENO":
+			if (!objetivo.tieneEstado("Veneno")) {
+				objetivo.aplicarEstado(new EstadoVeneno(3, 5));
+				System.out.println("-- ¡" + objetivo.getNombre() + " está envenenado!");
+			}
+			break;
+		case "ATURDIR":
+			if (!objetivo.tieneEstado("Aturdimiento")) {
+				objetivo.aplicarEstado(new EstadoAturdimiento(2));
+				System.out.println("-- ¡" + objetivo.getNombre() + " está aturdido!");
+			}
+			break;
+		case "SANGRADO":
+			if (!objetivo.tieneEstado("Sangrado")) {
+				objetivo.aplicarEstado(new EstadoSangrado(3, 4));
+				System.out.println("-- ¡" + objetivo.getNombre() + " está sangrando!");
+			}
+			break;
+		case "LISIADO":
+			if (!objetivo.tieneEstado("Lisiado")) {
+				objetivo.aplicarEstado(new EstadoLisiado(2, 5));
+				System.out.println("-- ¡" + objetivo.getNombre() + " está lisiado!");
+			}
+			break;
+		}
+	}
+
+	public void ejecutar(Personaje usuario, java.util.ArrayList<Personaje> objetivos) {
+		for (Personaje objetivo : objetivos) {
+			ejecutar(usuario, objetivo);
+		}
+	}
+}-e 
+
+
+==================================================
+RUTA: ./habilidad/Ventisca.java
+==================================================
+package habilidad;
+
+import personajes.Personaje;
+import estado.EstadoCongelado;
+import java.util.ArrayList;
+
+// Tormenta de nieve
+// Daño: 2d6, Coste: 40 PM
+// Puede congelar a los objetivos (50% probabilidad)
+public class Ventisca extends HechizoMagico {
+
+	public Ventisca() {
+		super("Ventisca", 40, 2, 6, null);
+	}
+
+	@Override
+	public void ejecutar(Personaje usuario, Personaje objetivo) {
+		System.out.println(usuario.getNombre() + " quiere usar " + nombre + "...");
+		System.out.println("Este hechizo afecta a múltiples objetivos. Usa la versión con lista de enemigos.");
+	}
+
+	@Override
+	public void ejecutar(Personaje usuario, ArrayList<Personaje> objetivos) {
+		if (!usuario.tieneRecursos(costeEnergia, costeMana)) {
+			System.out.println(usuario.getNombre() + " no tiene suficientes recursos.");
+			return;
+		}
+
+		usuario.consumirRecursos(costeEnergia, costeMana);
+		int bono = usuario.getInteligencia() / 2;
+
+		System.out.println(usuario.getNombre() + " lanza " + nombre + "...");
+		System.out.println("--- VENTISCA ---");
+
+		for (Personaje obj : objetivos) {
+			int tirada = dado.nextInt(20) + 1;
+			int totalImpacto = tirada + bono;
+
+			System.out.println("-> " + obj.getNombre() + " - Tirada: " + tirada + " + " + bono + " = " + totalImpacto);
+
+			if (totalImpacto >= obj.getDefensaTotal()) {
+				aplicarEfectoImpacto(usuario, obj, bono);
+			} else {
+				System.out.println("  ¡FALLO! El hechizo no atraviesa la defensa.");
+			}
+		}
+	}
+
+	@Override
+	protected void aplicarEfectoImpacto(Personaje usuario, Personaje objetivo, int bono) {
+		int daño = tirarDados() + bono;
+		System.out.println("  ¡IMPACTO! " + objetivo.getNombre() + " recibe " + daño + " de daño.");
+		objetivo.recibirDaño(daño, false);
+
+		int probabilidadCongelar = dado.nextInt(100) + 1;
+		if (probabilidadCongelar <= 50 && !objetivo.tieneEstado("Congelado")) {
+			objetivo.aplicarEstado(new EstadoCongelado(2, 3));
+			System.out.println("  -- ¡" + objetivo.getNombre() + " está congelado!");
+		}
+	}
+}-e 
+
+
+==================================================
+RUTA: ./habilidad/GritoGuerra.java
+==================================================
+package habilidad;
+
+import personajes.Personaje;
+import java.util.ArrayList;
+
+// Grito motivacional para los aliados
+// Daño: ninguno, Coste: 20 PE + 15 PM
+// Mejora el daño de los aliados
+public class GritoGuerra extends HabilidadHibrida {
+
+	public GritoGuerra() {
+		super("Grito de Guerra", 20, 15, 0, 0, Estadistica.FUERZA, Efecto.NINGUNO);
+	}
+
+	@Override
+	public void ejecutar(Personaje usuario, ArrayList<Personaje> aliados) {
+		if (!usuario.tieneRecursos(costeEnergia, costeMana)) {
+			System.out.println(usuario.getNombre() + " no tiene suficientes recursos.");
+			return;
+		}
+
+		usuario.consumirRecursos(costeEnergia, costeMana);
+
+		System.out.println(usuario.getNombre() + " lanza un " + nombre + "!");
+		System.out.println("Coste: " + costeEnergia + " PE + " + costeMana + " PM");
+		System.out.println("--- ALIADOS RECIBEN +3 DE DAÑO ---");
+		for (Personaje aliado : aliados) {
+			System.out.println("-- " + aliado.getNombre() + " recibe +3 de daño!");
+			aliado.aplicarEstado(new estado.EstadoFuria(3, 3));
+		}
+	}
+}-e 
+
+
+==================================================
+RUTA: ./habilidad/AccionCombate.java
+==================================================
+package habilidad;
+
+import java.util.Random;
+import personajes.Personaje;
+
+// Clase base abstracta para todas las habilidades de combate
+// Gestiona: recursos (energia/mana), dados de daño y estadísticas que escalan el daño
+// Subclases: HabilidadFisica, HechizoMagico, HabilidadHibrida
+public abstract class AccionCombate {
+
+	protected String nombre;
+	protected int costeEnergia; // SP consumidos (0 si no usa)
+	protected int costeMana; // MP consumidos (0 si no usa)
+	protected int dadosCantidad; // Cuántos dados tirar
+	protected int dadosCaras; // Caras de cada dado
+	protected Estadistica estadisticaClave; // FUE, DES, INT o CON
+	protected Random dado = new Random();
+
+	// Estadísticas disponibles para escalar el daño
+	public enum Estadistica {
+		FUERZA, // Ataques cuerpo a cuerpo potentes
+		DESTREZA, // Ataques precisos y rápidos
+		INTELIGENCIA, // Magia
+		CONSTITUCION // Ataques basados en vitalidad
+	}
+
+	public AccionCombate(String nombre, int costeEnergia, int costeMana, int dadosCantidad, int dadosCaras,
+			Estadistica estadisticaClave) {
+		this.nombre = nombre;
+		this.costeEnergia = costeEnergia;
+		this.costeMana = costeMana;
+		this.dadosCantidad = dadosCantidad;
+		this.dadosCaras = dadosCaras;
+		this.estadisticaClave = estadisticaClave;
+	}
+
+	// Tira XdY y devuelve la suma total
+	protected int tirarDados() {
+		int total = 0;
+		for (int i = 0; i < dadosCantidad; i++) {
+			total += dado.nextInt(dadosCaras) + 1;
+		}
+		return total;
+	}
+
+	// Devuelve el valor de la estadística relevante del personaje
+	protected int getModificador(Personaje p) {
+		switch (estadisticaClave) {
+		case FUERZA:
+			return p.getFuerza();
+		case DESTREZA:
+			return p.getDestreza();
+		case INTELIGENCIA:
+			return p.getInteligencia();
+		case CONSTITUCION:
+			return p.getConstitucion();
+		default:
+			return 0;
+		}
+	}
+
+	// Nuevo método que simplifica las herencias (junta funciones RECURSOS + TIRADA
+	// IMPACTO)
+	public void ejecutar(Personaje usuario, Personaje objetivo) {
+		if (!usuario.tieneRecursos(costeEnergia, costeMana)) {
+			System.out.println(usuario.getNombre() + " no tiene suficientes recursos.");
+			return;
+		}
+
+		usuario.consumirRecursos(costeEnergia, costeMana);
+
+		int tirada = dado.nextInt(20) + 1;
+		int bono = getModificador(usuario) / 2;
+		int totalImpacto = tirada + bono;
+
+		System.out.println(usuario.getNombre() + " usa " + nombre + "...");
+		System.out.println("Tirada: " + tirada + " + " + bono + " = " + totalImpacto);
+
+		if (totalImpacto >= objetivo.getDefensaTotal()) {
+			aplicarEfectoImpacto(usuario, objetivo, bono);
+		} else {
+			System.out.println("¡FALLO! El ataque no atraviesa la defensa.");
+		}
+	}
+
+	// Este método lo implementará cada "Madre" o "Hija" para su efecto único
+	protected abstract void aplicarEfectoImpacto(Personaje usuario, Personaje objetivo, int bono);
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public int getCosteEnergia() {
+		return costeEnergia;
+	}
+
+	public int getCosteMana() {
+		return costeMana;
+	}
+}-e 
+
+
+==================================================
+RUTA: ./habilidad/Efecto.java
+==================================================
+package habilidad;
+
+// Tipos de efectos especiales para HabilidadHibrida
+public enum Efecto {
+    NINGUNO,       // Sin efecto adicional
+    CURAR_VIDA,    // Cura al usuario según el daño causado
+    ROBO_VIDA,     // Lo mismo pero con nombre más scary
+    BUFF_ALIADOS   // Mejora temporal a aliados
+}
+-e 
+
+
+==================================================
+RUTA: ./habilidad/LuzSagrada.java
+==================================================
+package habilidad;
+
+import personajes.Personaje;
+import estado.EstadoRenovar;
+
+// Hechizo de luz sagrada que también cura
+// Daño: 2d8, Coste: 15 PE + 20 PM
+// Sana al objetivo y aplica Renovar
+public class LuzSagrada extends HabilidadHibrida {
+
+	public LuzSagrada() {
+		super("Luz Sagrada", 15, 20, 2, 8, Estadistica.INTELIGENCIA, Efecto.NINGUNO);
+	}
+
+	@Override
+	protected void aplicarEfectoImpacto(Personaje usuario, Personaje objetivo, int bono) {
+		int daño = tirarDados() + bono;
+		System.out.println("¡IMPACTO! " + objetivo.getNombre() + " recibe " + daño + " de daño.");
+		objetivo.recibirDaño(daño, false);
+
+		// Solo cura y aplica renovar si impactó
+		objetivo.curar(20);
+		objetivo.aplicarEstado(new EstadoRenovar(3, 10));
+		System.out.println("-- " + objetivo.getNombre() + " sanado + RENOVAR!");
+	}
+}-e 
+
+
+==================================================
+RUTA: ./habilidad/Ejecucion.java
+==================================================
+package habilidad;
+
+import personajes.Personaje;
+
+// Golpe devastador contra enemigos debilitados
+// Daño: 1d12, Coste: 40 PE, Escalado: FUE
+// Si el objetivo tiene menos del 20% de vida, hace daño x3
+public class Ejecucion extends HabilidadFisica {
+	public Ejecucion() {
+		super("Ejecución", 40, 1, 12, Estadistica.FUERZA, null);
+	}
+
+	@Override
+	protected void aplicarEfectoImpacto(Personaje usuario, Personaje objetivo, int bono) {
+		int daño = tirarDados() + bono;
+
+		// Calcula si es ejecución
+		int porcentajeVida = (objetivo.getVidaActual() * 100) / objetivo.getVidaMax();
+
+		if (porcentajeVida <= 20) {
+			daño *= 3;
+			System.out.println("¡EJECUCIÓN! Objetivo con poca vida - DAÑO x3!");
+		}
+
+		System.out.println("¡IMPACTO! " + objetivo.getNombre() + " recibe " + daño + " de daño.");
+		objetivo.recibirDaño(daño, false);
+	}
+}-e 
+
+
+==================================================
+RUTA: ./habilidad/Purificacion.java
+==================================================
+package habilidad;
+
+import personajes.Personaje;
+
+// Hechizo de purificación
+// Daño: ninguno, Coste: 15 PM
+// Elimina todos los estados negativos del aliado
+public class Purificacion extends HechizoMagico {
+
+	public Purificacion() {
+		super("Purificación", 15, 0, 0, null);
+	}
+
+	@Override
+	protected void aplicarEfectoImpacto(Personaje usuario, Personaje objetivo, int bono) {
+		System.out.println(usuario.getNombre() + " lanza " + nombre + "...");
+		System.out.println("--- PURIFICACIÓN ---");
+		System.out.println("Eliminando estados negativos de " + objetivo.getNombre() + "...");
+
+		int estadosEliminados = 0;
+		for (int i = objetivo.getEstadosActivos().size() - 1; i >= 0; i--) {
+			estado.Estado e = objetivo.getEstadosActivos().get(i);
+			String nombreEstado = e.getNombre();
+			if (nombreEstado.equals("Veneno") || nombreEstado.equals("Quemadura") || nombreEstado.equals("Congelado")
+					|| nombreEstado.equals("Aturdimiento") || nombreEstado.equals("Sangrado")
+					|| nombreEstado.equals("Lisiado")) {
+				objetivo.getEstadosActivos().remove(i);
+				estadosEliminados++;
+				System.out.println("-- Eliminado: " + nombreEstado);
+			}
+		}
+
+		if (estadosEliminados == 0) {
+			System.out.println("-- No se eliminó ningún estado negativo.");
+		} else {
+			System.out.println(
+					"¡" + objetivo.getNombre() + " ha sido purificado! (" + estadosEliminados + " estados eliminados)");
+		}
+	}
+}-e 
+
+
+==================================================
+RUTA: ./habilidad/GolpeSanguinario.java
+==================================================
+package habilidad;
+
+// Ataque que cura al usuario
+// Daño: 1d8, Coste: 15 PE + 10 PM, Escalado: FUE
+// Cura al usuario según el daño causado
+public class GolpeSanguinario extends HabilidadHibrida {
+
+	public GolpeSanguinario() {
+		super("Golpe Sanguinario", 15, 10, 1, 8, Estadistica.FUERZA, Efecto.CURAR_VIDA);
+	}
+}-e 
+
+
+==================================================
+RUTA: ./habilidad/TajoSismico.java
+==================================================
+package habilidad;
+
+// Corte sísmico en el suelo
+// Daño: 2d8, Coste: 30 PE, Escalado: FUE
+// Hace sangrar al objetivo
+public class TajoSismico extends HabilidadFisica {
+	public TajoSismico() {
+		super("Tajo Sísmico", 30, 2, 8, Estadistica.FUERZA, "SANGRADO");
+	}
+}-e 
+
+
+==================================================
+RUTA: ./habilidad/RayoEncadenado.java
+==================================================
+package habilidad;
+
+import personajes.Personaje;
+import java.util.ArrayList;
+
+// Rayo que salta entre enemigos
+// Daño: 2d8, Coste: 30 PM
+// Golpea a todos los objetivos en cadena
+public class RayoEncadenado extends HechizoMagico {
+
+	public RayoEncadenado() {
+		super("Rayo Encadenado", 30, 2, 8, "MULTI");
+	}
+
+	@Override
+	public void ejecutar(Personaje usuario, Personaje objetivo) {
+		System.out.println(usuario.getNombre() + " quiere usar " + nombre + "...");
+		System.out.println("Este hechizo afecta a múltiples objetivos. Usa la versión con lista de enemigos.");
+	}
+
+	@Override
+	public void ejecutar(Personaje usuario, ArrayList<Personaje> objetivos) {
+		if (!usuario.tieneRecursos(costeEnergia, costeMana)) {
+			System.out.println(usuario.getNombre() + " no tiene suficientes recursos.");
+			return;
+		}
+
+		usuario.consumirRecursos(costeEnergia, costeMana);
+		int bono = usuario.getInteligencia() / 2;
+
+		System.out.println(usuario.getNombre() + " lanza " + nombre + "...");
+		System.out.println("--- RAYO ENCADENADO ---");
+
+		for (Personaje obj : objetivos) {
+			int tirada = dado.nextInt(20) + 1;
+			int totalImpacto = tirada + bono;
+
+			System.out.println("-> " + obj.getNombre() + " - Tirada: " + tirada + " + " + bono + " = " + totalImpacto);
+
+			if (totalImpacto >= obj.getDefensaTotal()) {
+				aplicarEfectoImpacto(usuario, obj, bono);
+			} else {
+				System.out.println("  ¡FALLO! El rayo no atraviesa la defensa.");
+			}
+		}
+	}
+}-e 
+
+
+==================================================
+RUTA: ./habilidad/Rompecraneos.java
+==================================================
+package habilidad;
+
+// Golpe en la cabeza
+// Daño: 1d10, Coste: 35 PE, Escalado: FUE
+// Puede aturdir al objetivo
+public class Rompecraneos extends HabilidadFisica {
+	public Rompecraneos() {
+		super("Rompecráneos", 35, 1, 10, Estadistica.FUERZA, "ATURDIR");
+	}
+}-e 
+
+
+==================================================
+RUTA: ./habilidad/HojaPonzoñosa.java
+==================================================
+package habilidad;
+
+// Ataque con veneno
+// Daño: 1d6, Coste: 15 PE, Escalado: DES
+// Aplica Veneno al objetivo
+public class HojaPonzoñosa extends HabilidadFisica {
+	public HojaPonzoñosa() {
+		super("Hoja Ponzoñosa", 15, 1, 6, Estadistica.DESTREZA, "VENENO");
+	}
+}-e 
+
+
+==================================================
+RUTA: ./habilidad/BolaFuego.java
+==================================================
+package habilidad;
+
+import personajes.Personaje;
+import estado.EstadoQuemadura;
+
+// Lanza una bola de fuego
+// Daño: 3d6, Coste: 25 PM
+// Aplica Quemadura y sinergiza con Veneno
+public class BolaFuego extends HechizoMagico {
+
+	public BolaFuego() {
+		super("Bola de Fuego", 25, 3, 6, "QUEMA");
+	}
+
+	@Override
+	protected void aplicarEfectoImpacto(Personaje usuario, Personaje objetivo, int bono) {
+		int daño = tirarDados() + bono;
+
+		// Sinergia fuego + veneno
+		if (objetivo.tieneEstado("Veneno")) {
+			daño *= 2;
+			System.out.println("¡SINERGIA! Fuego contra Veneno - DAÑO x2!");
+		}
+
+		System.out.println("¡IMPACTO! " + objetivo.getNombre() + " recibe " + daño + " de daño.");
+		objetivo.recibirDaño(daño, false);
+
+		// Aplica quemadura
+		if (!objetivo.tieneEstado("Quemadura")) {
+			objetivo.aplicarEstado(new EstadoQuemadura(3, 5));
+			System.out.println("-- ¡" + objetivo.getNombre() + " está en llamas!");
+		}
+	}
+}-e 
+
+
+==================================================
+RUTA: ./habilidad/AtaqueFurtivo.java
+==================================================
+package habilidad;
+
+import personajes.Personaje;
+
+// Ataque rápido de pícaro
+// Daño: 1d6, Coste: 20 SP, Escalado: DES
+public class AtaqueFurtivo extends HabilidadFisica {
+	public AtaqueFurtivo() {
+		super("Ataque Furtivo", 20, 1, 6, Estadistica.DESTREZA, null);
+	}
+
+	@Override
+	protected void aplicarEfectoImpacto(Personaje usuario, Personaje objetivo, int bono) {
+		int daño = tirarDados() + bono;
+
+		// Bonus: daño doble si el objetivo está aturdido
+		if (objetivo.tieneEstado("Aturdimiento")) {
+			daño *= 2;
+			System.out.println("¡GOLPE CRÍTICO! Objetivo aturdido - DAÑO x2!");
+		}
+
+		System.out.println("¡IMPACTO! " + objetivo.getNombre() + " recibe " + daño + " de daño.");
+		objetivo.recibirDaño(daño, false);
+	}
+}-e 
+
+
+==================================================
+RUTA: ./habilidad/FintaRapida.java
+==================================================
+package habilidad;
+
+import personajes.Personaje;
+
+// Ataque rápido de distracción
+// Daño: 1d4, Coste: 10 PE, Escalado: DES
+// Daño bajo pero puede mejorar la evasión
+public class FintaRapida extends HabilidadFisica {
+	public FintaRapida() {
+		super("Finta Rápida", 10, 1, 4, Estadistica.DESTREZA, null);
+	}
+}-e 
+
+
+==================================================
+RUTA: ./consumibles/Consumible.java
+==================================================
+package consumibles;
+
+import personajes.Personaje;
+
+public abstract class Consumible {
+	protected String nombre;
+	protected int cantidad;
+
+	public Consumible(String nombre, int cantidad) {
+		this.nombre = nombre;
+		this.cantidad = cantidad;
+	}
+
+	// sirve tanto para atacar como para curarse
+	public abstract void usar(Personaje usuario, Personaje objetivo);
+
+	public int getCantidad() {
+		return cantidad;
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+}-e 
+
+
+==================================================
+RUTA: ./consumibles/CuchilloArrojadizo.java
+==================================================
+package consumibles;
+
+import personajes.Personaje;
+import java.util.Random;
+
+public class CuchilloArrojadizo extends Consumible {
+	private Random dado = new Random();
+
+	public CuchilloArrojadizo(int cantidad) {
+		super("Cuchillo Arrojadizo", cantidad);
+	}
+
+	@Override
+	public void usar(Personaje usuario, Personaje objetivo) {
+		if (cantidad <= 0) {
+			System.out.println("No quedan " + nombre + ".");
+			return;
+		}
+
+		cantidad--;
+		int tirada = dado.nextInt(20) + 1;
+		int daño = dado.nextInt(4) + 1; 
+
+		System.out.println(usuario.getNombre() + " lanza " + nombre + " a " + objetivo.getNombre() + "!");
+
+		if (tirada >= objetivo.getDefensaTotal()) {
+			System.out.println("IMPACTO! " + objetivo.getNombre() + " recibe " + daño + " de dano.");
+			objetivo.recibirDaño(daño, false);
+		} else {
+			System.out.println("FALLO! El cuchillo no alcanza el objetivo.");
+		}
+	}
+}-e 
+
+
+==================================================
+RUTA: ./consumibles/PocionCuracion.java
+==================================================
+package consumibles;
+
+import personajes.Personaje;
+
+public class PocionCuracion extends Consumible {
+
+	public PocionCuracion(int cantidad) {
+		super("Poción de Curación", cantidad);
+	}
+
+	@Override
+	public void usar(Personaje usuario, Personaje objetivo) {
+		if (cantidad <= 0) {
+			System.out.println("No quedan " + nombre + ".");
+			return;
+		}
+
+		cantidad--;
+		usuario.curar(50); 
+		System.out.println(usuario.getNombre() + " usa " + nombre + ".");
+	}
+}-e 
+
+
+==================================================
+RUTA: ./consumibles/PocionRecurso.java
+==================================================
+package consumibles;
+
+import personajes.Personaje;
+
+public class PocionRecurso extends Consumible {
+
+	public PocionRecurso(int cantidad) {
+		super("Poción de Recurso", cantidad);
+	}
+
+	@Override
+	public void usar(Personaje usuario, Personaje objetivo) {
+		if (cantidad <= 0) {
+			System.out.println("No quedan " + nombre + ".");
+			return;
+		}
+
+		cantidad--;
+		usuario.recuperarRecursos(40);
+		System.out.println(usuario.getNombre() + " usa " + nombre + ".");
+	}
+}-e 
+
+
+==================================================
+RUTA: ./consumibles/Bomba.java
+==================================================
+package consumibles;
+
+import personajes.Personaje;
+import java.util.Random;
+
+public class Bomba extends Consumible {
+	private Random dado = new Random();
+
+	public Bomba(int cantidad) {
+		super("Bomba de Mano", cantidad);
+	}
+
+	@Override
+	public void usar(Personaje usuario, Personaje objetivo) {
+		if (cantidad <= 0) {
+			System.out.println("No quedan " + nombre + ".");
+			return;
+		}
+
+		cantidad--;
+		int tirada = dado.nextInt(20) + 1;
+		int daño = dado.nextInt(6) + 1 + dado.nextInt(6) + 1; // Daño basado en 2d6
+
+		System.out.println(usuario.getNombre() + " lanza " + nombre + " a " + objetivo.getNombre() + "!");
+
+		if (tirada >= objetivo.getDefensaTotal()) {
+			System.out.println("IMPACTO! " + objetivo.getNombre() + " recibe " + daño + " de dano.");
+			objetivo.recibirDaño(daño, false);
+		} else {
+			System.out.println("FALLO! La bomba no alcanza el objetivo.");
+		}
+	}
+}-e 
+
+
+==================================================
+RUTA: ./personajes/JefeLich.java
+==================================================
+package personajes;
+
+import armas.CategoriaArma;
+import armaduras.CategoriaArmadura;
+import estado.EstadoVeneno;
+
+public class JefeLich extends Jefe {
+
+	public JefeLich(String nombre, int fue, int des, int con, int intel, int defBase) {
+		super(nombre, Raza.NO_MUERTO, TipoJefe.LICH, fue, des, con, intel, defBase);
+
+		this.armasPermitidas.add(CategoriaArma.distancia);
+		this.armadurasPermitidas.add(CategoriaArmadura.LIGERA);
+	}
+
+	@Override
+	public void habilidadEspecial(Personaje objetivo) {
+		System.out.println("\n" + nombre + " invoca a los muertos!");
+		System.out.println(nombre + " canaliza energía necromántica!");
+
+		int daño = 12 + (this.inteligencia / 2);
+		objetivo.recibirDaño(daño, true);
+
+		if (!objetivo.tieneEstado("Veneno")) {
+			objetivo.aplicarEstado(new EstadoVeneno(4, 6));
+		}
+	}
+}-e 
+
+
+==================================================
+RUTA: ./personajes/Jefe.java
+==================================================
+package personajes;
+
+public abstract class Jefe extends Personaje {
+
+  protected TipoJefe tipo;
+
+  public Jefe(String nombre, Raza raza, TipoJefe tipo, int fue, int des, int con, int intel, int defBase) {
+    super(nombre, raza, TipoClase.JEFE, fue, des, con, intel, defBase);
+    this.tipo = tipo;
+  }
+
+  public TipoJefe getTipo() {
+    return tipo;
+  }
+
+  public abstract void habilidadEspecial(Personaje objetivo);
+}
+-e 
+
+
+==================================================
+RUTA: ./personajes/TipoClase.java
+==================================================
+package personajes;
+
+public enum TipoClase {
+  GUERRERO, MAGO,
+  PICARO, PALADIN,
+  BRUJO, MONJE, BARDO,
+
+  MONSTRUO, JEFE
+
+}
+-e 
+
+
+==================================================
+RUTA: ./personajes/JefeDragon.java
+==================================================
+package personajes;
+
+import armas.CategoriaArma;
+import estado.EstadoQuemadura;
+import armaduras.CategoriaArmadura;
+
+public class JefeDragon extends Jefe {
+
+	public JefeDragon(String nombre, int fue, int des, int con, int intel, int defBase) {
+		super(nombre, Raza.DRACONIDO, TipoJefe.DRAGON, fue, des, con, intel, defBase);
+
+		this.armasPermitidas.add(CategoriaArma.melee);
+		this.armadurasPermitidas.add(CategoriaArmadura.PESADA);
+	}
+
+	@Override
+	public void habilidadEspecial(Personaje objetivo) {
+		// Combinamos los dos mensajes para que quede más épico
+		System.out.println("\n¡" + nombre + " usa su Aliento de Dragón!");
+		System.out.println("¡Exhala una ráfaga de fuego destructor sobre " + objetivo.getNombre() + "!");
+
+		int dañoFuego = 15 + (this.inteligencia / 2);
+
+		objetivo.recibirDaño(dañoFuego, false);
+
+		if (!objetivo.tieneEstado("Quemadura")) {
+			objetivo.aplicarEstado(new EstadoQuemadura(3, 5));
+		}
+	}
+}
+-e 
+
+
+==================================================
+RUTA: ./personajes/Personaje.java
+==================================================
+package personajes;
+
+import armas.Arma;
+import armas.CategoriaArma;
+import armaduras.CategoriaArmadura;
+import estado.Estado;
+import habilidad.AccionCombate;
+import consumibles.Consumible;
+import java.util.ArrayList;
+import java.util.List;
+
+public abstract class Personaje {
+	// --- ATRIBUTOS DE IDENTIDAD ---
+	protected String nombre;
+	protected Raza raza;
+	protected TipoClase tipoClase;
+	protected boolean vivo;
+	protected String mensajePreparacion;
+
+	// --- STATS Y RECURSOS ---
+	protected int fuerza, destreza, constitucion, inteligencia;
+	protected int vidaMax, vidaActual, manaMax, manaActual, energiaMax, energiaActual;
+	protected int defensaBase;
+
+	// --- EQUIPO Y COLECCIONES ---
+	protected Arma armaEquipada;
+	protected CategoriaArmadura armaduraEquipada = CategoriaArmadura.NADA;
+	protected List<CategoriaArma> armasPermitidas;
+	protected List<CategoriaArmadura> armadurasPermitidas;
+	protected ArrayList<Estado> estadosActivos = new ArrayList<>();
+	protected ArrayList<AccionCombate> habilidades = new ArrayList<>();
+	protected ArrayList<Consumible> inventario = new ArrayList<>();
+
+	// --- CONSTRUCTOR ---
+	public Personaje(String nombre, Raza raza, TipoClase tipoClase, int fue, int des, int con, int intel, int defBase) {
+		this.nombre = nombre;
+		this.raza = raza;
+		this.tipoClase = tipoClase;
+		this.fuerza = fue;
+		this.destreza = des;
+		this.constitucion = con;
+		this.inteligencia = intel;
+		this.defensaBase = defBase;
+		this.vivo = true;
+
+		// formulas de recursos
+		this.vidaMax = (this.constitucion * 5) + 50;
+		this.vidaActual = this.vidaMax;
+		this.manaMax = (this.inteligencia * 5) + 20;
+		this.manaActual = this.manaMax;
+		this.energiaMax = (this.fuerza * 5) + 20;
+		this.energiaActual = this.energiaMax;
+
+		this.armasPermitidas = new ArrayList<>();
+		this.armadurasPermitidas = new ArrayList<>();
+
+		this.mensajePreparacion = "está preparándose...";
+	}
+
+	// --- SECCIÓN: INFORMACIÓN ---
+	public void mostrarInfo() {
+		System.out.println("------------------------------------------");
+		System.out.println("PERSONAJE: " + nombre + " [" + tipoClase + " " + raza + "]");
+		System.out.println("--- Estadísticas ---");
+		System.out.println("FUE: " + fuerza + " | DES: " + getDestrezaTotal() + " | CON: " + constitucion + " | INT: "
+				+ inteligencia);
+		System.out.println("--- Barras de Recursos ---");
+		System.out.println("Vida: " + vidaActual + "/" + vidaMax);
+		System.out.println("Maná: " + manaActual + "/" + manaMax);
+		System.out.println("Energía: " + energiaActual + "/" + energiaMax);
+		System.out.println("--- Estado de Combate ---");
+		System.out.println("Defensa Base: " + defensaBase);
+		System.out.println("Defensa Total: " + getDefensaTotal());
+		System.out.println("Armadura: " + armaduraEquipada.nombre);
+		System.out.println("Arma: " + (armaEquipada != null ? armaEquipada.getNombre() : "Desarmado"));
+		System.out.println(" Vivo: " + (vivo ? "SÍ" : "NO"));
+		System.out.println("------------------------------------------");
+	}
+
+	// para antes o después de un turno, mostrar solo lo imprescindible
+	public void mostrarInfoBreve() {
+		System.out.println(
+				"   > " + nombre + ": " + vidaActual + "/" + vidaMax + " HP | Estados: " + getEstadosNombres());
+	}
+
+	// para que se muestren múltiples estados
+	private String getEstadosNombres() {
+		if (this.estadosActivos.isEmpty()) {
+			return "Ninguno";
+		}
+
+		String nombres = "";
+		for (int i = 0; i < estadosActivos.size(); i++) {
+			nombres = nombres + estadosActivos.get(i).getNombre();
+
+			// Si no es el último elemento, añadimos una coma
+			if (i < estadosActivos.size() - 1) {
+				nombres = nombres + ", ";
+			}
+		}
+		return nombres;
+	}
+
+	// --- SECCIÓN: EQUIPO ---
+	public void equiparArma(Arma arma) {
+		if (this.armasPermitidas.contains(arma.getCategoria())) {
+			this.armaEquipada = arma;
+			System.out.println(this.nombre + " se ha equipado " + arma.getNombre());
+		} else {
+			System.out.println(
+					this.tipoClase + " " + this.nombre + " no sabe usar ese tipo de arma: " + arma.getCategoria());
+		}
+	}
+
+	public void equiparArmadura(CategoriaArmadura categoria) {
+		if (this.armadurasPermitidas.contains(categoria)) {
+			this.armaduraEquipada = categoria;
+			System.out.println(this.nombre + " se ha equipado " + categoria.nombre);
+		} else {
+			System.out.println(this.tipoClase + " " + this.nombre + " no sabe usar ese tipo de armadura: " + categoria);
+		}
+	}
+
+	public Arma getArma() {
+		return this.armaEquipada;
+	}
+
+	// --- SECCIÓN: ESTADÍSTICAS Y RECURSOS ---
+	public int getDefensaTotal() {
+		return defensaBase + armaduraEquipada.bonoDefensa;
+	}
+
+	public int getDestrezaTotal() {
+		return destreza + armaduraEquipada.modificadorDestreza;
+	}
+
+	public int getFuerza() {
+		return fuerza;
+	}
+
+	public int getDestreza() {
+		return destreza;
+	}
+
+	public int getInteligencia() {
+		return inteligencia;
+	}
+
+	public int getConstitucion() {
+		return constitucion;
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public int getVidaActual() {
+		return vidaActual;
+	}
+
+	public int getVidaMax() {
+		return vidaMax;
+	}
+
+	public TipoClase getTipoClase() {
+		return this.tipoClase;
+	}
+
+	public boolean estaVivo() {
+		return this.vidaActual > 0;
+	}
+
+	public void curar(int cantidad) {
+		this.vidaActual += cantidad;
+		if (this.vidaActual > vidaMax) {
+			this.vidaActual = vidaMax;
+		}
+		System.out.println(this.nombre + " se ha curado " + cantidad + " puntos de vida.");
+	}
+
+	public void recuperarRecursos(int cantidad) {
+		this.energiaActual += cantidad;
+		this.manaActual += cantidad;
+		if (this.energiaActual > energiaMax) {
+			this.energiaActual = energiaMax;
+		}
+		if (this.manaActual > manaMax) {
+			this.manaActual = manaMax;
+		}
+		System.out.println(this.nombre + " recupera " + cantidad + " SP y MP.");
+	}
+
+	public boolean tieneRecursos(int energia, int mana) {
+		return this.energiaActual >= energia && this.manaActual >= mana;
+	}
+
+	public void consumirRecursos(int energia, int mana) {
+		this.energiaActual -= energia;
+		this.manaActual -= mana;
+	}
+
+	// --- SECCIÓN: COMBATE ---
+		public void atacar(Personaje objetivo) {
+			// compruebo q ambos personajes estén vivos
+			if (this.vivo == false || objetivo.estaVivo() == false) {
+				return;
+			}
+
+			// compruebo si sufre algun estado que le impide atacar
+			if (tieneEstado("Aturdimiento") || tieneEstado("Congelado") || tieneEstado("Lisiado")) {
+				System.out.println("! " + this.nombre + " intenta atacar pero está incapacitado.");
+				return;
+			}
+
+			// calculo daño
+			int daño = 0;
+			// para habilidades o estados que afectan al daño (como furia)
+			int bonoDeEstados = this.getBonoDañoTotal();
+			
+			// variable para construir el mensaje de ataque
+			String modo = "a puñetazos";
+			
+			if (this.armaEquipada != null) {
+				daño = this.armaEquipada.calcularDaño(this, objetivo) + bonoDeEstados;
+				
+				// detecto si es cuerpo a cuerpo o distancia para el texto
+				String tipo = "cuerpo a cuerpo";
+				if (this.armaEquipada.getCategoria() == armas.CategoriaArma.distancia) {
+					tipo = "a distancia";
+				}
+				modo = tipo + " con " + this.armaEquipada.getNombre();
+			} else {
+				daño = (this.fuerza / 2) + bonoDeEstados;
+			}
+
+			// mensaje unificado en una sola línea
+			System.out.println(this.nombre + " ataca " + modo + " a " + objetivo.getNombre());
+
+			// aplico efecto del arma antes del daño (arregla situaciones como q el
+			// personaje muera y se envenene después)
+			if (this.armaEquipada != null) {
+				this.aplicarEfectoDeArma(objetivo);
+			}
+
+			// aplico daño
+			objetivo.recibirDaño(daño, false);
+		}
+
+	public void recibirDaño(int cantidad, boolean esDañoPuro) {
+		if (this.vivo == false) {
+			return;
+		}
+
+		// para estados o ataques especiales q se salten la mitigación
+		int dañoFinal;
+		if (esDañoPuro == true) {
+			dañoFinal = cantidad;
+		} else {
+			int mitigacion = this.getDefensaTotal() / 2;
+			dañoFinal = cantidad - mitigacion;
+		}
+
+		// evita q el daño negativo cure al personaje
+		if (dañoFinal < 0) {
+			dañoFinal = 0;
+		}
+
+		this.vidaActual = this.vidaActual - dañoFinal;
+
+		// muestro el daño del ataque
+		String prefijo = "";
+		if (esDañoPuro == true) {
+			prefijo = "[PURO] ";
+		}
+		System.out.println(prefijo + this.nombre + " recibe " + dañoFinal + " de daño.");
+
+		if (this.vidaActual <= 0) {
+			this.vidaActual = 0;
+			this.vivo = false;
+			System.out.println(">>> " + this.nombre + " ha caído en combate.");
+		}
+	}
+
+	public int getBonoDañoTotal() {
+		int bonoTotal = 0;
+		for (Estado e : estadosActivos) {
+			bonoTotal += e.getModificadorDaño();
+		}
+		return bonoTotal;
+	}
+
+	// --- SECCIÓN: ESTADOS ---
+	// he creado después la de tiene estado para q no aplique el mismo varias veces
+	public void aplicarEstado(Estado nuevoEstado) {
+		this.estadosActivos.add(nuevoEstado);
+	}
+
+	// para aplicar estados alterados (resuelve el problema del veneno siempre
+	// aplicándose)
+	private void aplicarEfectoDeArma(Personaje objetivo) {
+		if (this.armaEquipada != null) {
+			this.armaEquipada.aplicarEfectosEspeciales(objetivo);
+		}
+	}
+
+	// compruebo si un personae ya tiene aplicado un estado con el mismo nombre
+	public boolean tieneEstado(String nombreEstado) {
+		for (Estado e : estadosActivos) {
+			if (e.getNombre().equals(nombreEstado))
+				return true;
+		}
+		return false;
+	}
+
+	// uso iterator en vez de bucle for para no generar problemas al borrar (por si
+	// por ejemplo se cura un estado antes de tiempo)
+	public void pasarTurnoDeEstados() {
+		if (!this.vivo || estadosActivos.isEmpty())
+			return;
+
+		java.util.Iterator<Estado> it = estadosActivos.iterator();
+		while (it.hasNext()) {
+			Estado e = it.next();
+			e.alPasarTurnoEstado(this);
+			e.reducirTurno();
+
+			if (!e.estaActivo()) {
+				e.alTerminarEstado(this);
+				it.remove();
+			}
+		}
+	}
+
+	public ArrayList<Estado> getEstadosActivos() {
+		return estadosActivos;
+	}
+
+	// --- SECCIÓN: HABILIDADES ---
+	public ArrayList<AccionCombate> getHabilidades() {
+		return habilidades;
+	}
+
+	public void agregarHabilidad(AccionCombate h) {
+		this.habilidades.add(h);
+	}
+
+	public void lanzarHechizo() {
+		System.out.println(nombre + " " + mensajePreparacion);
+	}
+
+	public void agregarItem(Consumible item) {
+		this.inventario.add(item);
+	}
+
+	public ArrayList<Consumible> getInventario() {
+		return inventario;
+	}
+}-e 
+
+
+==================================================
+RUTA: ./personajes/Monje.java
+==================================================
+package personajes;
+
+import armas.CategoriaArma;
+import armaduras.CategoriaArmadura;
+
+public class Monje extends Personaje {
+
+	public Monje(String nombre, Raza raza, int fue, int des, int con, int intel, int defBase) {
+
+		super(nombre, raza, TipoClase.MONJE, fue, des, con, intel, defBase);
+
+		// Armas a melee
+		this.armasPermitidas.add(CategoriaArma.melee);
+		// NADA DE ARMADURA
+		this.armadurasPermitidas.add(CategoriaArmadura.NADA);
+
+		this.mensajePreparacion = "esta haciendo taichi a la fresca";
+	}
+}-e 
+
+
+==================================================
+RUTA: ./personajes/TipoJefe.java
+==================================================
+package personajes;
+
+public enum TipoJefe {
+  DRAGON,
+  LICH,
+  DEMONIO,
+  GIGANTE
+}
+-e 
+
+
+==================================================
+RUTA: ./personajes/JefeDemonio.java
+==================================================
+package personajes;
+
+import armas.CategoriaArma;
+import armaduras.CategoriaArmadura;
+import estado.EstadoFuria;
+
+public class JefeDemonio extends Jefe {
+
+	public JefeDemonio(String nombre, int fue, int des, int con, int intel, int defBase) {
+		super(nombre, Raza.TIEFLING, TipoJefe.DEMONIO, fue, des, con, intel, defBase);
+
+		this.armasPermitidas.add(CategoriaArma.melee);
+		this.armadurasPermitidas.add(CategoriaArmadura.MEDIA);
+	}
+
+	@Override
+	public void habilidadEspecial(Personaje objetivo) {
+		System.out.println("\n" + nombre + " desata ira infernal!");
+		System.out.println(nombre + " entra en modo berserker!");
+
+		int daño = 10 + (this.fuerza / 2);
+		objetivo.recibirDaño(daño, false);
+
+		if (!this.tieneEstado("Furia")) {
+			this.aplicarEstado(new EstadoFuria(3, 8));
+		}
+	}
+}-e 
+
+
+==================================================
+RUTA: ./personajes/Raza.java
+==================================================
+package personajes;
+
+public enum Raza {
+  // Razas de personajes jugables o buenos buenosos :
+  HUMANO, ELFO,
+  ENANO, MEDIANO,
+  TIEFLING, DRACONIDO,
+  // Razas de enemigos
+  ORCO, GOBLIN,
+  NO_MUERTO, BESTIA
+
+}
+-e 
+
+
+==================================================
+RUTA: ./personajes/Mago.java
+==================================================
+package personajes;
+
+import armas.CategoriaArma;
+import armaduras.CategoriaArmadura;
+
+public class Mago extends Personaje {
+
+	public Mago(String nombre, Raza raza, int fue, int des, int con, int intel, int defBase) {
+		// El Mago siempre nace con TipoClase.MAGO
+		super(nombre, raza, TipoClase.MAGO, fue, des, con, intel, defBase);
+
+		// Armas a distancia
+		this.armasPermitidas.add(CategoriaArma.distancia);
+		// armaduras ligeras
+		this.armadurasPermitidas.add(CategoriaArmadura.LIGERA);
+
+		this.mensajePreparacion = "está canalizando energía arcana...";
+	}
+}-e 
+
+
+==================================================
+RUTA: ./personajes/Paladin.java
+==================================================
+package personajes;
+
+import armas.CategoriaArma;
+import armaduras.CategoriaArmadura;
+
+public class Paladin extends Personaje {
+
+	public Paladin(String nombre, Raza raza, int fue, int des, int con, int intel, int defBase) {
+		super(nombre, raza, TipoClase.PALADIN, fue, des, con, intel, defBase);
+		// Armas a melee
+		this.armasPermitidas.add(CategoriaArma.melee);
+		// armaduras pesadas
+		this.armadurasPermitidas.add(CategoriaArmadura.PESADA);
+
+		this.mensajePreparacion = "está cargado su fuerza...";
+	}
+}-e 
+
+
+==================================================
+RUTA: ./personajes/Brujo.java
+==================================================
+package personajes;
+
+import armas.CategoriaArma;
+import armaduras.CategoriaArmadura;
+
+public class Brujo extends Personaje {
+
+  public Brujo(String nombre, Raza raza, int fue, int des, int con, int intel, int defBase) {
+
+    super(nombre, raza, TipoClase.BRUJO, fue, des, con, intel, defBase);
+
+    // Armas a distanciaa
+    this.armasPermitidas.add(CategoriaArma.distancia);
+    // armadura ligera
+    this.armadurasPermitidas.add(CategoriaArmadura.LIGERA);
+
+    this.mensajePreparacion = "está canalizando energía demoniaca...";
+  }
+}-e 
+
+
+==================================================
+RUTA: ./personajes/Bardo.java
+==================================================
+package personajes;
+
+import armas.CategoriaArma;
+import armaduras.CategoriaArmadura;
+
+public class Bardo extends Personaje {
+
+	public Bardo(String nombre, Raza raza, int fue, int des, int con, int intel, int defBase) {
+		super(nombre, raza, TipoClase.BARDO, fue, des, con, intel, defBase);
+
+		// Armas a melee
+		this.armasPermitidas.add(CategoriaArma.melee);
+		// armaduras ligera y media
+		this.armadurasPermitidas.add(CategoriaArmadura.LIGERA);
+		this.armadurasPermitidas.add(CategoriaArmadura.MEDIA);
+
+		this.mensajePreparacion = "está cargado su fuerza...";
+	}
+}-e 
+
+
+==================================================
+RUTA: ./personajes/JefeGigante.java
+==================================================
+package personajes;
+
+import armas.CategoriaArma;
+import armaduras.CategoriaArmadura;
+import estado.EstadoAturdimiento;
+
+public class JefeGigante extends Jefe {
+
+	public JefeGigante(String nombre, int fue, int des, int con, int intel, int defBase) {
+		super(nombre, Raza.BESTIA, TipoJefe.GIGANTE, fue, des, con, intel, defBase);
+
+		this.armasPermitidas.add(CategoriaArma.melee);
+		this.armadurasPermitidas.add(CategoriaArmadura.PESADA);
+	}
+
+	@Override
+	public void habilidadEspecial(Personaje objetivo) {
+		System.out.println("\n" + nombre + " lanza rocas!");
+		System.out.println(nombre + " aplasta todo a su paso!");
+
+		int daño = 20 + (this.fuerza / 3);
+		objetivo.recibirDaño(daño, false);
+
+		if (!objetivo.tieneEstado("Aturdimiento")) {
+			objetivo.aplicarEstado(new EstadoAturdimiento(1));
+		}
+	}
+}-e 
+
+
+==================================================
+RUTA: ./personajes/Monstruo.java
+==================================================
+package personajes;
+
+import armas.CategoriaArma;
+import armaduras.CategoriaArmadura;
+
+public class Monstruo extends Personaje {
+
+	public Monstruo(String nombre, Raza raza, int fue, int des, int con, int intel, int defBase) {
+		super(nombre, raza, TipoClase.MONSTRUO, fue, des, con, intel, defBase);
+
+		// Cualquier tipo de arma
+		this.armasPermitidas.add(CategoriaArma.melee);
+		this.armasPermitidas.add(CategoriaArma.distancia);
+		// Sin armadura
+		this.armadurasPermitidas.add(CategoriaArmadura.NADA);
+
+		this.mensajePreparacion = "ruge salvajemente...";
+	}
+}-e 
+
+
+==================================================
+RUTA: ./personajes/Picaro.java
+==================================================
+package personajes;
+
+import armas.CategoriaArma;
+import armaduras.CategoriaArmadura;
+
+public class Picaro extends Personaje {
+
+	public Picaro(String nombre, Raza raza, int fue, int des, int con, int intel, int defBase) {
+
+		super(nombre, raza, TipoClase.PICARO, fue, des, con, intel, defBase);
+
+		// Armas a melee y a distancia
+		this.armasPermitidas.add(CategoriaArma.melee);
+		this.armasPermitidas.add(CategoriaArma.distancia);
+		// armaduras ligeras
+		this.armadurasPermitidas.add(CategoriaArmadura.LIGERA);
+
+		this.mensajePreparacion = "está canalizando energía arcana...";
+	}
+}-e 
+
+
+==================================================
+RUTA: ./personajes/Guerrero.java
+==================================================
+package personajes;
+
+import armas.CategoriaArma;
+import armaduras.CategoriaArmadura;
+
+public class Guerrero extends Personaje {
+
+	public Guerrero(String nombre, Raza raza, int fue, int des, int con, int intel, int defBase) {
+		super(nombre, raza, TipoClase.GUERRERO, fue, des, con, intel, defBase);
+
+		// Armas a melee
+		this.armasPermitidas.add(CategoriaArma.melee);
+		// armaduras media y pesada
+		this.armadurasPermitidas.add(CategoriaArmadura.MEDIA);
+		this.armadurasPermitidas.add(CategoriaArmadura.PESADA);
+
+		this.mensajePreparacion = "está cargado su fuerza...";
+	}
+}-e 
+
+
