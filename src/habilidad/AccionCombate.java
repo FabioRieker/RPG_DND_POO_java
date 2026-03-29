@@ -67,8 +67,6 @@ public abstract class AccionCombate {
 			return;
 		}
 
-		usuario.consumirRecursos(costeEnergia, costeMana);
-
 		int tirada = dado.nextInt(20) + 1;
 		int bono = getModificador(usuario) / 2;
 		int totalImpacto = tirada + bono;
@@ -77,6 +75,7 @@ public abstract class AccionCombate {
 		System.out.println("Tirada: " + tirada + " + " + bono + " = " + totalImpacto);
 
 		if (totalImpacto >= objetivo.getDefensaTotal()) {
+			usuario.consumirRecursos(costeEnergia, costeMana);
 			aplicarEfectoImpacto(usuario, objetivo, bono);
 		} else {
 			System.out.println("¡FALLO! El ataque no atraviesa la defensa.");

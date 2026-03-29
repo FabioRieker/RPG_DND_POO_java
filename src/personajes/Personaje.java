@@ -249,7 +249,7 @@ public abstract class Personaje {
 
 		int tiradaCritico = (int) (Math.random() * 20) + 1;
 		if (tiradaCritico == 20) {
-			System.out.println("💥 ¡GOLPE CRÍTICO! " + this.nombre + " ha encontrado el punto débil.");
+			System.out.println("¡GOLPE CRÍTICO! " + this.nombre + " ha encontrado el punto débil.");
 			daño = daño * 2;
 		}
 

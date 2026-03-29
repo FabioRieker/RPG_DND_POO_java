@@ -219,7 +219,7 @@ public class MotorCombate {
 			if (objetivo != null) {
 				// el ataque normal ya comprueba estados de incapacidad internamente
 				// si es jefe, usar habilidad especial
-				if (p.getTipoClase() == TipoClase.JEFE && Math.random() < 0.3) {
+				if (p instanceof Jefe && Math.random() < 0.3) {
 					((Jefe) p).habilidadEspecial(objetivo);
 				} else {
 					p.atacar(objetivo);
@@ -240,21 +240,23 @@ public class MotorCombate {
 			if (enemigo instanceof JefeLich)
 				loot = new Armeria().get("Colmillo de Araña");
 
-			System.out.println("[BOTÍN] " + enemigo.getNombre() + " ha soltado: " + loot.getNombre());
+			if (loot != null) {
+				System.out.println("[BOTÍN] " + enemigo.getNombre() + " ha soltado: " + loot.getNombre());
 
-			boolean equipado = false;
-			for (Personaje h : heroes) {
-				// solo equipa automáticamente si no tiene arma equipada
-				if (h.estaVivo() && h.getArma() == null && h.getArmasPermitidas().contains(loot.getCategoria())) {
-					h.equiparArma(loot);
-					equipado = true;
-					break;
+				boolean equipado = false;
+				for (Personaje h : heroes) {
+					// solo equipa automáticamente si no tiene arma equipada
+					if (h.estaVivo() && h.getArma() == null && h.getArmasPermitidas().contains(loot.getCategoria())) {
+						h.equiparArma(loot);
+						equipado = true;
+						break;
+					}
 				}
-			}
 
-			if (!equipado) {
-				mochilaComun.add(loot);
-				System.out.println("[SISTEMA] " + loot.getNombre() + " se ha guardado en la mochila común.");
+				if (!equipado) {
+					mochilaComun.add(loot);
+					System.out.println("[SISTEMA] " + loot.getNombre() + " se ha guardado en la mochila común.");
+				}
 			}
 		}
 	}
