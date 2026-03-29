@@ -1,9 +1,9 @@
 package habilidad;
 
-// Tipos de efectos especiales para HabilidadHibrida
+// Estados adicionales aplicables por habilidades híbridas
 public enum Efecto {
-    NINGUNO,       // Sin efecto adicional
-    CURAR_VIDA,    // Cura al usuario según el daño causado
-    ROBO_VIDA,     // Lo mismo pero con nombre más scary
-    BUFF_ALIADOS   // Mejora temporal a aliados
+	NINGUNO, // Ningún efecto secundario
+	CURAR_VIDA, // Restaura puntos de vida basándose en el daño infligido
+	ROBO_VIDA, // Funcionalmente idéntico a Curar Vida, pero temáticamente oscuro
+	BUFF_ALIADOS // Otorga beneficios temporales a objetivos aliados
 }

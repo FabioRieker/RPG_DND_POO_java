@@ -4,8 +4,21 @@ import personajes.*;
 import java.util.List;
 import java.util.ArrayList;
 
+/**
+ * Clase principal que arranca el juego. Se encarga de controlar el bucle de las
+ * 20 salas, generar los monstruos y llamar al motor de combate.
+ * 
+ * @author Ricardo Crespo
+ * @author Fabio Rieker
+ */
 public class Main {
 
+	/**
+	 * Metodo main de ejecucion principal. Se pregunta el modo de juego (Manual o
+	 * Automatico) y se recorren las salas.
+	 * 
+	 * @param args Argumentos pasados por consola al compilar
+	 */
 	public static void main(String[] args) {
 
 		System.out.println(motor.MotorCombate.ANSI_AZUL_MARINO + "\n===========================================");
@@ -18,7 +31,7 @@ public class Main {
 			int opt = motor.MotorCombate.sc.nextInt();
 			if (opt == 2) {
 				motor.MotorCombate.modoManual = true;
-				// Agrupamos recursos en la mochila
+				// Meter las 5 pociones de inicio en la mochila
 				for (int j = 0; j < 5; j++) {
 					motor.MotorCombate.inventarioGrupo.add(new consumibles.PocionCuracion(1));
 				}
@@ -30,21 +43,23 @@ public class Main {
 		System.out.println("    AVENTURA: EL DESCENSO A LAS RUINAS");
 		System.out.println("===========================================" + motor.MotorCombate.ANSI_RESET + "\n");
 
-		// llamar a heroes
+		// Crear el equipo que lucha y preparar la reserva
 		List<Personaje> listaHeroes = FabricaHeroes.crearEquipoInicial();
 		List<Personaje> reserva = new ArrayList<>();
 		Personaje[] heroes = listaHeroes.toArray(new Personaje[0]);
 
-		// bucle de 1 a 20 salas
+		// Bucle que recorre las 20 salas de la mazmorra
 		for (int i = 1; i <= 20; i++) {
+			// Si mueren todos los heroes, termina la partida
 			if (!MotorCombate.hayVivos(heroes)) {
-				System.out.println(motor.MotorCombate.ANSI_ROJO + "[ALERTA FATAL] EL EQUIPO HA CAÍDO EN LA SALA " + i + ". FIN DE LA AVENTURA." + motor.MotorCombate.ANSI_RESET);
+				System.out.println(motor.MotorCombate.ANSI_ROJO + "[ALERTA FATAL] EL EQUIPO HA CAÍDO EN LA SALA " + i
+						+ ". FIN DE LA AVENTURA." + motor.MotorCombate.ANSI_RESET);
 				break;
 			}
 
 			System.out.println("\n>>> ENTRANDO EN LA SALA " + i + "...");
 
-			// salas no de combate
+			// Eventos de historia (curas, trampas y reclutamientos)
 			if (i == 2) {
 				System.out.println("Encontráis suministros en una caravana saqueada.");
 				for (Personaje h : heroes) {
@@ -52,7 +67,8 @@ public class Main {
 						h.recuperarRecursos(30);
 				}
 			} else if (i == 5) {
-				System.out.println(motor.MotorCombate.ANSI_MORADO + "[EVENTO] ¡Rescatáis a Kallista! Se une a vuestra reserva." + motor.MotorCombate.ANSI_RESET);
+				System.out.println(motor.MotorCombate.ANSI_MORADO
+						+ "[EVENTO] ¡Rescatáis a Kallista! Se une a vuestra reserva." + motor.MotorCombate.ANSI_RESET);
 				reserva.add(FabricaHeroes.crearKallista());
 			} else if (i == 7) {
 				System.out.println("¡BOOM! Una trampa de fuego estalla.");
@@ -61,19 +77,25 @@ public class Main {
 						h.recibirDaño(12, true);
 				}
 			} else if (i == 9) {
-				System.out.println(motor.MotorCombate.ANSI_MORADO + "[EVENTO] Llegáis a una fuente curativa. El grupo descansa." + motor.MotorCombate.ANSI_RESET);
+				System.out.println(motor.MotorCombate.ANSI_MORADO
+						+ "[EVENTO] Llegáis a una fuente curativa. El grupo descansa." + motor.MotorCombate.ANSI_RESET);
 				for (Personaje h : heroes) {
 					if (h.estaVivo())
 						h.curar(50);
 				}
-				if (motor.MotorCombate.modoManual) motor.MotorCombate.gestionarCampamento(heroes, reserva);
+				if (motor.MotorCombate.modoManual)
+					motor.MotorCombate.gestionarCampamento(heroes, reserva);
 			} else if (i == 12) {
-				System.out.println(motor.MotorCombate.ANSI_MORADO + "[EVENTO] Un monje llamado Kwai Chang se une a vuestra reserva." + motor.MotorCombate.ANSI_RESET);
+				System.out.println(motor.MotorCombate.ANSI_MORADO
+						+ "[EVENTO] Un monje llamado Kwai Chang se une a vuestra reserva."
+						+ motor.MotorCombate.ANSI_RESET);
 				reserva.add(FabricaHeroes.crearMonjeKwai());
 			} else if (i == 14) {
 				System.out.println("Sala vacía... un silencio sepulcral inunda el lugar.");
 			} else if (i == 17) {
-				System.out.println(motor.MotorCombate.ANSI_MORADO + "[EVENTO] Lulu Nightingale, la barda, se une a vuestra reserva." + motor.MotorCombate.ANSI_RESET);
+				System.out.println(motor.MotorCombate.ANSI_MORADO
+						+ "[EVENTO] Lulu Nightingale, la barda, se une a vuestra reserva."
+						+ motor.MotorCombate.ANSI_RESET);
 				reserva.add(FabricaHeroes.crearBardoLulu());
 			} else if (i == 19) {
 				System.out.println("Último descanso antes del gran final. Salud y recursos al máximo.");
@@ -83,32 +105,37 @@ public class Main {
 						h.recuperarRecursos(100);
 					}
 				}
-				if (motor.MotorCombate.modoManual) motor.MotorCombate.gestionarCampamento(heroes, reserva);
+				if (motor.MotorCombate.modoManual)
+					motor.MotorCombate.gestionarCampamento(heroes, reserva);
 			} else {
-				// salas de combate
+				// Cargar los enemigos que toquen en esta sala
 				Sala salaActual = FabricaSalas.generarSala(i);
 				List<Personaje> listaEnemigos = salaActual.getEnemigos();
 				Personaje[] enemigos = listaEnemigos.toArray(new Personaje[0]);
 
-				// ejecuto combate
+				// Empezar la pelea pasando los dos arrays
 				MotorCombate.iniciarCombate(heroes, enemigos);
 			}
 
+			// Si un héroe principal muere y quedan reservas, se hace el cambio
 			for (int j = 0; j < heroes.length; j++) {
 				if (!heroes[j].estaVivo() && !reserva.isEmpty()) {
 					Personaje caido = heroes[j];
 					for (int r = 0; r < reserva.size(); r++) {
 						if (reserva.get(r).estaVivo()) {
 							Personaje sustituto = reserva.remove(r);
-							System.out.println(motor.MotorCombate.ANSI_ROJO + "\n[SISTEMA] " + caido.getNombre() + " ha muerto en acto de servicio." + motor.MotorCombate.ANSI_RESET);
+							System.out.println(motor.MotorCombate.ANSI_ROJO + "\n[SISTEMA] " + caido.getNombre()
+									+ " ha muerto en acto de servicio." + motor.MotorCombate.ANSI_RESET);
 							System.out.println(motor.MotorCombate.ANSI_MORADO + "[RESERVA] " + sustituto.getNombre()
-									+ " entra al equipo principal para ocupar su lugar." + motor.MotorCombate.ANSI_RESET);
+									+ " entra al equipo principal para ocupar su lugar."
+									+ motor.MotorCombate.ANSI_RESET);
 							heroes[j] = sustituto;
 							break;
 						}
 					}
 				}
 
+				// En las fuentes curativas, cambiar a los heridos por reservas sanos
 				if ((i == 9 || i == 19) && !reserva.isEmpty() && heroes[j].estaVivo()) {
 					if (heroes[j].getVidaActual() < (heroes[j].getVidaMax() * 0.5)) {
 						for (int r = 0; r < reserva.size(); r++) {
@@ -128,7 +155,8 @@ public class Main {
 			}
 
 			if (i == 20 && MotorCombate.hayVivos(heroes)) {
-				System.out.println(motor.MotorCombate.ANSI_AZUL_MARINO + "\n===========================================");
+				System.out
+						.println(motor.MotorCombate.ANSI_AZUL_MARINO + "\n===========================================");
 				System.out.println("    [SISTEMA] ¡AVENTURA COMPLETADA CON ÉXITO!");
 				System.out.println("===========================================" + motor.MotorCombate.ANSI_RESET);
 			}

@@ -1,9 +1,15 @@
 package habilidad;
 
-// Explosión de energía arcana
-// Daño: 3d8, Coste: 15 PE + 15 PM
+/**
+ * Estallido de magia pura que inflige daño puro sin importar la defensa.
+ * 
+ * @author Ricardo Crespo y Fabio Rieker
+ */
 public class ExplosionArcana extends HabilidadHibrida {
 
+	/**
+	 * Construye los costes y características de la Explosión Arcana.
+	 */
 	public ExplosionArcana() {
 		super("Explosión Arcana", 15, 15, 3, 8, Estadistica.INTELIGENCIA, Efecto.NINGUNO);
 	}

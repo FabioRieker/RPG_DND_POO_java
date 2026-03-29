@@ -4,11 +4,16 @@ import personajes.Personaje;
 import estado.EstadoCongelado;
 import java.util.ArrayList;
 
-// Tormenta de nieve
-// Daño: 2d6, Coste: 40 PM
-// Puede congelar a los objetivos (50% probabilidad)
+/**
+ * Magia de hielo de área que daña y congela a los enemigos.
+ * 
+ * @author Ricardo Crespo y Fabio Rieker
+ */
 public class Ventisca extends HechizoMagico {
 
+	/**
+	 * Construye los costes y características de la Ventisca.
+	 */
 	public Ventisca() {
 		super("Ventisca", 40, 2, 6, null);
 	}

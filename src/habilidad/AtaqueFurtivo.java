@@ -2,9 +2,15 @@ package habilidad;
 
 import personajes.Personaje;
 
-// Ataque rápido de pícaro
-// Daño: 1d6, Coste: 20 SP, Escalado: DES
+/**
+ * Habilidad que representa un golpe sorpresa buscando el punto ciego.
+ * 
+ * @author Ricardo Crespo y Fabio Rieker
+ */
 public class AtaqueFurtivo extends HabilidadFisica {
+	/**
+	 * Construye los costes y características del Ataque Furtivo.
+	 */
 	public AtaqueFurtivo() {
 		super("Ataque Furtivo", 20, 1, 6, Estadistica.DESTREZA, null);
 	}
@@ -13,7 +19,7 @@ public class AtaqueFurtivo extends HabilidadFisica {
 	protected void aplicarEfectoImpacto(Personaje usuario, Personaje objetivo, int bono) {
 		int daño = tirarDados() + bono;
 
-		// Bonus: daño doble si el objetivo está aturdido
+		// Bonificación táctica: causa el doble de daño a objetivos aturdidos
 		if (objetivo.tieneEstado("Aturdimiento")) {
 			daño *= 2;
 			System.out.println("¡GOLPE CRÍTICO! Objetivo aturdido - DAÑO x2!");

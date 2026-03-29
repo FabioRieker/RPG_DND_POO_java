@@ -7,6 +7,13 @@ import armaduras.CategoriaArmadura;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Sirve para crear directamente a los héroes iniciales sin picarlos a mano en
+ * el test. Les pone las estadísticas, armas, armaduras y habilidades a cada
+ * uno.
+ * 
+ * @author Ricardo Crespo y Fabio Rieker
+ */
 public class FabricaHeroes {
 
 	private static Armeria armeria = new Armeria();
@@ -33,6 +40,7 @@ public class FabricaHeroes {
 		elara.agregarHabilidad(new Ventisca());
 		elara.agregarHabilidad(new ToqueVampirico());
 		elara.agregarHabilidad(new Purificacion());
+		elara.agregarHabilidad(new RayoEncadenado());
 		equipo.add(elara);
 
 		// --- VEX (PICARO) ---
@@ -42,6 +50,7 @@ public class FabricaHeroes {
 		vex.agregarHabilidad(new HojaPonzoñosa());
 		vex.agregarHabilidad(new AtaqueFurtivo());
 		vex.agregarHabilidad(new TiroRodilla());
+		vex.agregarHabilidad(new LluviaFlechas());
 		equipo.add(vex);
 
 		// --- MARCUS (PALADIN) ---
@@ -51,6 +60,7 @@ public class FabricaHeroes {
 		marcus.agregarHabilidad(new LuzSagrada());
 		marcus.agregarHabilidad(new Purificacion());
 		marcus.agregarHabilidad(new GritoGuerra());
+		marcus.agregarHabilidad(new MuroPiedra());
 		equipo.add(marcus);
 
 		return equipo;
@@ -62,12 +72,13 @@ public class FabricaHeroes {
 		kallista.equiparArma(armeria.get("Ballesta"));
 		kallista.agregarHabilidad(new ToqueVampirico());
 		kallista.agregarHabilidad(new NubeToxica());
+		kallista.agregarHabilidad(new ExplosionArcana());
 		return kallista;
 	}
 
 	public static Personaje crearMonjeKwai() {
 		Monje kwai = new Monje("Kwai Chang", Raza.HUMANO, 14, 16, 12, 10, 12);
-		// El monje no usa armadura por clase [cite: 753]
+		// Requisito de la propia clase Monje: No portan armaduras pesadas ni ligeras
 		kwai.agregarHabilidad(new FintaRapida());
 		kwai.agregarHabilidad(new GolpeSanguinario());
 		return kwai;

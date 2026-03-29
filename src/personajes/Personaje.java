@@ -9,6 +9,12 @@ import consumibles.Consumible;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Clase base para todos los personajes del juego (héroes y enemigos). Define
+ * sus atributos, equipo, recursos y acciones básicas en combate.
+ * 
+ * @author Ricardo Crespo y Fabio Rieker
+ */
 public abstract class Personaje {
 	// --- ATRIBUTOS DE IDENTIDAD ---
 	protected String nombre;
@@ -34,6 +40,18 @@ public abstract class Personaje {
 	protected ArrayList<Consumible> inventario = new ArrayList<>();
 
 	// --- CONSTRUCTOR ---
+	/**
+	 * Constructor principal para crear cualquier personaje.
+	 * 
+	 * @param nombre    Nombre del personaje.
+	 * @param raza      Raza a la que pertenece.
+	 * @param tipoClase Rol o clase principal (ej. Guerrero, Jefe).
+	 * @param fue       Puntos iniciales de Fuerza.
+	 * @param des       Puntos iniciales de Destreza.
+	 * @param con       Puntos iniciales de Constitución.
+	 * @param intel     Puntos iniciales de Inteligencia.
+	 * @param defBase   Defensa pura inicial sin armaduras.
+	 */
 	public Personaje(String nombre, Raza raza, TipoClase tipoClase, int fue, int des, int con, int intel, int defBase) {
 		this.nombre = nombre;
 		this.raza = raza;
@@ -45,7 +63,7 @@ public abstract class Personaje {
 		this.defensaBase = defBase;
 		this.vivo = true;
 
-		// formulas de recursos de D&D adaptadas
+		// Fórmulas de recursos adaptadas de D&D
 		this.vidaMax = (this.constitucion * 3) + 25;
 		this.vidaActual = this.vidaMax;
 		this.manaMax = (this.inteligencia * 3) + 15;
@@ -60,26 +78,74 @@ public abstract class Personaje {
 	}
 
 	// --- SECCIÓN: INFORMACIÓN ---
+	/**
+	 * Muestra toda la ficha de estadísticas del personaje en la consola.
+	 */
 	public void mostrarInfo() {
-		System.out.println("------------------------------------------");
-		System.out.println("PERSONAJE: " + nombre + " [" + tipoClase + " " + raza + "]");
-		System.out.println("--- Estadísticas ---");
-		System.out.println("FUE: " + fuerza + " | DES: " + getDestrezaTotal() + " | CON: " + constitucion + " | INT: "
-				+ inteligencia);
-		System.out.println("--- Barras de Recursos ---");
-		System.out.println("Vida: " + vidaActual + "/" + vidaMax);
-		System.out.println("Maná: " + manaActual + "/" + manaMax);
-		System.out.println("Energía: " + energiaActual + "/" + energiaMax);
-		System.out.println("--- Estado de Combate ---");
-		System.out.println("Defensa Base: " + defensaBase);
-		System.out.println("Defensa Total: " + getDefensaTotal());
-		System.out.println("Armadura: " + armaduraEquipada.nombre);
-		System.out.println("Arma: " + (armaEquipada != null ? armaEquipada.getNombre() : "Desarmado"));
-		System.out.println(" Vivo: " + (vivo ? "SÍ" : "NO"));
-		System.out.println("------------------------------------------");
+		String B = motor.MotorCombate.ANSI_BEIGE;
+		String R = motor.MotorCombate.ANSI_RESET;
+
+		String arma = (armaEquipada != null) ? armaEquipada.getNombre() : "Desarmado";
+
+		System.out.println(B + "╔════════════════════════════════════════════════════════════════════════════╗");
+		System.out.println("║  FICHA DE PERSONAJE                                                        ║");
+		System.out.println("╠════════════════════════════════════════════════════════════════════════════╣");
+		System.out.println("║  Nombre: " + nombre + "  |  Clase: " + tipoClase + "  |  Raza: " + raza);
+		System.out.println("║  Estado: " + (vivo ? "VIVO" : "MUERTO"));
+		System.out.println("╠════════════════════════════════════════════════════════════════════════════╣");
+		System.out.println("║  --- Recursos ---");
+		System.out.println("║  Vida:    " + vidaActual + "/" + vidaMax);
+		System.out.println("║  Mana:    " + manaActual + "/" + manaMax);
+		System.out.println("║  Energia: " + energiaActual + "/" + energiaMax);
+		System.out.println("╠════════════════════════════════════════════════════════════════════════════╣");
+		System.out.println("║  --- Estadisticas ---");
+		System.out.println("║  FUE: " + fuerza + "  |  DES: " + getDestrezaTotal() + "  |  CON: " + constitucion
+				+ "  |  INT: " + inteligencia);
+		System.out.println("║  Defensa: " + getDefensaTotal() + " (base " + defensaBase + ")");
+		System.out.println("╠════════════════════════════════════════════════════════════════════════════╣");
+		System.out.println("║  --- Equipo ---");
+		System.out.println("║  Arma:     " + arma);
+		System.out.println("║  Armadura: " + armaduraEquipada.nombre);
+		System.out.println("╠════════════════════════════════════════════════════════════════════════════╣");
+		System.out.println("║  --- Habilidades ---");
+
+		if (habilidades.isEmpty()) {
+			System.out.println("║  (ninguna)");
+		} else {
+			for (int i = 0; i < habilidades.size(); i++) {
+				System.out.println("║  " + (i + 1) + ". " + habilidades.get(i).getNombre());
+			}
+		}
+
+		System.out.println("╠════════════════════════════════════════════════════════════════════════════╣");
+		System.out.println("║  --- Estados Activos ---");
+
+		if (estadosActivos.isEmpty()) {
+			System.out.println("║  (sin estados)");
+		} else {
+			for (int i = 0; i < estadosActivos.size(); i++) {
+				System.out.println("║  - " + estadosActivos.get(i).getNombre());
+			}
+		}
+
+		System.out.println("╠════════════════════════════════════════════════════════════════════════════╣");
+		System.out.println("║  --- Inventario ---");
+
+		if (inventario.isEmpty()) {
+			System.out.println("║  (vacio)");
+		} else {
+			for (int i = 0; i < inventario.size(); i++) {
+				System.out.println("║  " + (i + 1) + ". " + inventario.get(i).getNombre());
+			}
+		}
+
+		System.out.println("╚════════════════════════════════════════════════════════════════════════════╝" + R);
 	}
 
-	// para antes o después de un turno, con barra de vida dinamica
+	/**
+	 * Imprime una pequeña barra de vida y el estado del personaje. Pensado para
+	 * usarse rápido durante el combate.
+	 */
 	public void mostrarInfoBreve() {
 		int celdasTotales = 10;
 		int celdasLlenas = vidaMax > 0 ? (int) Math.round(((double) vidaActual / vidaMax) * celdasTotales) : 0;
@@ -101,26 +167,35 @@ public abstract class Personaje {
 
 		System.out.println(motor.MotorCombate.ANSI_BEIGE
 				+ "╔════════════════════════════════════════════════════════════════════════════╗");
-		System.out.printf("║ %-20s HP: %-15s %-9s STR: %-4d CON: %-4d ║%n",
-				ident, barraHp.toString(), vidaActual + "/" + vidaMax, fuerza, constitucion);
-		System.out.printf("║ %-20s ENERGIA: %-7s MANA: %-7s DEX: %-4d INT: %-4d ║%n",
-				estadoVivo, energiaActual + "/" + energiaMax, manaActual + "/" + manaMax, destreza, inteligencia);
+		System.out.printf("║ %-20s HP: %-15s %-9s STR: %-4d CON: %-4d ║%n", ident, barraHp.toString(),
+				vidaActual + "/" + vidaMax, fuerza, constitucion);
+		System.out.printf("║ %-20s ENERGIA: %-7s MANA: %-7s DEX: %-4d INT: %-4d ║%n", estadoVivo,
+				energiaActual + "/" + energiaMax, manaActual + "/" + manaMax, destreza, inteligencia);
 		System.out.println("╚════════════════════════════════════════════════════════════════════════════╝"
 				+ motor.MotorCombate.ANSI_RESET);
 	}
 
 	// --- SECCIÓN: EQUIPO ---
+	/**
+	 * Permite que el personaje equipe un arma si su clase lo permite.
+	 * 
+	 * @param arma Arma a equipar.
+	 */
 	public void equiparArma(Arma arma) {
 		if (this.armasPermitidas.contains(arma.getCategoria())) {
 			this.armaEquipada = arma;
 			System.out.println("[SISTEMA] " + this.nombre + " se ha equipado " + arma.getNombre());
 		} else {
-			System.out.println(motor.MotorCombate.ANSI_AMARILLO + "[SISTEMA] " +
-					this.tipoClase + " " + this.nombre + " no sabe usar ese tipo de arma: " + arma.getCategoria()
-					+ motor.MotorCombate.ANSI_RESET);
+			System.out.println(motor.MotorCombate.ANSI_AMARILLO + "[SISTEMA] " + this.tipoClase + " " + this.nombre
+					+ " no sabe usar ese tipo de arma: " + arma.getCategoria() + motor.MotorCombate.ANSI_RESET);
 		}
 	}
 
+	/**
+	 * Equipa una armadura comprobando que el personaje sepa usarla.
+	 * 
+	 * @param categoria Tipo de armadura a poner.
+	 */
 	public void equiparArmadura(CategoriaArmadura categoria) {
 		if (this.armadurasPermitidas.contains(categoria)) {
 			this.armaduraEquipada = categoria;
@@ -143,10 +218,10 @@ public abstract class Personaje {
 	public int getDefensaTotal() {
 		int total = defensaBase + armaduraEquipada.bonoDefensa;
 		if (this.posturaDefensiva) {
-			total += 15; // bono defensivo estático nivel DAM 1
+			total += 15; // Bono de postura defensiva
 		}
 		if (this.muroActivo) {
-			total += 30; // super defensa
+			total += 30; // Bono del muro de piedra
 		}
 		return total;
 	}
@@ -195,10 +270,18 @@ public abstract class Personaje {
 		return !esEnemigo();
 	}
 
+	/**
+	 * Comprueba si el personaje tiene puntos de vida.
+	 * 
+	 * @return true si tiene más de 0 HP.
+	 */
 	public boolean estaVivo() {
 		return this.vidaActual > 0;
 	}
 
+	/**
+	 * Cambia el estado del personaje a una postura para recibir menos daño.
+	 */
 	public void defenderse() {
 		this.posturaDefensiva = true;
 		System.out.println(motor.MotorCombate.ANSI_AMARILLO + "\n[DEFENSA] " + this.nombre
@@ -218,6 +301,11 @@ public abstract class Personaje {
 		return this.muroActivo;
 	}
 
+	/**
+	 * Cura vida al personaje sin sobrepasar su máximo de puntos.
+	 * 
+	 * @param cantidad Puntos de vida a sumar.
+	 */
 	public void curar(int cantidad) {
 		this.vidaActual += cantidad;
 		if (this.vidaActual > vidaMax) {
@@ -227,6 +315,11 @@ public abstract class Personaje {
 				+ " puntos de vida." + motor.MotorCombate.ANSI_RESET);
 	}
 
+	/**
+	 * Restaura maná y energía al mismo tiempo.
+	 * 
+	 * @param cantidad Puntos a rellenar en ambas estadísticas.
+	 */
 	public void recuperarRecursos(int cantidad) {
 		this.energiaActual += cantidad;
 		this.manaActual += cantidad;
@@ -250,26 +343,32 @@ public abstract class Personaje {
 	}
 
 	// --- SECCIÓN: COMBATE ---
+	/**
+	 * Realiza un ataque físico básico contra un objetivo. Si tira un 20 en un dado
+	 * virtual, es un golpe crítico y hace el doble de daño.
+	 * 
+	 * @param objetivo Enemigo que recibe el ataque.
+	 */
 	public void atacar(Personaje objetivo) {
-		// compruebo q ambos personajes estén vivos
+		// Comprueba que ambos personajes estén con vida
 		if (this.vivo == false || objetivo.estaVivo() == false) {
 			return;
 		}
 
-		// compruebo si sufre algun estado que le impide atacar
+		// Comprueba si sufre algún estado que le impide atacar
 
-		// calculo daño
+		// Cálculo del daño base
 		int daño = 0;
-		// para habilidades o estados que afectan al daño (como furia)
+		// Suma bonificaciones de daño de estados como la Furia
 		int bonoDeEstados = this.getBonoDañoTotal();
 
-		// variable para construir el mensaje de ataque
+		// Variable auxiliar para mostrar el mensaje de ataque
 		String modo = "a puñetazos";
 
 		if (this.armaEquipada != null) {
 			daño = this.armaEquipada.calcularDaño(this, objetivo) + bonoDeEstados;
 
-			// detecto si es cuerpo a cuerpo o distancia para el texto
+			// Detecta si el arma es cuerpo a cuerpo o a distancia
 			String tipo = "cuerpo a cuerpo";
 			if (this.armaEquipada.getCategoria() == armas.CategoriaArma.distancia) {
 				tipo = "a distancia";
@@ -287,25 +386,32 @@ public abstract class Personaje {
 			daño = daño * 2;
 		}
 
-		// mensaje unificado en una sola línea (Blanco/Neutro)
+		// Mensaje unificado de ataque
 		System.out.println("\n[ATAQUE] " + this.nombre + " ataca " + modo + " a " + objetivo.getNombre());
 
-		// aplico efecto del arma antes del daño (arregla situaciones como q el
-		// personaje muera y se envenene después)
+		// Aplica el efecto del arma antes de calcular la vida final
 		if (this.armaEquipada != null) {
 			this.aplicarEfectoDeArma(objetivo);
 		}
 
-		// aplico daño
+		// Aplica la reducción de vida
 		objetivo.recibirDaño(daño, false);
 	}
 
+	/**
+	 * Resta puntos a la vida del personaje, reducidos por su nivel de defensa.
+	 * Muestra si ha muerto en el proceso.
+	 * 
+	 * @param cantidad   Los puntos base de daño del ataque o efecto.
+	 * @param esDañoPuro Si es verdadero, el ataque ignora toda reducción de
+	 *                   armadura.
+	 */
 	public void recibirDaño(int cantidad, boolean esDañoPuro) {
 		if (this.vivo == false) {
 			return;
 		}
 
-		// para estados o ataques especiales q se salten la mitigación
+		// Permite que el daño puro ignore la mitigación de la armadura
 		int dañoFinal;
 		if (esDañoPuro == true) {
 			dañoFinal = cantidad;
@@ -314,14 +420,14 @@ public abstract class Personaje {
 			dañoFinal = cantidad - mitigacion;
 		}
 
-		// evita q el daño negativo cure al personaje
+		// Evita que un número negativo de daño cure al personaje
 		if (dañoFinal < 0) {
 			dañoFinal = 0;
 		}
 
 		this.vidaActual = this.vidaActual - dañoFinal;
 
-		// muestro el daño del ataque
+		// Añade un prefijo especial para indicar la procedencia del daño
 		String prefijo = "";
 		if (esDañoPuro == true) {
 			prefijo = "[PURO] ";
@@ -348,22 +454,25 @@ public abstract class Personaje {
 	}
 
 	// --- SECCIÓN: ESTADOS ---
-	// he creado después la de tiene estado para q no aplique el mismo varias veces
+	/**
+	 * Agrega un estado alterado como veneno o quemadura si no lo tiene puesto.
+	 * 
+	 * @param nuevoEstado Estado a aplicar al personaje.
+	 */
 	public void aplicarEstado(Estado nuevoEstado) {
 		if (!tieneEstado(nuevoEstado.getNombre())) {
 			this.estadosActivos.add(nuevoEstado);
 		}
 	}
 
-	// para aplicar estados alterados (resuelve el problema del veneno siempre
-	// aplicándose)
+	// Llama a la lógica de estado que tienen algunas armas
 	private void aplicarEfectoDeArma(Personaje objetivo) {
 		if (this.armaEquipada != null) {
 			this.armaEquipada.aplicarEfectosEspeciales(objetivo);
 		}
 	}
 
-	// compruebo si un personae ya tiene aplicado un estado con el mismo nombre
+	// Comprueba que no tenga ya un estado con el mismo nombre para no duplicarlo
 	public boolean tieneEstado(String nombreEstado) {
 		for (Estado e : estadosActivos) {
 			if (e.getNombre().equals(nombreEstado))
@@ -372,8 +481,10 @@ public abstract class Personaje {
 		return false;
 	}
 
-	// uso iterator en vez de bucle for para no generar problemas al borrar (por si
-	// por ejemplo se cura un estado antes de tiempo)
+	/**
+	 * Descuenta un turno a todos los estados activos y borra los caducados al
+	 * inicio de cada ronda.
+	 */
 	public void pasarTurnoDeEstados() {
 		if (!this.vivo || estadosActivos.isEmpty())
 			return;

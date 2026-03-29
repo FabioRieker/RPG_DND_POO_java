@@ -1,9 +1,14 @@
 package habilidad;
 
-// Ataque con veneno
-// Daño: 1d6, Coste: 15 PE, Escalado: DES
-// Aplica Veneno al objetivo
+/**
+ * Técnica física que impregna un arma con toxinas peligrosas.
+ * 
+ * @author Ricardo Crespo y Fabio Rieker
+ */
 public class HojaPonzoñosa extends HabilidadFisica {
+	/**
+	 * Construye los costes y características del tajo ponzoñoso.
+	 */
 	public HojaPonzoñosa() {
 		super("Hoja Ponzoñosa", 15, 1, 6, Estadistica.DESTREZA, "VENENO");
 	}

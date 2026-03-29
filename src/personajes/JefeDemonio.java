@@ -4,8 +4,24 @@ import armas.CategoriaArma;
 import armaduras.CategoriaArmadura;
 import estado.EstadoFuria;
 
+/**
+ * Jefe de tipo Demonio que puede ejecutar ataques especiales. Se centra en
+ * ataques con fuego y quemaduras.
+ * 
+ * @author Ricardo Crespo y Fabio Rieker
+ */
 public class JefeDemonio extends Jefe {
 
+	/**
+	 * Crea un Jefe Demonio con estadísticas base.
+	 * 
+	 * @param nombre  Nombre del demonio.
+	 * @param fue     Fuerza.
+	 * @param des     Destreza.
+	 * @param con     Constitución.
+	 * @param intel   Inteligencia.
+	 * @param defBase Defensa inicial sin equipamiento.
+	 */
 	public JefeDemonio(String nombre, int fue, int des, int con, int intel, int defBase) {
 		super(nombre, Raza.TIEFLING, TipoJefe.DEMONIO, fue, des, con, intel, defBase);
 
@@ -13,6 +29,12 @@ public class JefeDemonio extends Jefe {
 		this.armadurasPermitidas.add(CategoriaArmadura.MEDIA);
 	}
 
+	/**
+	 * Realiza un ataque ígneo que ignora parte de la defensa rival. Aplica el
+	 * estado Quemadura al objetivo.
+	 * 
+	 * @param objetivo Personaje al que se ataca.
+	 */
 	@Override
 	public void habilidadEspecial(Personaje objetivo) {
 		System.out.println("\n" + nombre + " desata ira infernal!");

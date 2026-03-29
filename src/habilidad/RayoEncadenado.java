@@ -3,11 +3,17 @@ package habilidad;
 import personajes.Personaje;
 import java.util.ArrayList;
 
-// Rayo que salta entre enemigos
-// Daño: 2d8, Coste: 30 PM
-// Golpea a todos los objetivos en cadena
+/**
+ * Magia eléctrica que causa daño pero su verdadero poder es afectar a múltiples
+ * objetivos a la vez.
+ * 
+ * @author Ricardo Crespo y Fabio Rieker
+ */
 public class RayoEncadenado extends HechizoMagico {
 
+	/**
+	 * Construye los costes y características del Rayo Encadenado.
+	 */
 	public RayoEncadenado() {
 		super("Rayo Encadenado", 30, 2, 8, "MULTI");
 	}

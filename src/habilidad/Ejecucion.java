@@ -2,10 +2,15 @@ package habilidad;
 
 import personajes.Personaje;
 
-// Golpe devastador contra enemigos debilitados
-// Daño: 1d12, Coste: 40 PE, Escalado: FUE
-// Si el objetivo tiene menos del 20% de vida, hace daño x3
+/**
+ * Ataque letal que inflige más daño si el enemigo tiene poca vida.
+ * 
+ * @author Ricardo Crespo y Fabio Rieker
+ */
 public class Ejecucion extends HabilidadFisica {
+	/**
+	 * Construye los costes y características de la Ejecución.
+	 */
 	public Ejecucion() {
 		super("Ejecución", 40, 1, 12, Estadistica.FUERZA, null);
 	}
@@ -14,8 +19,9 @@ public class Ejecucion extends HabilidadFisica {
 	protected void aplicarEfectoImpacto(Personaje usuario, Personaje objetivo, int bono) {
 		int daño = tirarDados() + bono;
 
-		// Calcula si es ejecución
-		if (objetivo.getVidaMax() <= 0) return;
+		// Comprueba si se cumplen los requisitos del umbral de vida para ejecutar
+		if (objetivo.getVidaMax() <= 0)
+			return;
 		int porcentajeVida = (objetivo.getVidaActual() * 100) / objetivo.getVidaMax();
 
 		if (porcentajeVida <= 20) {

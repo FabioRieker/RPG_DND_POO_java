@@ -4,11 +4,16 @@ import personajes.Personaje;
 import estado.EstadoVeneno;
 import java.util.ArrayList;
 
-// Nube venenosa que afecta a todos los enemigos
-// Daño: 1d6, Coste: 35 PM
-// Aplica Veneno a todos los objetivos
+/**
+ * Magia nociva de área que hace un poco de daño inicial pero aplica Veneno.
+ * 
+ * @author Ricardo Crespo y Fabio Rieker
+ */
 public class NubeToxica extends HechizoMagico {
 
+	/**
+	 * Construye los costes y características de la Nube Tóxica.
+	 */
 	public NubeToxica() {
 		super("Nube Tóxica", 35, 1, 6, null);
 	}

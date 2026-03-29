@@ -4,6 +4,12 @@ import personajes.Personaje;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Clase que representa una habitación o nivel del mapa. Guarda la lista de
+ * monstruos que hay dentro.
+ * 
+ * @author Ricardo Crespo y Fabio Rieker
+ */
 public class Sala {
 	private int numero;
 	private List<Personaje> enemigos;

@@ -3,11 +3,16 @@ package habilidad;
 import personajes.Personaje;
 import estado.EstadoRenovar;
 
-// Hechizo de luz sagrada que también cura
-// Daño: 2d8, Coste: 15 PE + 20 PM
-// Sana al objetivo y aplica Renovar
+/**
+ * Magia sagrada híbrida que hace daño a monstruos pero cura a aliados.
+ * 
+ * @author Ricardo Crespo y Fabio Rieker
+ */
 public class LuzSagrada extends HabilidadHibrida {
 
+	/**
+	 * Construye los costes y características de la Luz Sagrada.
+	 */
 	public LuzSagrada() {
 		super("Luz Sagrada", 15, 20, 2, 8, Estadistica.INTELIGENCIA, Efecto.NINGUNO);
 	}
@@ -18,7 +23,7 @@ public class LuzSagrada extends HabilidadHibrida {
 		System.out.println("¡IMPACTO! " + objetivo.getNombre() + " recibe " + daño + " de daño.");
 		objetivo.recibirDaño(daño, false);
 
-		// Solo cura y aplica renovar si impactó
+		// El efecto secundario solo se activa si el golpe inicial impactó
 		usuario.curar(20);
 		usuario.aplicarEstado(new EstadoRenovar(3, 10));
 		System.out.println("-- " + usuario.getNombre() + " sanado + RENOVAR!");

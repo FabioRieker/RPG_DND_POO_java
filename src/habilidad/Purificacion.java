@@ -2,11 +2,16 @@ package habilidad;
 
 import personajes.Personaje;
 
-// Hechizo de purificación
-// Daño: ninguno, Coste: 15 PM
-// Elimina todos los estados negativos del aliado
+/**
+ * Magia blanca que neutraliza estados perjudiciales en el objetivo.
+ * 
+ * @author Ricardo Crespo y Fabio Rieker
+ */
 public class Purificacion extends HechizoMagico {
 
+	/**
+	 * Construye los costes y características del hechizo Purificación.
+	 */
 	public Purificacion() {
 		super("Purificación", 15, 0, 0, null);
 	}

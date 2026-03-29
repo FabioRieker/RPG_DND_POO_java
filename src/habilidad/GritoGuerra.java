@@ -3,11 +3,16 @@ package habilidad;
 import personajes.Personaje;
 import java.util.ArrayList;
 
-// Grito motivacional para los aliados
-// Daño: ninguno, Coste: 20 PE + 15 PM
-// Mejora el daño de los aliados
+/**
+ * Grito híbrido que inspira a los aliados y aumenta su ataque.
+ * 
+ * @author Ricardo Crespo y Fabio Rieker
+ */
 public class GritoGuerra extends HabilidadHibrida {
 
+	/**
+	 * Construye los costes y características del Grito de Guerra.
+	 */
 	public GritoGuerra() {
 		super("Grito de Guerra", 20, 15, 0, 0, Estadistica.FUERZA, Efecto.NINGUNO);
 	}

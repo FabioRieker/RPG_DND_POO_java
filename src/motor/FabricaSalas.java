@@ -3,6 +3,13 @@ package motor;
 import personajes.*;
 import armas.Armeria;
 
+/**
+ * Oculta la creación manual para generar las distintas salas del mapa más
+ * fácilmente. Coloca los monstruos y les da armas y estadísticas según el
+ * número de la sala.
+ * 
+ * @author Ricardo Crespo y Fabio Rieker
+ */
 public class FabricaSalas {
 	private static Armeria armeria = new Armeria();
 
