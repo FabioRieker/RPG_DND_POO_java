@@ -1,7 +1,5 @@
 package habilidad;
 
-import personajes.Personaje;
-
 // Ataque rápido de distracción
 // Daño: 1d4, Coste: 10 PE, Escalado: DES
 // Daño bajo pero puede mejorar la evasión
