@@ -15,9 +15,9 @@ public class NubeToxica extends HechizoMagico {
 
 	@Override
 	public void ejecutar(Personaje usuario, Personaje objetivo) {
-		ArrayList<Personaje> lista = new ArrayList<>();
-		lista.add(objetivo);
-		ejecutar(usuario, lista);
+		System.out.println(usuario.getNombre() + " intenta usar " + nombre
+				+ " en un solo objetivo, pero cancela al ver el derroche de maná.");
+		System.out.println("-> Este hechizo solo debe usarse contra grupos de enemigos.");
 	}
 
 	@Override
