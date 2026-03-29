@@ -22,6 +22,10 @@ public class Armeria {
 			return new HojaFenix();
 		if (nombre.equals("Colmillo de Araña"))
 			return new ColmilloArana();
-		return listaArmas.get(nombre);
+		Arma armaEncontrada = listaArmas.get(nombre);
+		if (armaEncontrada == null) {
+			throw new IllegalArgumentException("Arma no existe en la armeria: " + nombre);
+		}
+		return armaEncontrada;
 	}
 }

@@ -369,7 +369,11 @@ public abstract class Personaje {
 	}
 
 	public void agregarItem(Consumible item) {
-		this.inventario.add(item);
+		if (this.inventario.size() < 10) {
+			this.inventario.add(item);
+		} else {
+			System.out.println("El inventario de " + this.nombre + " está lleno.");
+		}
 	}
 
 	public ArrayList<Consumible> getInventario() {

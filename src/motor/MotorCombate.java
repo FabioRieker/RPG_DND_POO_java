@@ -171,6 +171,10 @@ public class MotorCombate {
 				Consumible c = p.getInventario().get(j);
 				if (c.getNombre().equals("Poción de Curación") && c.getCantidad() > 0) {
 					c.usar(p, p);
+					if (c.getCantidad() <= 0) {
+						p.getInventario().remove(j);
+						j--;
+					}
 					haUsadoItem = true;
 					break;
 				}
@@ -203,6 +207,10 @@ public class MotorCombate {
 				Consumible c = p.getInventario().get(j);
 				if (c.getNombre().equals("Poción de Curación") && c.getCantidad() > 0) {
 					c.usar(p, p);
+					if (c.getCantidad() <= 0) {
+						p.getInventario().remove(j);
+						j--;
+					}
 					haUsadoItem = true;
 					break;
 				}
@@ -329,20 +337,19 @@ public class MotorCombate {
 		}
 	}
 
-	// mantengo esta clase de momento
+	// mantengo esta clase de momento y la arreglo para que no genere excepciones en
+	// caso de usarla
 	public static Personaje obtenerObjetivoAleatorio(Personaje[] grupo) {
-		Personaje[] vivos = new Personaje[grupo.length];
-		int count = 0;
+		ArrayList<Personaje> vivos = new ArrayList<>();
 		for (int i = 0; i < grupo.length; i++) {
 			if (grupo[i].estaVivo() == true) {
-				vivos[count] = grupo[i];
-				count++;
+				vivos.add(grupo[i]);
 			}
 		}
-		if (count == 0) {
+		if (vivos.isEmpty()) {
 			return null;
 		}
-		int indiceAleatorio = (int) (Math.random() * count);
-		return vivos[indiceAleatorio];
+		int indiceAleatorio = (int) (Math.random() * vivos.size());
+		return vivos.get(indiceAleatorio);
 	}
 }

@@ -21,12 +21,12 @@ public class NubeToxica extends HechizoMagico {
 
 	@Override
 	public void ejecutar(Personaje usuario, ArrayList<Personaje> objetivos) {
-		if (!usuario.tieneRecursos(costeEnergia, costeMana)) {
+		if (!usuario.tieneRecursos(0, costeMana)) {
 			System.out.println(usuario.getNombre() + " no tiene suficientes recursos.");
 			return;
 		}
 
-		usuario.consumirRecursos(costeEnergia, costeMana);
+		usuario.consumirRecursos(0, costeMana);
 
 		int bono = usuario.getInteligencia() / 2;
 
