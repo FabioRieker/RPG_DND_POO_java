@@ -16,6 +16,7 @@ public abstract class Personaje {
 	protected TipoClase tipoClase;
 	protected boolean vivo;
 	protected String mensajePreparacion;
+	protected boolean posturaDefensiva = false;
 
 	// --- STATS Y RECURSOS ---
 	protected int fuerza, destreza, constitucion, inteligencia;
@@ -131,7 +132,11 @@ public abstract class Personaje {
 
 	// --- SECCIÓN: ESTADÍSTICAS Y RECURSOS ---
 	public int getDefensaTotal() {
-		return defensaBase + armaduraEquipada.bonoDefensa;
+		int total = defensaBase + armaduraEquipada.bonoDefensa;
+		if (this.posturaDefensiva) {
+			total += 15; // bono defensivo estático nivel DAM 1
+		}
+		return total;
 	}
 
 	public int getDestrezaTotal() {
@@ -174,6 +179,15 @@ public abstract class Personaje {
 		return this.vidaActual > 0;
 	}
 
+	public void defenderse() {
+		this.posturaDefensiva = true;
+		System.out.println(this.nombre + " adopta una postura defensiva firme.");
+	}
+
+	public void reiniciarDefensa() {
+		this.posturaDefensiva = false;
+	}
+
 	public void curar(int cantidad) {
 		this.vidaActual += cantidad;
 		if (this.vidaActual > vidaMax) {
@@ -211,10 +225,6 @@ public abstract class Personaje {
 		}
 
 		// compruebo si sufre algun estado que le impide atacar
-		if (tieneEstado("Aturdimiento") || tieneEstado("Congelado") || tieneEstado("Lisiado")) {
-			System.out.println("! " + this.nombre + " intenta atacar pero está incapacitado.");
-			return;
-		}
 
 		// calculo daño
 		int daño = 0;
@@ -235,6 +245,12 @@ public abstract class Personaje {
 			modo = tipo + " con " + this.armaEquipada.getNombre();
 		} else {
 			daño = (this.fuerza / 2) + bonoDeEstados;
+		}
+
+		int tiradaCritico = (int) (Math.random() * 20) + 1;
+		if (tiradaCritico == 20) {
+			System.out.println("💥 ¡GOLPE CRÍTICO! " + this.nombre + " ha encontrado el punto débil.");
+			daño = daño * 2;
 		}
 
 		// mensaje unificado en una sola línea
@@ -358,5 +374,21 @@ public abstract class Personaje {
 
 	public ArrayList<Consumible> getInventario() {
 		return inventario;
+	}
+
+	public int getManaActual() {
+		return manaActual;
+	}
+
+	public int getManaMax() {
+		return manaMax;
+	}
+
+	public int getEnergiaActual() {
+		return energiaActual;
+	}
+
+	public int getEnergiaMax() {
+		return energiaMax;
 	}
 }

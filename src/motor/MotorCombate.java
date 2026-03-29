@@ -90,6 +90,13 @@ public class MotorCombate {
 					continue;
 				}
 
+				p.reiniciarDefensa();
+
+				if (p.tieneEstado("Aturdimiento") || p.tieneEstado("Congelado") || p.tieneEstado("Lisiado")) {
+					System.out.println("! " + p.getNombre() + " no puede actuar este turno debido a su estado.");
+					continue;
+				}
+
 				// identifio si es héroe para aplicar su lógica
 				boolean esHeroe = false;
 				for (int j = 0; j < heroes.length; j++) {
@@ -99,57 +106,9 @@ public class MotorCombate {
 				}
 
 				if (esHeroe == true) {
-					// Turno de Heroes
-					boolean haUsadoItem = false;
-					if (p.getVidaActual() < (p.getVidaMax() * 0.3)) {
-						for (int j = 0; j < p.getInventario().size(); j++) {
-							Consumible c = p.getInventario().get(j);
-							if (c.getNombre().equals("Poción de Curación") && c.getCantidad() > 0) {
-								c.usar(p, p);
-								haUsadoItem = true;
-								break;
-							}
-						}
-					}
-
-					if (haUsadoItem == false) {
-						Personaje objetivo = seleccionarObjetivoInteligente(p, enemigos);
-
-						// si el objetivo es un jefe, guarda quién le ataca para su venganza
-						if (objetivo != null && objetivo.getTipoClase() == TipoClase.JEFE) {
-							ultimoAtacanteJefe = p;
-						}
-
-						p.atacar(objetivo);
-					}
+					turnoHeroe(p, enemigos);
 				} else {
-					// Turno de Enemigos
-					boolean haUsadoItem = false;
-					if (p.getVidaActual() < (p.getVidaMax() * 0.3)) {
-						for (int j = 0; j < p.getInventario().size(); j++) {
-							Consumible c = p.getInventario().get(j);
-							if (c.getNombre().equals("Poción de Curación") && c.getCantidad() > 0) {
-								c.usar(p, p);
-								haUsadoItem = true;
-								break;
-							}
-						}
-					}
-
-					if (haUsadoItem == false) {
-						Personaje objetivo = seleccionarObjetivoInteligente(p, heroes);
-
-						// el ataque normal ya comprueba estados de incapacidad internamente
-						p.atacar(objetivo);
-
-						// si es jefe, usar habilidad especial
-						if (p.getTipoClase() == TipoClase.JEFE && Math.random() < 0.3) {
-							if (p.tieneEstado("Aturdimiento") == false && p.tieneEstado("Congelado") == false
-									&& p.tieneEstado("Lisiado") == false) {
-								((Jefe) p).habilidadEspecial(objetivo);
-							}
-						}
-					}
+					turnoEnemigo(p, heroes);
 				}
 
 				// prueba del sleep, se implementará mejor después
@@ -202,6 +161,71 @@ public class MotorCombate {
 		System.out.println("\n===========================================");
 		System.out.println("         COMBATE FINALIZADO");
 		System.out.println("===========================================\n");
+	}
+
+	private static void turnoHeroe(Personaje p, Personaje[] enemigos) {
+		// Turno de Heroes
+		boolean haUsadoItem = false;
+		if (p.getVidaActual() < (p.getVidaMax() * 0.3)) {
+			for (int j = 0; j < p.getInventario().size(); j++) {
+				Consumible c = p.getInventario().get(j);
+				if (c.getNombre().equals("Poción de Curación") && c.getCantidad() > 0) {
+					c.usar(p, p);
+					haUsadoItem = true;
+					break;
+				}
+			}
+			if (!haUsadoItem) {
+				p.defenderse();
+				haUsadoItem = true;
+			}
+		}
+
+		if (haUsadoItem == false) {
+			Personaje objetivo = seleccionarObjetivoInteligente(p, enemigos);
+
+			// si el objetivo es un jefe, guarda quién le ataca para su venganza
+			if (objetivo != null && objetivo.getTipoClase() == TipoClase.JEFE) {
+				ultimoAtacanteJefe = p;
+			}
+
+			if (objetivo != null) {
+				p.atacar(objetivo);
+			}
+		}
+	}
+
+	private static void turnoEnemigo(Personaje p, Personaje[] heroes) {
+		// Turno de Enemigos
+		boolean haUsadoItem = false;
+		if (p.getVidaActual() < (p.getVidaMax() * 0.3)) {
+			for (int j = 0; j < p.getInventario().size(); j++) {
+				Consumible c = p.getInventario().get(j);
+				if (c.getNombre().equals("Poción de Curación") && c.getCantidad() > 0) {
+					c.usar(p, p);
+					haUsadoItem = true;
+					break;
+				}
+			}
+			if (!haUsadoItem) {
+				p.defenderse();
+				haUsadoItem = true;
+			}
+		}
+
+		if (haUsadoItem == false) {
+			Personaje objetivo = seleccionarObjetivoInteligente(p, heroes);
+
+			if (objetivo != null) {
+				// el ataque normal ya comprueba estados de incapacidad internamente
+				// si es jefe, usar habilidad especial
+				if (p.getTipoClase() == TipoClase.JEFE && Math.random() < 0.3) {
+					((Jefe) p).habilidadEspecial(objetivo);
+				} else {
+					p.atacar(objetivo);
+				}
+			}
+		}
 	}
 
 	private static void procesarAutoLoot(Personaje[] heroes, Personaje enemigo) {
