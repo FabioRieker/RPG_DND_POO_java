@@ -182,8 +182,10 @@ public class MotorCombate {
 				}
 			}
 			if (!haUsadoItem) {
-				p.defenderse();
-				haUsadoItem = true;
+				if (Math.random() < 0.5) {
+					p.defenderse();
+					haUsadoItem = true;
+				}
 			}
 		}
 
@@ -218,8 +220,10 @@ public class MotorCombate {
 				}
 			}
 			if (!haUsadoItem) {
-				p.defenderse();
-				haUsadoItem = true;
+				if (Math.random() < 0.5) {
+					p.defenderse();
+					haUsadoItem = true;
+				}
 			}
 		}
 
@@ -310,16 +314,11 @@ public class MotorCombate {
 			}
 		}
 
-		// probabilidades generales (50/25/20/5)
+		// probabilidades generales (25/25/50)
 		double azar = Math.random() * 100;
 
-		// 5% autodaño
-		if (azar <= 5) {
-			System.out.println("   [IA] ¡" + atacante.getNombre() + " está confundido y se golpea a sí mismo!");
-			return atacante;
-		}
-		// 20% ataque al tanque (Más defensa)
-		else if (azar <= 25) {
+		// 25% ataque al tanque (Más defensa)
+		if (azar <= 25) {
 			Personaje tanque = vivos.get(0);
 			for (int i = 1; i < vivos.size(); i++) {
 				if (vivos.get(i).getDefensaTotal() > tanque.getDefensaTotal()) {

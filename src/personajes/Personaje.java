@@ -45,12 +45,12 @@ public abstract class Personaje {
 		this.defensaBase = defBase;
 		this.vivo = true;
 
-		// formulas de recursos
-		this.vidaMax = (this.constitucion * 5) + 50;
+		// formulas de recursos de D&D adaptadas
+		this.vidaMax = (this.constitucion * 3) + 25;
 		this.vidaActual = this.vidaMax;
-		this.manaMax = (this.inteligencia * 5) + 20;
+		this.manaMax = (this.inteligencia * 3) + 15;
 		this.manaActual = this.manaMax;
-		this.energiaMax = (this.fuerza * 5) + 20;
+		this.energiaMax = (this.fuerza * 3) + 15;
 		this.energiaActual = this.energiaMax;
 
 		this.armasPermitidas = new ArrayList<>();
@@ -289,7 +289,7 @@ public abstract class Personaje {
 		if (esDañoPuro == true) {
 			dañoFinal = cantidad;
 		} else {
-			int mitigacion = this.getDefensaTotal() / 2;
+			int mitigacion = this.getDefensaTotal() / 4;
 			dañoFinal = cantidad - mitigacion;
 		}
 
