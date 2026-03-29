@@ -10,12 +10,12 @@ public class MotorCombate {
 
 	public static final String ANSI_RESET = "\u001B[0m";
 	public static final String ANSI_ROJO = "\u001B[31m";
-	public static final String ANSI_VERDE_OSCURO = "\u001B[32m"; // Verde estándar (no fosforito)
+	public static final String ANSI_VERDE_OSCURO = "\u001B[32m"; // Verde estándar
 	public static final String ANSI_AMARILLO = "\u001B[33m";
-	public static final String ANSI_AZUL = "\u001B[34m"; 
-	public static final String ANSI_AZUL_MARINO = "\u001B[38;5;18m"; // Azul marino 256
+	public static final String ANSI_AZUL = "\u001B[34m";
+	public static final String ANSI_AZUL_MARINO = "\u001B[38;5;39m"; // Azul Claro/Cian oscuro
+	public static final String ANSI_BEIGE = "\u001B[38;5;223m";
 	public static final String ANSI_MORADO = "\u001B[35m";
-	public static final String ANSI_ROSA = "\u001B[38;5;206m";
 	public static final String ANSI_CIAN = "\u001B[36m";
 
 	// variable para rastrear quién fue el último en golpear a un jefe
@@ -105,7 +105,8 @@ public class MotorCombate {
 				p.reiniciarDefensa();
 
 				if (p.tieneEstado("Aturdimiento") || p.tieneEstado("Congelado") || p.tieneEstado("Lisiado")) {
-					System.out.println(ANSI_AMARILLO + "\n[ESTADO] " + p.getNombre() + " no puede actuar este turno debido a su estado." + ANSI_RESET);
+					System.out.println(ANSI_AMARILLO + "\n[ESTADO] " + p.getNombre()
+							+ " no puede actuar este turno debido a su estado." + ANSI_RESET);
 					continue;
 				}
 
@@ -131,7 +132,7 @@ public class MotorCombate {
 			}
 
 			// mostrar estado
-			System.out.println("\n" + ANSI_ROSA + "--- [SISTEMA] Estado tras turno " + turno + " ---" + ANSI_RESET);
+			System.out.println("\n" + ANSI_BEIGE + "--- [SISTEMA] Estado tras turno " + turno + " ---" + ANSI_RESET);
 			System.out.println("Heroes:");
 			for (int i = 0; i < heroes.length; i++) {
 				heroes[i].mostrarInfoBreve();
@@ -220,19 +221,21 @@ public class MotorCombate {
 						java.util.Collections.shuffle(clon);
 						for (int j = 0; j < clon.size(); j++) {
 							habilidad.AccionCombate h = clon.get(j);
-							
+
 							String nHab = h.getNombre();
 							Personaje objHab = objetivo;
-							
+
 							// Evitar lanzar curas o bufos a los monstruos
 							if (nHab.equals("Purificación") || nHab.equals("Muro de Piedra")) {
 								objHab = p;
-							} 
+							}
 							// El bot no está preparado para castear áreas complejas
-							else if (nHab.equals("Nube Tóxica") || nHab.equals("Ventisca") || nHab.equals("Lluvia de Flechas") || nHab.equals("Rayo Encadenado") || nHab.equals("Grito de Guerra")) {
+							else if (nHab.equals("Nube Tóxica") || nHab.equals("Ventisca")
+									|| nHab.equals("Lluvia de Flechas") || nHab.equals("Rayo Encadenado")
+									|| nHab.equals("Grito de Guerra")) {
 								continue;
 							}
-							
+
 							if (p.tieneRecursos(h.getCosteEnergia(), h.getCosteMana())) {
 								h.ejecutar(p, objHab);
 								usoHabilidad = true;
@@ -291,16 +294,18 @@ public class MotorCombate {
 							java.util.Collections.shuffle(clon);
 							for (int j = 0; j < clon.size(); j++) {
 								habilidad.AccionCombate h = clon.get(j);
-								
+
 								String nHab = h.getNombre();
 								Personaje objHab = objetivo;
-								
+
 								if (nHab.equals("Purificación") || nHab.equals("Muro de Piedra")) {
 									objHab = p;
-								} else if (nHab.equals("Nube Tóxica") || nHab.equals("Ventisca") || nHab.equals("Lluvia de Flechas") || nHab.equals("Rayo Encadenado") || nHab.equals("Grito de Guerra")) {
+								} else if (nHab.equals("Nube Tóxica") || nHab.equals("Ventisca")
+										|| nHab.equals("Lluvia de Flechas") || nHab.equals("Rayo Encadenado")
+										|| nHab.equals("Grito de Guerra")) {
 									continue;
 								}
-								
+
 								if (p.tieneRecursos(h.getCosteEnergia(), h.getCosteMana())) {
 									h.ejecutar(p, objHab);
 									usoHabilidad = true;
@@ -330,7 +335,8 @@ public class MotorCombate {
 				loot = new Armeria().get("Colmillo de Araña");
 
 			if (loot != null) {
-				System.out.println(ANSI_AMARILLO + "\n[BOTÍN] " + enemigo.getNombre() + " ha soltado: " + loot.getNombre() + ANSI_RESET);
+				System.out.println(ANSI_AMARILLO + "\n[BOTÍN] " + enemigo.getNombre() + " ha soltado: "
+						+ loot.getNombre() + ANSI_RESET);
 
 				boolean equipado = false;
 				for (Personaje h : heroes) {
@@ -344,7 +350,8 @@ public class MotorCombate {
 
 				if (!equipado) {
 					mochilaComun.add(loot);
-					System.out.println(ANSI_CIAN + "[SISTEMA] " + loot.getNombre() + " se ha guardado en la mochila común." + ANSI_RESET);
+					System.out.println(ANSI_CIAN + "[SISTEMA] " + loot.getNombre()
+							+ " se ha guardado en la mochila común." + ANSI_RESET);
 				}
 			}
 		}
@@ -374,7 +381,8 @@ public class MotorCombate {
 		// provocación del Muro de Piedra
 		for (Personaje vivo : vivos) {
 			if (vivo.isMuroActivo()) {
-				System.out.println(ANSI_AMARILLO + "\n[IA] " + atacante.getNombre() + " se ve forzado a atacar a " + vivo.getNombre()
+				System.out.println(ANSI_AMARILLO + "\n[IA] " + atacante.getNombre() + " se ve forzado a atacar a "
+						+ vivo.getNombre()
 						+ " por el muro de piedra!" + ANSI_RESET);
 				return vivo;
 			}
@@ -400,12 +408,10 @@ public class MotorCombate {
 					tanque = vivos.get(i);
 				}
 			}
-			System.out.println(ANSI_ROJO + "\n[IA ATAQUE] ¡" + atacante.getNombre() + " se choca contra el escudo de " + tanque.getNombre() + "!" + ANSI_RESET);
 			return tanque;
 		}
 		// 25% ataque normal (aleatorio)
 		else if (azar <= 50) {
-			System.out.println(ANSI_ROJO + "\n[IA ATAQUE] ¡" + atacante.getNombre() + " lanza un ataque frenético al azar!" + ANSI_RESET);
 			int index = (int) (Math.random() * vivos.size());
 			return vivos.get(index);
 		}

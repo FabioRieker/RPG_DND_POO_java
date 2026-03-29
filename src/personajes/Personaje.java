@@ -79,28 +79,34 @@ public abstract class Personaje {
 		System.out.println("------------------------------------------");
 	}
 
-	// para antes o después de un turno, mostrar solo lo imprescindible
+	// para antes o después de un turno, con barra de vida dinamica
 	public void mostrarInfoBreve() {
-		System.out.println(
-				"   > " + nombre + ": " + vidaActual + "/" + vidaMax + " HP | Estados: " + getEstadosNombres());
-	}
+		int celdasTotales = 10;
+		int celdasLlenas = vidaMax > 0 ? (int) Math.round(((double) vidaActual / vidaMax) * celdasTotales) : 0;
+		if (celdasLlenas == 0 && vidaActual > 0)
+			celdasLlenas = 1;
 
-	// para que se muestren múltiples estados
-	private String getEstadosNombres() {
-		if (this.estadosActivos.isEmpty()) {
-			return "Ninguno";
-		}
-
-		String nombres = "";
-		for (int i = 0; i < estadosActivos.size(); i++) {
-			nombres = nombres + estadosActivos.get(i).getNombre();
-
-			// si no es el último elemento, añade una coma
-			if (i < estadosActivos.size() - 1) {
-				nombres = nombres + ", ";
+		StringBuilder barraHp = new StringBuilder("[");
+		for (int i = 0; i < celdasTotales; i++) {
+			if (i < celdasLlenas) {
+				barraHp.append("█");
+			} else {
+				barraHp.append(" ");
 			}
 		}
-		return nombres;
+		barraHp.append("]");
+
+		String estadoVivo = vivo ? "VIVO" : "MUERTO";
+		String ident = nombre + " [" + tipoClase + "]";
+
+		System.out.println(motor.MotorCombate.ANSI_BEIGE
+				+ "╔════════════════════════════════════════════════════════════════════════════╗");
+		System.out.printf("║ %-20s HP: %-15s %-9s STR: %-4d CON: %-4d ║%n",
+				ident, barraHp.toString(), vidaActual + "/" + vidaMax, fuerza, constitucion);
+		System.out.printf("║ %-20s ENERGIA: %-7s MANA: %-7s DEX: %-4d INT: %-4d ║%n",
+				estadoVivo, energiaActual + "/" + energiaMax, manaActual + "/" + manaMax, destreza, inteligencia);
+		System.out.println("╚════════════════════════════════════════════════════════════════════════════╝"
+				+ motor.MotorCombate.ANSI_RESET);
 	}
 
 	// --- SECCIÓN: EQUIPO ---
@@ -109,8 +115,9 @@ public abstract class Personaje {
 			this.armaEquipada = arma;
 			System.out.println("[SISTEMA] " + this.nombre + " se ha equipado " + arma.getNombre());
 		} else {
-			System.out.println(motor.MotorCombate.ANSI_AMARILLO + "[SISTEMA] " + 
-					this.tipoClase + " " + this.nombre + " no sabe usar ese tipo de arma: " + arma.getCategoria() + motor.MotorCombate.ANSI_RESET);
+			System.out.println(motor.MotorCombate.ANSI_AMARILLO + "[SISTEMA] " +
+					this.tipoClase + " " + this.nombre + " no sabe usar ese tipo de arma: " + arma.getCategoria()
+					+ motor.MotorCombate.ANSI_RESET);
 		}
 	}
 
@@ -119,7 +126,8 @@ public abstract class Personaje {
 			this.armaduraEquipada = categoria;
 			System.out.println("[SISTEMA] " + this.nombre + " se ha equipado " + categoria.nombre);
 		} else {
-			System.out.println(motor.MotorCombate.ANSI_AMARILLO + "[SISTEMA] " + this.tipoClase + " " + this.nombre + " no sabe usar ese tipo de armadura: " + categoria + motor.MotorCombate.ANSI_RESET);
+			System.out.println(motor.MotorCombate.ANSI_AMARILLO + "[SISTEMA] " + this.tipoClase + " " + this.nombre
+					+ " no sabe usar ese tipo de armadura: " + categoria + motor.MotorCombate.ANSI_RESET);
 		}
 	}
 
@@ -193,7 +201,8 @@ public abstract class Personaje {
 
 	public void defenderse() {
 		this.posturaDefensiva = true;
-		System.out.println(motor.MotorCombate.ANSI_AMARILLO + "\n[DEFENSA] " + this.nombre + " adopta una postura defensiva firme." + motor.MotorCombate.ANSI_RESET);
+		System.out.println(motor.MotorCombate.ANSI_AMARILLO + "\n[DEFENSA] " + this.nombre
+				+ " adopta una postura defensiva firme." + motor.MotorCombate.ANSI_RESET);
 	}
 
 	public void reiniciarDefensa() {
@@ -214,7 +223,8 @@ public abstract class Personaje {
 		if (this.vidaActual > vidaMax) {
 			this.vidaActual = vidaMax;
 		}
-		System.out.println(motor.MotorCombate.ANSI_MORADO + "[CURA] " + this.nombre + " recupera " + cantidad + " puntos de vida." + motor.MotorCombate.ANSI_RESET);
+		System.out.println(motor.MotorCombate.ANSI_MORADO + "[CURA] " + this.nombre + " recupera " + cantidad
+				+ " puntos de vida." + motor.MotorCombate.ANSI_RESET);
 	}
 
 	public void recuperarRecursos(int cantidad) {
@@ -226,7 +236,8 @@ public abstract class Personaje {
 		if (this.manaActual > manaMax) {
 			this.manaActual = manaMax;
 		}
-		System.out.println(motor.MotorCombate.ANSI_AZUL + "[CURA] " + this.nombre + " recupera " + cantidad + " SP y MP." + motor.MotorCombate.ANSI_RESET);
+		System.out.println(motor.MotorCombate.ANSI_AZUL + "[CURA] " + this.nombre + " recupera " + cantidad
+				+ " SP y MP." + motor.MotorCombate.ANSI_RESET);
 	}
 
 	public boolean tieneRecursos(int energia, int mana) {
@@ -271,7 +282,8 @@ public abstract class Personaje {
 		int tiradaCritico = (int) (Math.random() * 20) + 1;
 		if (tiradaCritico == 20) {
 			String colorCrit = objetivo.esHeroe() ? motor.MotorCombate.ANSI_ROJO : motor.MotorCombate.ANSI_VERDE_OSCURO;
-			System.out.println(colorCrit + "[CRÍTICO] " + this.nombre + " ha encontrado un punto vital." + motor.MotorCombate.ANSI_RESET);
+			System.out.println(colorCrit + "[CRÍTICO] " + this.nombre + " ha encontrado un punto vital."
+					+ motor.MotorCombate.ANSI_RESET);
 			daño = daño * 2;
 		}
 
@@ -314,14 +326,16 @@ public abstract class Personaje {
 		if (esDañoPuro == true) {
 			prefijo = "[PURO] ";
 		}
-		
+
 		String colorDaño = this.esHeroe() ? motor.MotorCombate.ANSI_ROJO : motor.MotorCombate.ANSI_VERDE_OSCURO;
-		System.out.println(colorDaño + "[DAÑO] " + prefijo + this.nombre + " recibe " + dañoFinal + " de daño." + motor.MotorCombate.ANSI_RESET);
+		System.out.println(colorDaño + "[DAÑO] " + prefijo + this.nombre + " recibe " + dañoFinal + " de daño."
+				+ motor.MotorCombate.ANSI_RESET);
 
 		if (this.vidaActual <= 0) {
 			this.vidaActual = 0;
 			this.vivo = false;
-			System.out.println(colorDaño + "[ALERTA FATAL] " + this.nombre + " ha caído en combate." + motor.MotorCombate.ANSI_RESET);
+			System.out.println(colorDaño + "[ALERTA FATAL] " + this.nombre + " ha caído en combate."
+					+ motor.MotorCombate.ANSI_RESET);
 		}
 	}
 
@@ -398,7 +412,8 @@ public abstract class Personaje {
 		if (this.inventario.size() < 10) {
 			this.inventario.add(item);
 		} else {
-			System.out.println(motor.MotorCombate.ANSI_AMARILLO + "[SISTEMA] El inventario de " + this.nombre + " está lleno." + motor.MotorCombate.ANSI_RESET);
+			System.out.println(motor.MotorCombate.ANSI_AMARILLO + "[SISTEMA] El inventario de " + this.nombre
+					+ " está lleno." + motor.MotorCombate.ANSI_RESET);
 		}
 	}
 
