@@ -5,7 +5,7 @@ import personajes.Personaje;
 public class ArmaCuerpoACuerpo extends Arma {
 
   public ArmaCuerpoACuerpo(String nombre, int cantidadDados, int carasDado) {
-    // La categoria de arma hace qu se diferencie el tipo de arma
+    // La categoria de arma hace que se diferencie el tipo de arma
     super(nombre, cantidadDados, carasDado, CategoriaArma.melee);
   }
 

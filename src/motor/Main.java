@@ -9,7 +9,25 @@ public class Main {
 	public static void main(String[] args) {
 
 		System.out.println(motor.MotorCombate.ANSI_AZUL_MARINO + "\n===========================================");
-		System.out.println("    [SISTEMA] AVENTURA: EL DESCENSO A LAS RUINAS");
+		System.out.println("    [SISTEMA] Selecciona el modo de juego:");
+		System.out.println("    1. Modo Automático (La IA controla todo)");
+		System.out.println("    2. Modo Manual (Control total de Héroes)");
+		System.out.println("===========================================" + motor.MotorCombate.ANSI_RESET);
+		System.out.print("> Elige una opción: ");
+		if (motor.MotorCombate.sc.hasNextInt()) {
+			int opt = motor.MotorCombate.sc.nextInt();
+			if (opt == 2) {
+				motor.MotorCombate.modoManual = true;
+				// Agrupamos recursos en la mochila
+				for (int j = 0; j < 5; j++) {
+					motor.MotorCombate.inventarioGrupo.add(new consumibles.PocionCuracion(1));
+				}
+			}
+		}
+		motor.MotorCombate.sc.nextLine();
+
+		System.out.println(motor.MotorCombate.ANSI_AZUL_MARINO + "\n===========================================");
+		System.out.println("    AVENTURA: EL DESCENSO A LAS RUINAS");
 		System.out.println("===========================================" + motor.MotorCombate.ANSI_RESET + "\n");
 
 		// llamar a heroes
@@ -48,6 +66,7 @@ public class Main {
 					if (h.estaVivo())
 						h.curar(50);
 				}
+				if (motor.MotorCombate.modoManual) motor.MotorCombate.gestionarCampamento(heroes, reserva);
 			} else if (i == 12) {
 				System.out.println(motor.MotorCombate.ANSI_MORADO + "[EVENTO] Un monje llamado Kwai Chang se une a vuestra reserva." + motor.MotorCombate.ANSI_RESET);
 				reserva.add(FabricaHeroes.crearMonjeKwai());
@@ -64,6 +83,7 @@ public class Main {
 						h.recuperarRecursos(100);
 					}
 				}
+				if (motor.MotorCombate.modoManual) motor.MotorCombate.gestionarCampamento(heroes, reserva);
 			} else {
 				// salas de combate
 				Sala salaActual = FabricaSalas.generarSala(i);
