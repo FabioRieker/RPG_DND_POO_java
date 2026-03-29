@@ -15,6 +15,7 @@ public class Ejecucion extends HabilidadFisica {
 		int daño = tirarDados() + bono;
 
 		// Calcula si es ejecución
+		if (objetivo.getVidaMax() <= 0) return;
 		int porcentajeVida = (objetivo.getVidaActual() * 100) / objetivo.getVidaMax();
 
 		if (porcentajeVida <= 20) {

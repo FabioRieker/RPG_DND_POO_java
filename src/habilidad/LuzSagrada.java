@@ -19,8 +19,8 @@ public class LuzSagrada extends HabilidadHibrida {
 		objetivo.recibirDaño(daño, false);
 
 		// Solo cura y aplica renovar si impactó
-		objetivo.curar(20);
-		objetivo.aplicarEstado(new EstadoRenovar(3, 10));
-		System.out.println("-- " + objetivo.getNombre() + " sanado + RENOVAR!");
+		usuario.curar(20);
+		usuario.aplicarEstado(new EstadoRenovar(3, 10));
+		System.out.println("-- " + usuario.getNombre() + " sanado + RENOVAR!");
 	}
 }

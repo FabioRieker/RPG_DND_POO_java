@@ -15,6 +15,8 @@ public class MotorCombate {
 	public static ArrayList<Arma> mochilaComun = new ArrayList<>();
 
 	public static void iniciarCombate(Personaje[] heroes, Personaje[] enemigos) {
+		ultimoAtacanteJefe = null;
+
 		// COMBATE POR TURNOS
 		System.out.println("\n===========================================");
 		System.out.println("            ¡COMBATE COMIENZA!");
@@ -289,6 +291,15 @@ public class MotorCombate {
 
 		if (vivos.isEmpty())
 			return null;
+
+		// provocación del Muro de Piedra
+		for (Personaje vivo : vivos) {
+			if (vivo.isMuroActivo()) {
+				System.out.println("   [IA] " + atacante.getNombre() + " se ve forzado a atacar a " + vivo.getNombre()
+						+ " por el muro de piedra!");
+				return vivo;
+			}
+		}
 
 		// sistema especial de venganza en jefes (70/30)
 		if (atacante.getTipoClase() == TipoClase.JEFE && ultimoAtacanteJefe != null && ultimoAtacanteJefe.estaVivo()) {

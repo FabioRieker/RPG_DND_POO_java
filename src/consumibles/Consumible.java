@@ -8,7 +8,7 @@ public abstract class Consumible {
 
 	public Consumible(String nombre, int cantidad) {
 		this.nombre = nombre;
-		this.cantidad = cantidad;
+		this.cantidad = cantidad > 0 ? cantidad : 1;
 	}
 
 	// sirve tanto para atacar como para curarse

@@ -14,7 +14,7 @@ public class MuroPiedra extends HechizoMagico {
 	@Override
 	protected void aplicarEfectoImpacto(Personaje usuario, Personaje objetivo, int bono) {
 		System.out.println(usuario.getNombre() + " lanza " + nombre + "...");
-		System.out.println("¡IMPACTO! " + objetivo.getNombre() + " recibe +4 de defensa por 3 turnos!");
-		System.out.println("-- ¡" + objetivo.getNombre() + " está protegido por un muro de piedra!");
+		System.out.println("¡IMPACTO! " + objetivo.getNombre() + " bloquea ataques masivos y provoca a sus atacantes por 1 turno!");
+		objetivo.aplicarMuroPiedra();
 	}
 }

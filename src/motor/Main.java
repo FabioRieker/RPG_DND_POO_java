@@ -93,7 +93,7 @@ public class Main {
 					if (heroes[j].getVidaActual() < (heroes[j].getVidaMax() * 0.5)) {
 						for (int r = 0; r < reserva.size(); r++) {
 							Personaje candidato = reserva.get(r);
-							if (candidato.estaVivo() && candidato.getVidaActual() > heroes[j].getVidaActual()) {
+							if (candidato.estaVivo() && candidato.getVidaActual() >= (candidato.getVidaMax() * 0.8)) {
 								Personaje herido = heroes[j];
 								heroes[j] = reserva.remove(r);
 								reserva.add(herido);

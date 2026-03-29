@@ -17,6 +17,7 @@ public abstract class Personaje {
 	protected boolean vivo;
 	protected String mensajePreparacion;
 	protected boolean posturaDefensiva = false;
+	protected boolean muroActivo = false;
 
 	// --- STATS Y RECURSOS ---
 	protected int fuerza, destreza, constitucion, inteligencia;
@@ -136,6 +137,9 @@ public abstract class Personaje {
 		if (this.posturaDefensiva) {
 			total += 15; // bono defensivo estático nivel DAM 1
 		}
+		if (this.muroActivo) {
+			total += 30; // super defensa
+		}
 		return total;
 	}
 
@@ -186,6 +190,15 @@ public abstract class Personaje {
 
 	public void reiniciarDefensa() {
 		this.posturaDefensiva = false;
+		this.muroActivo = false;
+	}
+
+	public void aplicarMuroPiedra() {
+		this.muroActivo = true;
+	}
+
+	public boolean isMuroActivo() {
+		return this.muroActivo;
 	}
 
 	public void curar(int cantidad) {
@@ -312,7 +325,9 @@ public abstract class Personaje {
 	// --- SECCIÓN: ESTADOS ---
 	// he creado después la de tiene estado para q no aplique el mismo varias veces
 	public void aplicarEstado(Estado nuevoEstado) {
-		this.estadosActivos.add(nuevoEstado);
+		if (!tieneEstado(nuevoEstado.getNombre())) {
+			this.estadosActivos.add(nuevoEstado);
+		}
 	}
 
 	// para aplicar estados alterados (resuelve el problema del veneno siempre

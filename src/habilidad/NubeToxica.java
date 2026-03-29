@@ -15,8 +15,9 @@ public class NubeToxica extends HechizoMagico {
 
 	@Override
 	public void ejecutar(Personaje usuario, Personaje objetivo) {
-		System.out.println(usuario.getNombre() + " quiere usar " + nombre + "...");
-		System.out.println("Este hechizo afecta a múltiples objetivos. Usa la versión con lista de enemigos.");
+		ArrayList<Personaje> lista = new ArrayList<>();
+		lista.add(objetivo);
+		ejecutar(usuario, lista);
 	}
 
 	@Override
