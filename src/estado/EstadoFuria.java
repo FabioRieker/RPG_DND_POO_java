@@ -12,7 +12,7 @@ public class EstadoFuria extends Estado {
 
     @Override
     public void alPasarTurnoEstado(Personaje obj) {
-        System.out.println("[ESTADO] " + obj.getNombre() + " está enfurecido con +" + potencia + " de daño!");
+        System.out.println(motor.MotorCombate.ANSI_ROJO + "[ESTADO] " + obj.getNombre() + " está enfurecido con +" + potencia + " de daño!" + motor.MotorCombate.ANSI_RESET);
     }
     
     public int getModificadorDaño() {
@@ -21,6 +21,6 @@ public class EstadoFuria extends Estado {
 
     @Override
     public void alTerminarEstado(Personaje obj) {
-        System.out.println("[ESTADO] La furia de " + obj.getNombre() + " se ha calmado.");
+        System.out.println(motor.MotorCombate.ANSI_AMARILLO + "[ESTADO] La furia de " + obj.getNombre() + " se ha calmado." + motor.MotorCombate.ANSI_RESET);
     }
 }

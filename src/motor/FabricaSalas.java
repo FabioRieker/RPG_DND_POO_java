@@ -1,7 +1,6 @@
 package motor;
 
 import personajes.*;
-import armas.ArmaCuerpoACuerpo;
 import armas.Armeria;
 
 public class FabricaSalas {
@@ -83,7 +82,7 @@ public class FabricaSalas {
 			break;
 		case 20:
 			JefeDragon dragon = new JefeDragon("Valdrax el Devorador", 20, 10, 22, 15, 16);
-			dragon.equiparArma(new ArmaCuerpoACuerpo("Garras Reales", 2, 8));
+			dragon.equiparArma(armeria.get("Garras Reales"));
 			sala.agregarEnemigo(dragon);
 			break;
 		}

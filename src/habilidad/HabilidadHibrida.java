@@ -19,7 +19,8 @@ public class HabilidadHibrida extends AccionCombate {
 	@Override
 	protected void aplicarEfectoImpacto(Personaje usuario, Personaje objetivo, int bono) {
 		int daño = tirarDados() + bono;
-		System.out.println("¡IMPACTO! " + objetivo.getNombre() + " recibe " + daño + " de daño.");
+		String colorDaño = objetivo.esEnemigo() ? motor.MotorCombate.ANSI_VERDE_OSCURO : motor.MotorCombate.ANSI_ROJO;
+		System.out.println(colorDaño + "[DAÑO HIBRIDO] ¡IMPACTO! " + objetivo.getNombre() + " recibe " + daño + " de daño." + motor.MotorCombate.ANSI_RESET);
 
 		// Explosion Arcana hace daño puro
 		boolean esPuro = this.nombre.equals("Explosión Arcana");
@@ -31,15 +32,16 @@ public class HabilidadHibrida extends AccionCombate {
 	private void aplicarEfectoEspecial(Personaje usuario, Personaje objetivo, int daño) {
 		switch (efecto) {
 		case CURAR_VIDA:
+			System.out.println(motor.MotorCombate.ANSI_MORADO + "[CURA] " + usuario.getNombre() + " se cura " + daño + " HP!" + motor.MotorCombate.ANSI_RESET);
 			usuario.curar(daño);
-			System.out.println("-- " + usuario.getNombre() + " se cura " + daño + " HP!");
 			break;
 		case ROBO_VIDA:
+			System.out.println(motor.MotorCombate.ANSI_MORADO + "[DRENAJE] " + usuario.getNombre() + " roba " + daño + " HP!" + motor.MotorCombate.ANSI_RESET);
 			usuario.curar(daño);
-			System.out.println("-- " + usuario.getNombre() + " roba " + daño + " HP!");
 			break;
 		case BUFF_ALIADOS:
-			System.out.println("-- " + objetivo.getNombre() + " recibe +" + daño + " de daño temporal!");
+			String colorBuff = objetivo.esEnemigo() ? motor.MotorCombate.ANSI_ROJO : motor.MotorCombate.ANSI_VERDE_OSCURO;
+			System.out.println(colorBuff + "[BUFF] " + objetivo.getNombre() + " recibe +" + daño + " de daño temporal!" + motor.MotorCombate.ANSI_RESET);
 			objetivo.aplicarEstado(new EstadoFuria(3, daño));
 			break;
 		case NINGUNO:

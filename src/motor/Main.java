@@ -8,9 +8,9 @@ public class Main {
 
 	public static void main(String[] args) {
 
-		System.out.println("===========================================");
-		System.out.println("    AVENTURA: EL DESCENSO A LAS RUINAS");
-		System.out.println("===========================================\n");
+		System.out.println(motor.MotorCombate.ANSI_AZUL_MARINO + "\n===========================================");
+		System.out.println("    [SISTEMA] AVENTURA: EL DESCENSO A LAS RUINAS");
+		System.out.println("===========================================" + motor.MotorCombate.ANSI_RESET + "\n");
 
 		// llamar a heroes
 		List<Personaje> listaHeroes = FabricaHeroes.crearEquipoInicial();
@@ -20,7 +20,7 @@ public class Main {
 		// bucle de 1 a 20 salas
 		for (int i = 1; i <= 20; i++) {
 			if (!MotorCombate.hayVivos(heroes)) {
-				System.out.println("EL EQUIPO HA CAÍDO EN LA SALA " + i + ". FIN DE LA AVENTURA.");
+				System.out.println(motor.MotorCombate.ANSI_ROJO + "[ALERTA FATAL] EL EQUIPO HA CAÍDO EN LA SALA " + i + ". FIN DE LA AVENTURA." + motor.MotorCombate.ANSI_RESET);
 				break;
 			}
 
@@ -34,7 +34,7 @@ public class Main {
 						h.recuperarRecursos(30);
 				}
 			} else if (i == 5) {
-				System.out.println("¡Rescatáis a Kallista! Se une a vuestra reserva.");
+				System.out.println(motor.MotorCombate.ANSI_MORADO + "[EVENTO] ¡Rescatáis a Kallista! Se une a vuestra reserva." + motor.MotorCombate.ANSI_RESET);
 				reserva.add(FabricaHeroes.crearKallista());
 			} else if (i == 7) {
 				System.out.println("¡BOOM! Una trampa de fuego estalla.");
@@ -43,18 +43,18 @@ public class Main {
 						h.recibirDaño(12, true);
 				}
 			} else if (i == 9) {
-				System.out.println("Llegáis a una fuente curativa. El grupo descansa.");
+				System.out.println(motor.MotorCombate.ANSI_MORADO + "[EVENTO] Llegáis a una fuente curativa. El grupo descansa." + motor.MotorCombate.ANSI_RESET);
 				for (Personaje h : heroes) {
 					if (h.estaVivo())
 						h.curar(50);
 				}
 			} else if (i == 12) {
-				System.out.println("Un monje llamado Kwai Chang se une a vuestra reserva.");
+				System.out.println(motor.MotorCombate.ANSI_MORADO + "[EVENTO] Un monje llamado Kwai Chang se une a vuestra reserva." + motor.MotorCombate.ANSI_RESET);
 				reserva.add(FabricaHeroes.crearMonjeKwai());
 			} else if (i == 14) {
 				System.out.println("Sala vacía... un silencio sepulcral inunda el lugar.");
 			} else if (i == 17) {
-				System.out.println("Lulu Nightingale, la barda, se une a vuestra reserva.");
+				System.out.println(motor.MotorCombate.ANSI_MORADO + "[EVENTO] Lulu Nightingale, la barda, se une a vuestra reserva." + motor.MotorCombate.ANSI_RESET);
 				reserva.add(FabricaHeroes.crearBardoLulu());
 			} else if (i == 19) {
 				System.out.println("Último descanso antes del gran final. Salud y recursos al máximo.");
@@ -80,9 +80,9 @@ public class Main {
 					for (int r = 0; r < reserva.size(); r++) {
 						if (reserva.get(r).estaVivo()) {
 							Personaje sustituto = reserva.remove(r);
-							System.out.println("\n[SISTEMA] " + caido.getNombre() + " ha muerto en acto de servicio.");
-							System.out.println("[RESERVA] " + sustituto.getNombre()
-									+ " entra al equipo principal para ocupar su lugar.");
+							System.out.println(motor.MotorCombate.ANSI_ROJO + "\n[SISTEMA] " + caido.getNombre() + " ha muerto en acto de servicio." + motor.MotorCombate.ANSI_RESET);
+							System.out.println(motor.MotorCombate.ANSI_MORADO + "[RESERVA] " + sustituto.getNombre()
+									+ " entra al equipo principal para ocupar su lugar." + motor.MotorCombate.ANSI_RESET);
 							heroes[j] = sustituto;
 							break;
 						}
@@ -107,10 +107,10 @@ public class Main {
 				}
 			}
 
-			if (MotorCombate.hayVivos(heroes)) {
-				System.out.println("\n===========================================");
-				System.out.println("    ¡AVENTURA COMPLETADA CON ÉXITO!");
-				System.out.println("===========================================");
+			if (i == 20 && MotorCombate.hayVivos(heroes)) {
+				System.out.println(motor.MotorCombate.ANSI_AZUL_MARINO + "\n===========================================");
+				System.out.println("    [SISTEMA] ¡AVENTURA COMPLETADA CON ÉXITO!");
+				System.out.println("===========================================" + motor.MotorCombate.ANSI_RESET);
 			}
 		}
 

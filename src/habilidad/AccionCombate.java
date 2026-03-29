@@ -71,14 +71,14 @@ public abstract class AccionCombate {
 		int bono = getModificador(usuario) / 2;
 		int totalImpacto = tirada + bono;
 
-		System.out.println(usuario.getNombre() + " usa " + nombre + "...");
-		System.out.println("Tirada: " + tirada + " + " + bono + " = " + totalImpacto);
+		System.out.println("\n[HABILIDAD] " + usuario.getNombre() + " usa " + nombre + "...");
+		System.out.println(motor.MotorCombate.ANSI_CIAN + "[SISTEMA] Tirada: " + tirada + " + " + bono + " = " + totalImpacto + motor.MotorCombate.ANSI_RESET);
 
 		if (totalImpacto >= objetivo.getDefensaTotal()) {
 			usuario.consumirRecursos(costeEnergia, costeMana);
 			aplicarEfectoImpacto(usuario, objetivo, bono);
 		} else {
-			System.out.println("¡FALLO! El ataque no atraviesa la defensa.");
+			System.out.println(motor.MotorCombate.ANSI_AMARILLO + "[ALERTA] ¡FALLO! El ataque no atraviesa la defensa de " + objetivo.getNombre() + "." + motor.MotorCombate.ANSI_RESET);
 		}
 	}
 

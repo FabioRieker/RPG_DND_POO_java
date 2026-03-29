@@ -10,12 +10,12 @@ public class EstadoCongelado extends Estado {
 
   @Override
   public void alPasarTurnoEstado(Personaje obj) {
-    System.out.println("[ESTADO] El frío hiela a " + obj.getNombre());
+    System.out.println(motor.MotorCombate.ANSI_AZUL + "[ESTADO] El frío hiela a " + obj.getNombre() + motor.MotorCombate.ANSI_RESET);
     obj.recibirDaño(potencia, true);
   }
 
   @Override
   public void alTerminarEstado(Personaje obj) {
-    System.out.println("[ESTADO] " + obj.getNombre() + " se ha descongelado.");
+    System.out.println(motor.MotorCombate.ANSI_AZUL + "[ESTADO] " + obj.getNombre() + " se ha descongelado." + motor.MotorCombate.ANSI_RESET);
   }
 }

@@ -107,19 +107,19 @@ public abstract class Personaje {
 	public void equiparArma(Arma arma) {
 		if (this.armasPermitidas.contains(arma.getCategoria())) {
 			this.armaEquipada = arma;
-			System.out.println(this.nombre + " se ha equipado " + arma.getNombre());
+			System.out.println("[SISTEMA] " + this.nombre + " se ha equipado " + arma.getNombre());
 		} else {
-			System.out.println(
-					this.tipoClase + " " + this.nombre + " no sabe usar ese tipo de arma: " + arma.getCategoria());
+			System.out.println(motor.MotorCombate.ANSI_AMARILLO + "[SISTEMA] " + 
+					this.tipoClase + " " + this.nombre + " no sabe usar ese tipo de arma: " + arma.getCategoria() + motor.MotorCombate.ANSI_RESET);
 		}
 	}
 
 	public void equiparArmadura(CategoriaArmadura categoria) {
 		if (this.armadurasPermitidas.contains(categoria)) {
 			this.armaduraEquipada = categoria;
-			System.out.println(this.nombre + " se ha equipado " + categoria.nombre);
+			System.out.println("[SISTEMA] " + this.nombre + " se ha equipado " + categoria.nombre);
 		} else {
-			System.out.println(this.tipoClase + " " + this.nombre + " no sabe usar ese tipo de armadura: " + categoria);
+			System.out.println(motor.MotorCombate.ANSI_AMARILLO + "[SISTEMA] " + this.tipoClase + " " + this.nombre + " no sabe usar ese tipo de armadura: " + categoria + motor.MotorCombate.ANSI_RESET);
 		}
 	}
 
@@ -179,13 +179,21 @@ public abstract class Personaje {
 		return this.tipoClase;
 	}
 
+	public boolean esEnemigo() {
+		return this.tipoClase == TipoClase.MONSTRUO || this.tipoClase == TipoClase.JEFE;
+	}
+
+	public boolean esHeroe() {
+		return !esEnemigo();
+	}
+
 	public boolean estaVivo() {
 		return this.vidaActual > 0;
 	}
 
 	public void defenderse() {
 		this.posturaDefensiva = true;
-		System.out.println(this.nombre + " adopta una postura defensiva firme.");
+		System.out.println(motor.MotorCombate.ANSI_AMARILLO + "\n[DEFENSA] " + this.nombre + " adopta una postura defensiva firme." + motor.MotorCombate.ANSI_RESET);
 	}
 
 	public void reiniciarDefensa() {
@@ -206,7 +214,7 @@ public abstract class Personaje {
 		if (this.vidaActual > vidaMax) {
 			this.vidaActual = vidaMax;
 		}
-		System.out.println(this.nombre + " se ha curado " + cantidad + " puntos de vida.");
+		System.out.println(motor.MotorCombate.ANSI_MORADO + "[CURA] " + this.nombre + " recupera " + cantidad + " puntos de vida." + motor.MotorCombate.ANSI_RESET);
 	}
 
 	public void recuperarRecursos(int cantidad) {
@@ -218,7 +226,7 @@ public abstract class Personaje {
 		if (this.manaActual > manaMax) {
 			this.manaActual = manaMax;
 		}
-		System.out.println(this.nombre + " recupera " + cantidad + " SP y MP.");
+		System.out.println(motor.MotorCombate.ANSI_AZUL + "[CURA] " + this.nombre + " recupera " + cantidad + " SP y MP." + motor.MotorCombate.ANSI_RESET);
 	}
 
 	public boolean tieneRecursos(int energia, int mana) {
@@ -262,12 +270,13 @@ public abstract class Personaje {
 
 		int tiradaCritico = (int) (Math.random() * 20) + 1;
 		if (tiradaCritico == 20) {
-			System.out.println("¡GOLPE CRÍTICO! " + this.nombre + " ha encontrado el punto débil.");
+			String colorCrit = objetivo.esHeroe() ? motor.MotorCombate.ANSI_ROJO : motor.MotorCombate.ANSI_VERDE_OSCURO;
+			System.out.println(colorCrit + "[CRÍTICO] " + this.nombre + " ha encontrado un punto vital." + motor.MotorCombate.ANSI_RESET);
 			daño = daño * 2;
 		}
 
-		// mensaje unificado en una sola línea
-		System.out.println(this.nombre + " ataca " + modo + " a " + objetivo.getNombre());
+		// mensaje unificado en una sola línea (Blanco/Neutro)
+		System.out.println("\n[ATAQUE] " + this.nombre + " ataca " + modo + " a " + objetivo.getNombre());
 
 		// aplico efecto del arma antes del daño (arregla situaciones como q el
 		// personaje muera y se envenene después)
@@ -305,12 +314,14 @@ public abstract class Personaje {
 		if (esDañoPuro == true) {
 			prefijo = "[PURO] ";
 		}
-		System.out.println(prefijo + this.nombre + " recibe " + dañoFinal + " de daño.");
+		
+		String colorDaño = this.esHeroe() ? motor.MotorCombate.ANSI_ROJO : motor.MotorCombate.ANSI_VERDE_OSCURO;
+		System.out.println(colorDaño + "[DAÑO] " + prefijo + this.nombre + " recibe " + dañoFinal + " de daño." + motor.MotorCombate.ANSI_RESET);
 
 		if (this.vidaActual <= 0) {
 			this.vidaActual = 0;
 			this.vivo = false;
-			System.out.println(">>> " + this.nombre + " ha caído en combate.");
+			System.out.println(colorDaño + "[ALERTA FATAL] " + this.nombre + " ha caído en combate." + motor.MotorCombate.ANSI_RESET);
 		}
 	}
 
@@ -387,7 +398,7 @@ public abstract class Personaje {
 		if (this.inventario.size() < 10) {
 			this.inventario.add(item);
 		} else {
-			System.out.println("El inventario de " + this.nombre + " está lleno.");
+			System.out.println(motor.MotorCombate.ANSI_AMARILLO + "[SISTEMA] El inventario de " + this.nombre + " está lleno." + motor.MotorCombate.ANSI_RESET);
 		}
 	}
 

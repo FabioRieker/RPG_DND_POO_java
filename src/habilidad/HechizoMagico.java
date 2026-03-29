@@ -23,11 +23,12 @@ public abstract class HechizoMagico extends AccionCombate {
 		// Sinergia: fuego contra veneno = daño doble y limpia el veneno
 		if ("QUEMA".equals(efectoEspecial) && objetivo.tieneEstado("Veneno")) {
 			daño *= 2;
-			System.out.println("¡SINERGIA! Fuego contra Veneno - DAÑO x2");
-			System.out.println("-- El veneno se ha limpiado con el fuego.");
+			System.out.println(motor.MotorCombate.ANSI_AMARILLO + "[CRÍTICO MAGICO] ¡SINERGIA! Fuego contra Veneno - DAÑO x2" + motor.MotorCombate.ANSI_RESET);
+			System.out.println(motor.MotorCombate.ANSI_MORADO + "[CURA] El veneno se ha sublimado con el fuego." + motor.MotorCombate.ANSI_RESET);
 		}
 
-		System.out.println("¡IMPACTO! " + objetivo.getNombre() + " recibe " + daño + " de daño.");
+		String colorDaño = objetivo.esEnemigo() ? motor.MotorCombate.ANSI_VERDE_OSCURO : motor.MotorCombate.ANSI_ROJO;
+		System.out.println(colorDaño + "[DAÑO MAGICO] ¡IMPACTO! " + objetivo.getNombre() + " recibe " + daño + " de daño." + motor.MotorCombate.ANSI_RESET);
 		objetivo.recibirDaño(daño, false);
 
 		aplicarEfecto(objetivo);
@@ -41,25 +42,26 @@ public abstract class HechizoMagico extends AccionCombate {
 		switch (efectoEspecial) {
 		case "QUEMA":
 			if (!objetivo.tieneEstado("Quemadura")) {
+				System.out.println(motor.MotorCombate.ANSI_AMARILLO + "[ESTADO] ¡" + objetivo.getNombre() + " está en llamas!" + motor.MotorCombate.ANSI_RESET);
 				objetivo.aplicarEstado(new EstadoQuemadura(3, 5));
-				System.out.println("-- ¡" + objetivo.getNombre() + " está en llamas!");
 			}
 			break;
 		case "CONGELA":
 			if (!objetivo.tieneEstado("Congelado")) {
+				System.out.println(motor.MotorCombate.ANSI_AZUL + "[ESTADO] ¡" + objetivo.getNombre() + " está congelado!" + motor.MotorCombate.ANSI_RESET);
 				objetivo.aplicarEstado(new EstadoCongelado(2, 3));
-				System.out.println("-- ¡" + objetivo.getNombre() + " está congelado!");
 			}
 			break;
 		case "RENOVAR":
+			System.out.println(motor.MotorCombate.ANSI_MORADO + "[MEND] ¡" + objetivo.getNombre() + " recibe efectos regenerativos!" + motor.MotorCombate.ANSI_RESET);
 			objetivo.aplicarEstado(new EstadoRenovar(3, 8));
-			System.out.println("-- ¡" + objetivo.getNombre() + " recibe efectos regenerativos!");
 			break;
 		case "MULTI":
-			System.out.println("-- ¡El rayo salta a objetivos cercanos!");
+			System.out.println(motor.MotorCombate.ANSI_AZUL + "[MAGIA] ¡El rayo salta a objetivos cercanos!" + motor.MotorCombate.ANSI_RESET);
 			break;
 		case "DEFENSA_MAS":
-			System.out.println("-- ¡" + objetivo.getNombre() + " recibe +4 de defensa!");
+			String colorBuff = objetivo.esEnemigo() ? motor.MotorCombate.ANSI_ROJO : motor.MotorCombate.ANSI_VERDE_OSCURO;
+			System.out.println(colorBuff + "[DEFENSA] ¡" + objetivo.getNombre() + " recibe +4 de defensa temporal!" + motor.MotorCombate.ANSI_RESET);
 			break;
 		}
 	}

@@ -11,12 +11,12 @@ public class PocionRecurso extends Consumible {
 	@Override
 	public void usar(Personaje usuario, Personaje objetivo) {
 		if (cantidad <= 0) {
-			System.out.println("No quedan " + nombre + ".");
+			System.out.println(motor.MotorCombate.ANSI_AMARILLO + "[SISTEMA] No quedan " + nombre + "." + motor.MotorCombate.ANSI_RESET);
 			return;
 		}
 
 		cantidad--;
+		System.out.println(motor.MotorCombate.ANSI_AZUL + "\n[OBJETO] " + usuario.getNombre() + " usa " + nombre + "." + motor.MotorCombate.ANSI_RESET);
 		usuario.recuperarRecursos(40);
-		System.out.println(usuario.getNombre() + " usa " + nombre + ".");
 	}
 }
