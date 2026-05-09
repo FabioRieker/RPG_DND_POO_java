@@ -4,6 +4,7 @@
 # Ignorar la carpeta bin donde Eclipse guarda sus compilados por defecto
 bin/
 build/
+target/
 
 # Ignorar archivos de configuración específicos de Eclipse 
 .classpath
