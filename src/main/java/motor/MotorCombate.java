@@ -5,6 +5,9 @@ import consumibles.*;
 import armas.Arma;
 import armas.Armeria;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Scanner;
 
 /**
  * Clase principal que maneja los turnos e interacciones de la batalla. Controla
@@ -29,7 +32,7 @@ public class MotorCombate {
   private static Personaje ultimoAtacanteJefe = null;
 
   public static boolean modoManual = false;
-  public static java.util.Scanner sc = new java.util.Scanner(System.in);
+  public static Scanner sc = new Scanner(System.in);
   public static ArrayList<Consumible> inventarioGrupo = new ArrayList<>();
 
   // Mochila común con armas para todo el grupo
@@ -71,7 +74,7 @@ public class MotorCombate {
       }
 
       // Juntar héroes y enemigos en una lista para ver quién ataca primero
-      java.util.ArrayList<Personaje> todos = new java.util.ArrayList<Personaje>();
+      ArrayList<Personaje> todos = new ArrayList<Personaje>();
 
       for (int i = 0; i < heroes.length; i++) {
         Personaje h = heroes[i];
@@ -231,15 +234,15 @@ public class MotorCombate {
 
       if (objetivo != null) {
         boolean usoHabilidad = false;
-        java.util.ArrayList<habilidad.AccionCombate> habs = p.getHabilidades();
+        ArrayList<habilidad.AccionCombate> habs = p.getHabilidades();
         if (habs != null && habs.size() > 0) {
           double probMagia = 0.5;
           if (p.getVidaActual() < (p.getVidaMax() * 0.5)) {
             probMagia = 0.85;
           }
           if (Math.random() < probMagia) {
-            java.util.ArrayList<habilidad.AccionCombate> clon = new java.util.ArrayList<>(habs);
-            java.util.Collections.shuffle(clon);
+            ArrayList<habilidad.AccionCombate> clon = new ArrayList<>(habs);
+            Collections.shuffle(clon);
             for (int j = 0; j < clon.size(); j++) {
               habilidad.AccionCombate h = clon.get(j);
 
@@ -314,11 +317,11 @@ public class MotorCombate {
           usoHabilidadEspecial = true;
         } else {
           boolean usoHabilidad = false;
-          java.util.ArrayList<habilidad.AccionCombate> habs = p.getHabilidades();
+          ArrayList<habilidad.AccionCombate> habs = p.getHabilidades();
           if (habs != null && habs.size() > 0) {
             if (Math.random() < 0.3) {
-              java.util.ArrayList<habilidad.AccionCombate> clon = new java.util.ArrayList<>(habs);
-              java.util.Collections.shuffle(clon);
+              ArrayList<habilidad.AccionCombate> clon = new ArrayList<>(habs);
+              Collections.shuffle(clon);
               for (int j = 0; j < clon.size(); j++) {
                 habilidad.AccionCombate h = clon.get(j);
 
@@ -419,7 +422,7 @@ public class MotorCombate {
    */
   public static Personaje seleccionarObjetivoInteligente(Personaje atacante, Personaje[] posiblesObjetivos) {
     // Mirar quién está vivo para no atacar a muertos
-    java.util.ArrayList<Personaje> vivos = new java.util.ArrayList<Personaje>();
+    ArrayList<Personaje> vivos = new ArrayList<Personaje>();
     for (int i = 0; i < posiblesObjetivos.length; i++) {
       if (posiblesObjetivos[i].estaVivo()) {
         vivos.add(posiblesObjetivos[i]);
@@ -506,7 +509,7 @@ public class MotorCombate {
    * @param titulares Los héroes que están jugando ahora.
    * @param reserva   Los héroes que están en el banquillo.
    */
-  public static void gestionarCampamento(Personaje[] titulares, java.util.List<Personaje> reserva) {
+  public static void gestionarCampamento(Personaje[] titulares, List<Personaje> reserva) {
     boolean salir = false;
     do {
       System.out.println(ANSI_CIAN
@@ -646,7 +649,7 @@ public class MotorCombate {
       sc.nextLine();
 
       if (opt == 1) {
-        java.util.ArrayList<Personaje> vivosObj = new java.util.ArrayList<>();
+        ArrayList<Personaje> vivosObj = new ArrayList<>();
         System.out.println("--- Elige Objetivo ---");
         System.out.println("Enemigos:");
         for (int j = 0; j < enemigos.length; j++) {
@@ -668,7 +671,7 @@ public class MotorCombate {
           turnoCompletado = true;
         }
       } else if (opt == 2) {
-        java.util.ArrayList<habilidad.AccionCombate> habs = p.getHabilidades();
+        ArrayList<habilidad.AccionCombate> habs = p.getHabilidades();
         if (habs.isEmpty()) {
           System.out.println(ANSI_AMARILLO + "[SISTEMA] No tienes habilidades aprendidas." + ANSI_RESET);
         } else {
@@ -691,7 +694,7 @@ public class MotorCombate {
               boolean esBeneficiosa = nHab.equals("Purificación") || nHab.equals("Muro de Piedra")
                   || nHab.equals("Luz Sagrada");
 
-              java.util.ArrayList<Personaje> vivosObj = new java.util.ArrayList<>();
+              ArrayList<Personaje> vivosObj = new ArrayList<>();
               System.out.println("--- Elige Objetivo ---");
               if (esBeneficiosa) {
                 System.out.println("Aliados:");
@@ -747,7 +750,7 @@ public class MotorCombate {
           if (numeroObjeto > 0 && numeroObjeto <= inventarioGrupo.size()) {
             Consumible objetoElegido = inventarioGrupo.get(numeroObjeto - 1);
 
-            java.util.ArrayList<Personaje> vivosObj = new java.util.ArrayList<>();
+            ArrayList<Personaje> vivosObj = new ArrayList<>();
             System.out.println("--- Elige Objetivo ---");
             System.out.println("Aliados:");
             for (int j = 0; j < aliados.length; j++) {
@@ -779,7 +782,7 @@ public class MotorCombate {
         p.defenderse();
         turnoCompletado = true;
       } else if (opt == 5) {
-        java.util.ArrayList<Personaje> vivosObj = new java.util.ArrayList<>();
+        ArrayList<Personaje> vivosObj = new ArrayList<>();
         System.out.println("--- Elige a quién Inspeccionar ---");
         for (int j = 0; j < aliados.length; j++) {
           if (aliados[j].estaVivo()) {

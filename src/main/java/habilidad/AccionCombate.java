@@ -19,6 +19,7 @@ public abstract class AccionCombate {
 	protected int dadosCaras; // Número de caras del tipo de dado usado para el daño
 	protected Estadistica estadisticaClave; // Estadística principal que escala el potencial de la habilidad
 	protected Random dado = new Random();
+	protected Personaje propietario; // Personaje al que está vinculada la habilidad
 
 	/**
 	 * Estadísticas del personaje que pueden potenciar el efecto de la habilidad.
@@ -70,16 +71,16 @@ public abstract class AccionCombate {
 	 */
 	protected int getModificador(Personaje p) {
 		switch (estadisticaClave) {
-		case FUERZA:
-			return p.getFuerza();
-		case DESTREZA:
-			return p.getDestreza();
-		case INTELIGENCIA:
-			return p.getInteligencia();
-		case CONSTITUCION:
-			return p.getConstitucion();
-		default:
-			return 0;
+			case FUERZA:
+				return p.getFuerza();
+			case DESTREZA:
+				return p.getDestreza();
+			case INTELIGENCIA:
+				return p.getInteligencia();
+			case CONSTITUCION:
+				return p.getConstitucion();
+			default:
+				return 0;
 		}
 	}
 
@@ -92,6 +93,16 @@ public abstract class AccionCombate {
 	 * @param objetivo Enemigo o aliado al que se le lanza la habilidad.
 	 */
 	public void ejecutar(Personaje usuario, Personaje objetivo) {
+		// Vincula la habilidad al primer usuario que la use, si no tiene dueño
+		if (this.propietario == null) {
+			this.propietario = usuario;
+		}
+
+		// Prohíbe usar la habilidad si el usuario no es el propietario
+		if (this.propietario != usuario) {
+			return;
+		}
+
 		if (!usuario.tieneRecursos(costeEnergia, costeMana)) {
 			System.out.println(usuario.getNombre() + " no tiene suficientes recursos.");
 			return;
