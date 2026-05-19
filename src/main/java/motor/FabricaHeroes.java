@@ -25,9 +25,9 @@ public class FabricaHeroes {
 		Guerrero thorin = new Guerrero("Thorin", Raza.ENANO, 16, 10, 16, 8, 12);
 		thorin.equiparArmadura(CategoriaArmadura.PESADA);
 		thorin.equiparArma(armeria.get("Hacha"));
-		thorin.agregarHabilidad(new GolpeSanguinario());
-		thorin.agregarHabilidad(new Rompecraneos());
-		thorin.agregarHabilidad(new TajoSismico());
+		thorin.agregarHabilidad(new HabilidadHibridaGenerica(TipoHabilidadHibridaSimple.GOLPE_SANGUINARIO));
+		thorin.agregarHabilidad(new HabilidadFisicaGenerica(TipoHabilidadFisicaSimple.ROMPECRANEOS));
+		thorin.agregarHabilidad(new HabilidadFisicaGenerica(TipoHabilidadFisicaSimple.TAJO_SISMICO));
 		thorin.agregarHabilidad(new Ejecucion());
 		equipo.add(thorin);
 
@@ -36,9 +36,9 @@ public class FabricaHeroes {
 		elara.equiparArmadura(CategoriaArmadura.LIGERA);
 		elara.equiparArma(armeria.get("Ballesta"));
 		elara.agregarHabilidad(new BolaFuego());
-		elara.agregarHabilidad(new RafagaGlacial());
+		elara.agregarHabilidad(new HechizoMagicoGenerico(TipoHechizoMagicoSimple.RAFAGA_GLACIAL));
 		elara.agregarHabilidad(new Ventisca());
-		elara.agregarHabilidad(new ToqueVampirico());
+		elara.agregarHabilidad(new HabilidadHibridaGenerica(TipoHabilidadHibridaSimple.TOQUE_VAMPIRICO));
 		elara.agregarHabilidad(new Purificacion());
 		elara.agregarHabilidad(new RayoEncadenado());
 		equipo.add(elara);
@@ -47,10 +47,10 @@ public class FabricaHeroes {
 		Picaro vex = new Picaro("Vex", Raza.HUMANO, 10, 16, 10, 12, 14);
 		vex.equiparArmadura(CategoriaArmadura.LIGERA);
 		vex.equiparArma(armeria.get("Daga"));
-		vex.agregarHabilidad(new HojaPonzoñosa());
+		vex.agregarHabilidad(new HabilidadFisicaGenerica(TipoHabilidadFisicaSimple.HOJA_PONZONOSA));
 		vex.agregarHabilidad(new AtaqueFurtivo());
-		vex.agregarHabilidad(new TiroRodilla());
-		vex.agregarHabilidad(new LluviaFlechas());
+		vex.agregarHabilidad(new HabilidadFisicaGenerica(TipoHabilidadFisicaSimple.TIRO_RODILLA));
+		vex.agregarHabilidad(new HabilidadFisicaGenerica(TipoHabilidadFisicaSimple.LLUVIA_FLECHAS));
 		equipo.add(vex);
 
 		// --- MARCUS (PALADIN) ---
@@ -70,17 +70,17 @@ public class FabricaHeroes {
 		Brujo kallista = new Brujo("Kallista", Raza.TIEFLING, 8, 14, 14, 18, 14);
 		kallista.equiparArmadura(CategoriaArmadura.LIGERA);
 		kallista.equiparArma(armeria.get("Ballesta"));
-		kallista.agregarHabilidad(new ToqueVampirico());
+		kallista.agregarHabilidad(new HabilidadHibridaGenerica(TipoHabilidadHibridaSimple.TOQUE_VAMPIRICO));
 		kallista.agregarHabilidad(new NubeToxica());
-		kallista.agregarHabilidad(new ExplosionArcana());
+		kallista.agregarHabilidad(new HabilidadHibridaGenerica(TipoHabilidadHibridaSimple.EXPLOSION_ARCANA));
 		return kallista;
 	}
 
 	public static Personaje crearMonjeKwai() {
 		Monje kwai = new Monje("Kwai Chang", Raza.HUMANO, 14, 16, 12, 10, 12);
 		// Requisito de la propia clase Monje: No portan armaduras pesadas ni ligeras
-		kwai.agregarHabilidad(new FintaRapida());
-		kwai.agregarHabilidad(new GolpeSanguinario());
+		kwai.agregarHabilidad(new HabilidadFisicaGenerica(TipoHabilidadFisicaSimple.FINTA_RAPIDA));
+		kwai.agregarHabilidad(new HabilidadHibridaGenerica(TipoHabilidadHibridaSimple.GOLPE_SANGUINARIO));
 		return kwai;
 	}
 

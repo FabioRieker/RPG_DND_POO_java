@@ -8,7 +8,7 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>Proyecto RPG DND</name>
-    <description>Juego RPG basado en D&amp;D desarrollado en Java orientado a objetos</description>
+    <description>Juego RPG basado en DND desarrollado en Java orientado a objetos</description>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
