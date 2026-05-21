@@ -3,14 +3,14 @@ package estado;
 import personajes.Personaje;
 
 /**
- * Estado beneficioso que aumenta temporalmente el poder de ataque físico.
+ * Estado beneficioso que aumenta temporalmente el poder de ataque fisico.
  * 
  * @author Ricardo Crespo y Fabio Rieker
  */
 public class EstadoFuria extends Estado {
 
 	/**
-	 * Constructor básico para este buff pasivo.
+	 * Constructor basico para este buff pasivo.
 	 * 
 	 * @param turnos   Turnos activo.
 	 * @param potencia Cantidad de daño bruto que añade pasivamente.
@@ -20,9 +20,9 @@ public class EstadoFuria extends Estado {
 	}
 
 	/**
-	 * Anuncia la condición alterada mediante un mensaje en rojo.
+	 * Anuncia la condicion alterada mediante un mensaje en rojo.
 	 * 
-	 * @param obj Personaje sobre el que actúa.
+	 * @param obj Personaje sobre el que actua.
 	 */
 	@Override
 	public void alPasarTurnoEstado(Personaje obj) {
@@ -31,7 +31,7 @@ public class EstadoFuria extends Estado {
 	}
 
 	/**
-	 * Devuelve el bonus numérico de ataque mientras está activa.
+	 * Devuelve el bonus numerico de ataque mientras esta activa.
 	 * 
 	 * @return La cifra entera de potencia extra a sumar.
 	 */

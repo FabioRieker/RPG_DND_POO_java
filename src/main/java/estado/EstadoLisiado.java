@@ -4,7 +4,7 @@ import personajes.Personaje;
 
 /**
  * Estado perjudicial que impide al personaje realizar acciones durante su
- * turno. Representa daños graves que le impiden luchar momentáneamente.
+ * turno. Representa daños graves que le impiden luchar momentaneamente.
  * 
  * @author Ricardo Crespo y Fabio Rieker
  */
@@ -13,7 +13,7 @@ public class EstadoLisiado extends Estado {
 	/**
 	 * Crea el debuff de estado lisiado.
 	 * 
-	 * @param turnos   Duración en turnos del estado alterado.
+	 * @param turnos   Duracion en turnos del estado alterado.
 	 * @param potencia No se usa para daño en este estado (suele ser 0).
 	 */
 	public EstadoLisiado(int turnos, int potencia) {
@@ -21,7 +21,7 @@ public class EstadoLisiado extends Estado {
 	}
 
 	/**
-	 * Muestra un aviso de que el personaje sigue bajo efecto de lesión.
+	 * Muestra un aviso de que el personaje sigue bajo efecto de lesion.
 	 * 
 	 * @param obj El personaje afectado.
 	 */
@@ -32,7 +32,7 @@ public class EstadoLisiado extends Estado {
 	}
 
 	/**
-	 * Muestra un aviso indicando que el personaje se curó del estado.
+	 * Muestra un aviso indicando que el personaje se curo del estado.
 	 * 
 	 * @param obj El personaje afectado anteriormente.
 	 */

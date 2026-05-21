@@ -4,7 +4,7 @@ import personajes.Personaje;
 import java.util.ArrayList;
 
 /**
- * Magia eléctrica que causa daño pero su verdadero poder es afectar a múltiples
+ * Magia electrica que causa daño pero su verdadero poder es afectar a multiples
  * objetivos a la vez.
  * 
  * @author Ricardo Crespo y Fabio Rieker
@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class RayoEncadenado extends HechizoMagico {
 
 	/**
-	 * Construye los costes y características del Rayo Encadenado.
+	 * Construye los costes y caracteristicas del Rayo Encadenado.
 	 */
 	public RayoEncadenado() {
 		super("Rayo Encadenado", 30, 2, 8, "MULTI");

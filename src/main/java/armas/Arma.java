@@ -4,7 +4,7 @@ import personajes.Personaje;
 import java.util.Random;
 
 /**
- * Clase que representa un arma genérica del juego. Se encarga de almacenar los
+ * Clase que representa un arma generica del juego. Se encarga de almacenar los
  * datos de daño, caras del dado y tipo de arma. Es la base para construir armas
  * cuerpo a cuerpo o a distancia.
  * 
@@ -19,10 +19,10 @@ public abstract class Arma {
 
 	/**
 	 * Define los atributos base compartidos por cualquier arma (daño y
-	 * clasificación).
+	 * clasificacion).
 	 * 
 	 * @param nombre        Nombre del arma (ej. "Espada de Madera").
-	 * @param cantidadDados Número de dados para la tirada de daño básico.
+	 * @param cantidadDados Numero de dados para la tirada de daño basico.
 	 * @param carasDado     Tipo de dado (de 6 caras, de 4 caras, etc).
 	 * @param categoria     Si el arma es a distancia o cuerpo a cuerpo.
 	 */
@@ -45,7 +45,7 @@ public abstract class Arma {
 	}
 
 	/**
-	 * Consulta la categoría a la que pertenece el arma.
+	 * Consulta la categoria a la que pertenece el arma.
 	 * 
 	 * @return El tipo de distancia operativa del arma.
 	 */
@@ -71,18 +71,18 @@ public abstract class Arma {
 	 * 
 	 * @param atacante Personaje que ataca y usa el arma actual.
 	 * @param defensor Personaje objetivo del daño.
-	 * @return Daño numérico calculado.
+	 * @return daño numerico calculado.
 	 */
 	public abstract int calcularDaño(Personaje atacante, Personaje defensor);
 
 	/**
 	 * Aplica efectos secundarios especiales al impactar.
 	 * 
-	 * @param defensor Personaje que recibe el golpe y la posible alteración de
+	 * @param defensor Personaje que recibe el golpe y la posible alteracion de
 	 *                 estado.
 	 */
 	public void aplicarEfectosEspeciales(Personaje defensor) {
-		// Método opcional para aplicar estados alterados (no hacerlo abstracto previene
-		// sobrecargar armas genéricas)
+		// Metodo opcional para aplicar estados alterados (no hacerlo abstracto previene
+		// sobrecargar armas genericas)
 	}
 }

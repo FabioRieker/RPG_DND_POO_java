@@ -5,8 +5,8 @@ import estado.EstadoFuria;
 import java.util.ArrayList;
 
 /**
- * Habilidades que usan tanto energía como maná al mismo tiempo. Útiles para
- * clases híbridas como el Paladín o el Bardo.
+ * Habilidades que usan tanto energia como mana al mismo tiempo. Utiles para
+ * clases hibridas como el Paladin o el Bardo.
  * 
  * @author Ricardo Crespo y Fabio Rieker
  */
@@ -15,15 +15,15 @@ public class HabilidadHibrida extends AccionCombate {
 	private Efecto efecto;
 
 	/**
-	 * Configura el ataque mezclado con magia y fuerza física.
+	 * Configura el ataque mezclado con magia y fuerza fisica.
 	 * 
 	 * @param nombre        Nombre del conjuro marcial.
-	 * @param costeEnergia  Resistencia aeróbica gastada.
-	 * @param costeMana     Puntos de energía espiritual gastados.
+	 * @param costeEnergia  Resistencia aerobica gastada.
+	 * @param costeMana     Puntos de energia espiritual gastados.
 	 * @param dadosCantidad Multiplicador de la tirada.
-	 * @param dadosCaras    Limite máximo del daño.
+	 * @param dadosCaras    Limite maximo del daño.
 	 * @param estadistica   Puntos de atributo con los que escala.
-	 * @param efecto        Si este ataque cura, bufón o roba vida.
+	 * @param efecto        Si este ataque cura, bufon o roba vida.
 	 */
 	public HabilidadHibrida(String nombre, int costeEnergia, int costeMana, int dadosCantidad, int dadosCaras,
 			Estadistica estadistica, Efecto efecto) {
@@ -32,11 +32,11 @@ public class HabilidadHibrida extends AccionCombate {
 	}
 
 	/**
-	 * Se ejecuta al aceptar que el proyectil híbrido ha acertado a su blanco.
+	 * Se ejecuta al aceptar que el proyectil hibrido ha acertado a su blanco.
 	 * 
 	 * @param usuario  Tirador del hechizo.
 	 * @param objetivo Recepcionista del daño.
-	 * @param bono     Adicional por estadísticas del lanzador.
+	 * @param bono     Adicional por estadisticas del lanzador.
 	 */
 	@Override
 	protected void aplicarEfectoImpacto(Personaje usuario, Personaje objetivo, int bono) {

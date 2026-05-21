@@ -4,14 +4,14 @@ import personajes.Personaje;
 import java.util.ArrayList;
 
 /**
- * Grito híbrido que inspira a los aliados y aumenta su ataque.
+ * Grito hibrido que inspira a los aliados y aumenta su ataque.
  * 
  * @author Ricardo Crespo y Fabio Rieker
  */
 public class GritoGuerra extends HabilidadHibrida {
 
 	/**
-	 * Construye los costes y características del Grito de Guerra.
+	 * Construye los costes y caracteristicas del Grito de Guerra.
 	 */
 	public GritoGuerra() {
 		super("Grito de Guerra", 20, 15, 0, 0, Estadistica.FUERZA, Efecto.NINGUNO);

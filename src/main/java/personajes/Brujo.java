@@ -4,7 +4,7 @@ import armas.CategoriaArma;
 import armaduras.CategoriaArmadura;
 
 /**
- * Clase que representa a un héroe de tipo brujo. Especialista en magia ofensiva
+ * Clase que representa a un heroe de tipo brujo. Especialista en magia ofensiva
  * y estados alterados.
  * 
  * @author Ricardo Crespo y Fabio Rieker
@@ -14,11 +14,11 @@ public class Brujo extends Personaje {
 	/**
 	 * Crea un personaje brujo y le asigna sus limitaciones de equipo.
 	 * 
-	 * @param nombre  Nombre del héroe.
+	 * @param nombre  Nombre del heroe.
 	 * @param raza    Raza a la que pertenece.
 	 * @param fue     Fuerza base.
 	 * @param des     Destreza base.
-	 * @param con     Constitución base.
+	 * @param con     Constitucion base.
 	 * @param intel   Inteligencia base.
 	 * @param defBase Defensa inicial.
 	 */

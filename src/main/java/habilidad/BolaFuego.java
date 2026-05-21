@@ -11,7 +11,7 @@ import estado.EstadoQuemadura;
 public class BolaFuego extends HechizoMagico {
 
 	/**
-	 * Construye los costes y características de Bola de Fuego.
+	 * Construye los costes y caracteristicas de Bola de Fuego.
 	 */
 	public BolaFuego() {
 		super("Bola de Fuego", 25, 3, 6, "QUEMA");
@@ -21,7 +21,7 @@ public class BolaFuego extends HechizoMagico {
 	protected void aplicarEfectoImpacto(Personaje usuario, Personaje objetivo, int bono) {
 		int daño = tirarDados() + bono;
 
-		// Sinergia entre Daño de Fuego y Veneno
+		// Sinergia entre daño de Fuego y Veneno
 		if (objetivo.tieneEstado("Veneno")) {
 			daño *= 2;
 			System.out.println("¡SINERGIA! Fuego contra Veneno - DAÑO x2!");

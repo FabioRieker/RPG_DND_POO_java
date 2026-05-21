@@ -11,16 +11,16 @@ import personajes.Personaje;
 public class EstadoAturdimiento extends Estado {
 
 	/**
-	 * Crea un estado de aturdimiento genérico.
+	 * Crea un estado de aturdimiento generico.
 	 * 
-	 * @param turnos Cantidad de turnos que el personaje no podrá moverse.
+	 * @param turnos Cantidad de turnos que el personaje no podra moverse.
 	 */
 	public EstadoAturdimiento(int turnos) {
 		super("Aturdimiento", turnos, 0);
 	}
 
 	/**
-	 * Imprime por pantalla un aviso de la parálisis.
+	 * Imprime por pantalla un aviso de la paralisis.
 	 * 
 	 * @param obj Personaje bajo los efectos del aturdimiento.
 	 */
@@ -31,9 +31,9 @@ public class EstadoAturdimiento extends Estado {
 	}
 
 	/**
-	 * Imprime por pantalla el final de la parálisis.
+	 * Imprime por pantalla el final de la paralisis.
 	 * 
-	 * @param obj Personaje que se recupera de la condición.
+	 * @param obj Personaje que se recupera de la condicion.
 	 */
 	@Override
 	public void alTerminarEstado(Personaje obj) {

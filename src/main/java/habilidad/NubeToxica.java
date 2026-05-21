@@ -5,14 +5,14 @@ import estado.EstadoVeneno;
 import java.util.ArrayList;
 
 /**
- * Magia nociva de área que hace un poco de daño inicial pero aplica Veneno.
+ * Magia nociva de area que hace un poco de daño inicial pero aplica Veneno.
  * 
  * @author Ricardo Crespo y Fabio Rieker
  */
 public class NubeToxica extends HechizoMagico {
 
 	/**
-	 * Construye los costes y características de la Nube Tóxica.
+	 * Construye los costes y caracteristicas de la Nube Toxica.
 	 */
 	public NubeToxica() {
 		super("Nube Tóxica", 35, 1, 6, null);
@@ -59,7 +59,7 @@ public class NubeToxica extends HechizoMagico {
 		System.out.println("  ¡IMPACTO! " + objetivo.getNombre() + " recibe " + daño + " de daño.");
 		objetivo.recibirDaño(daño, false);
 
-		// Solo aplica veneno si impactó
+		// Solo aplica veneno si impacto
 		if (!objetivo.tieneEstado("Veneno")) {
 			objetivo.aplicarEstado(new EstadoVeneno(3, 5));
 			System.out.println("  -- ¡" + objetivo.getNombre() + " está envenenado!");

@@ -22,11 +22,11 @@ public class ArmaADistancia extends Arma {
 	}
 
 	/**
-	 * Añade el modificador de Destreza al resultado del dado base.
+	 * añade el modificador de Destreza al resultado del dado base.
 	 * 
 	 * @param atacante Personaje que ejecuta el letal.
 	 * @param defensor Personaje objetivo del disparo.
-	 * @return Daño procesado final.
+	 * @return daño procesado final.
 	 */
 	@Override
 	public int calcularDaño(Personaje atacante, Personaje defensor) {

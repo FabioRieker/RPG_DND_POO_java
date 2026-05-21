@@ -9,7 +9,7 @@ import personajes.Personaje;
  */
 public class AtaqueFurtivo extends HabilidadFisica {
 	/**
-	 * Construye los costes y características del Ataque Furtivo.
+	 * Construye los costes y caracteristicas del Ataque Furtivo.
 	 */
 	public AtaqueFurtivo() {
 		super("Ataque Furtivo", 20, 1, 6, Estadistica.DESTREZA, null);
@@ -19,7 +19,7 @@ public class AtaqueFurtivo extends HabilidadFisica {
 	protected void aplicarEfectoImpacto(Personaje usuario, Personaje objetivo, int bono) {
 		int daño = tirarDados() + bono;
 
-		// Bonificación táctica: causa el doble de daño a objetivos aturdidos
+		// Bonificacion tactica: causa el doble de daño a objetivos aturdidos
 		if (objetivo.tieneEstado("Aturdimiento")) {
 			daño *= 2;
 			System.out.println("¡GOLPE CRÍTICO! Objetivo aturdido - DAÑO x2!");

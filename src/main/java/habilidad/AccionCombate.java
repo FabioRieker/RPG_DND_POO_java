@@ -4,8 +4,8 @@ import java.util.Random;
 import personajes.Personaje;
 
 /**
- * Clase base para todas las habilidades del juego. Controla si cuestan energía
- * o maná, cuántos dados hay que tirar para ver el daño y con qué atributo
+ * Clase base para todas las habilidades del juego. Controla si cuestan energia
+ * o mana, cuantos dados hay que tirar para ver el daño y con que atributo
  * escalan.
  * 
  * @author Ricardo Crespo y Fabio Rieker
@@ -22,21 +22,21 @@ public abstract class AccionCombate {
 	protected Personaje propietario; // Personaje al que está vinculada la habilidad
 
 	/**
-	 * Estadísticas del personaje que pueden potenciar el efecto de la habilidad.
+	 * Estadisticas del personaje que pueden potenciar el efecto de la habilidad.
 	 */
 	public enum Estadistica {
 		FUERZA, DESTREZA, INTELIGENCIA, CONSTITUCION
 	}
 
 	/**
-	 * Prepara la acción de combate con sus costes y estadísticas base.
+	 * Prepara la accion de combate con sus costes y estadisticas base.
 	 * 
 	 * @param nombre           Nombre de la habilidad.
-	 * @param costeEnergia     Puntos de energía (SP) que consume. 0 si no usa.
-	 * @param costeMana        Puntos de maná (MP) que consume. 0 si no usa.
-	 * @param dadosCantidad    Número de dados a tirar para calcular el daño base.
+	 * @param costeEnergia     Puntos de energia (SP) que consume. 0 si no usa.
+	 * @param costeMana        Puntos de mana (MP) que consume. 0 si no usa.
+	 * @param dadosCantidad    Numero de dados a tirar para calcular el daño base.
 	 * @param dadosCaras       Caras de cada dado (ej. 6 para un dado normal).
-	 * @param estadisticaClave Estadística del personaje que mejora el ataque.
+	 * @param estadisticaClave Estadistica del personaje que mejora el ataque.
 	 */
 	public AccionCombate(String nombre, int costeEnergia, int costeMana, int dadosCantidad, int dadosCaras,
 			Estadistica estadisticaClave) {
@@ -67,7 +67,7 @@ public abstract class AccionCombate {
 	 * para potenciar la habilidad.
 	 * 
 	 * @param p Personaje que usa la habilidad.
-	 * @return El valor de su estadística clave.
+	 * @return El valor de su estadistica clave.
 	 */
 	protected int getModificador(Personaje p) {
 		switch (estadisticaClave) {
@@ -93,12 +93,12 @@ public abstract class AccionCombate {
 	 * @param objetivo Enemigo o aliado al que se le lanza la habilidad.
 	 */
 	public void ejecutar(Personaje usuario, Personaje objetivo) {
-		// Vincula la habilidad al primer usuario que la use, si no tiene dueño
+		// Vincula la habilidad al primer usuario que la use, si no tiene dueno
 		if (this.propietario == null) {
 			this.propietario = usuario;
 		}
 
-		// Prohíbe usar la habilidad si el usuario no es el propietario
+		// Prohibe usar la habilidad si el usuario no es el propietario
 		if (this.propietario != usuario) {
 			return;
 		}
@@ -127,7 +127,7 @@ public abstract class AccionCombate {
 	}
 
 	/**
-	 * Cada habilidad concreta define aquí qué hace exactamente cuando acierta al
+	 * Cada habilidad concreta define aqui que hace exactamente cuando acierta al
 	 * rival.
 	 * 
 	 * @param usuario  Personaje que ha lanzado el ataque.

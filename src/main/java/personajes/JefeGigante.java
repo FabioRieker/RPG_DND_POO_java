@@ -13,12 +13,12 @@ import estado.EstadoAturdimiento;
 public class JefeGigante extends Jefe {
 
 	/**
-	 * Crea un Jefe Gigante con estadísticas base.
+	 * Crea un Jefe Gigante con estadisticas base.
 	 * 
 	 * @param nombre  Nombre del gigante.
 	 * @param fue     Fuerza.
 	 * @param des     Destreza.
-	 * @param con     Constitución.
+	 * @param con     Constitucion.
 	 * @param intel   Inteligencia.
 	 * @param defBase Defensa inicial sin equipamiento.
 	 */
@@ -30,7 +30,7 @@ public class JefeGigante extends Jefe {
 	}
 
 	/**
-	 * Pisa fuerte el suelo, dañando e intentando aturdir al rival.
+	 * Pisa fuerte el suelo, danando e intentando aturdir al rival.
 	 * 
 	 * @param objetivo Personaje al que ataca.
 	 */

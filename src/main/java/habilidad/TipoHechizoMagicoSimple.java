@@ -1,7 +1,7 @@
 package habilidad;
 
 /**
- * Enumerado que almacena los datos de los hechizos mágicos simples.
+ * Enumerado que almacena los datos de los hechizos magicos simples.
  */
 public enum TipoHechizoMagicoSimple {
 	RAFAGA_GLACIAL("Ráfaga Glacial", 20, 2, 6, "CONGELA");

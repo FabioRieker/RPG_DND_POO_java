@@ -4,7 +4,7 @@ import armas.CategoriaArma;
 import armaduras.CategoriaArmadura;
 
 /**
- * Clase que representa a un monstruo genérico. Puede equipar cualquier arma
+ * Clase que representa a un monstruo generico. Puede equipar cualquier arma
  * pero no usa armaduras.
  * 
  * @author Ricardo Crespo y Fabio Rieker
@@ -18,7 +18,7 @@ public class Monstruo extends Personaje {
 	 * @param raza    Raza a la que pertenece.
 	 * @param fue     Fuerza base.
 	 * @param des     Destreza base.
-	 * @param con     Constitución base.
+	 * @param con     Constitucion base.
 	 * @param intel   Inteligencia base.
 	 * @param defBase Defensa inicial.
 	 */

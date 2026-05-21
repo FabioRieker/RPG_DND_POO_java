@@ -3,7 +3,7 @@ package estado;
 import personajes.Personaje;
 
 /**
- * Clase base abstracta que centraliza la lógica de los estados alterados.
+ * Clase base abstracta que centraliza la logica de los estados alterados.
  * Permite que los personajes sufran efectos a lo largo del tiempo.
  * 
  * @author Ricardo Crespo y Fabio Rieker
@@ -17,9 +17,9 @@ public abstract class Estado {
 	 * Constructor base para crear un estado alterado.
 	 * 
 	 * @param nombre   Nombre descriptivo del estado.
-	 * @param turnos   Número de turnos que permanecerá activo.
-	 * @param potencia Valor numérico del efecto (daño por turno, curación o
-	 *                 bonificación).
+	 * @param turnos   Numero de turnos que permanecera activo.
+	 * @param potencia Valor numerico del efecto (daño por turno, curacion o
+	 *                 bonificacion).
 	 */
 	public Estado(String nombre, int turnos, int potencia) {
 		this.nombre = nombre;
@@ -28,7 +28,7 @@ public abstract class Estado {
 	}
 
 	/**
-	 * Se ejecuta una vez por turno mientras el estado está activo.
+	 * Se ejecuta una vez por turno mientras el estado esta activo.
 	 * 
 	 * @param obj El personaje que sufre el efecto.
 	 */
@@ -47,12 +47,12 @@ public abstract class Estado {
 	 * @return true si quedan turnos restantes, false si ha caducado.
 	 */
 	public boolean estaActivo() {
-		// Un estado caduca cuando su duración baja a cero
+		// Un estado caduca cuando su duracion baja a cero
 		return turnosRestantes > 0;
 	}
 
 	/**
-	 * Resta un turno a la duración total del estado.
+	 * Resta un turno a la duracion total del estado.
 	 */
 	public void reducirTurno() {
 		turnosRestantes--;

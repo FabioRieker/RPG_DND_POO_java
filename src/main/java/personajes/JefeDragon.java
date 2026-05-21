@@ -5,19 +5,19 @@ import estado.EstadoQuemadura;
 import armaduras.CategoriaArmadura;
 
 /**
- * Jefe de tipo Dragón. Tiene mucha fuerza bruta y un aliento poderoso.
+ * Jefe de tipo Dragon. Tiene mucha fuerza bruta y un aliento poderoso.
  * 
  * @author Ricardo Crespo y Fabio Rieker
  */
 public class JefeDragon extends Jefe {
 
 	/**
-	 * Crea un Jefe Dragón con estadísticas base.
+	 * Crea un Jefe Dragon con estadisticas base.
 	 * 
-	 * @param nombre  Nombre del dragón.
+	 * @param nombre  Nombre del dragon.
 	 * @param fue     Fuerza.
 	 * @param des     Destreza.
-	 * @param con     Constitución.
+	 * @param con     Constitucion.
 	 * @param intel   Inteligencia.
 	 * @param defBase Defensa inicial sin equipamiento.
 	 */
@@ -35,7 +35,7 @@ public class JefeDragon extends Jefe {
 	 */
 	@Override
 	public void habilidadEspecial(Personaje objetivo) {
-		// Se unen los mensajes para darle más impacto narrativo
+		// Se unen los mensajes para darle mas impacto narrativo
 		System.out.println("\n¡" + nombre + " usa su Aliento de Dragón!");
 		System.out.println("¡Exhala una ráfaga de fuego destructor sobre " + objetivo.getNombre() + "!");
 

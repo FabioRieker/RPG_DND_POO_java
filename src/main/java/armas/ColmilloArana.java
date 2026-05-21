@@ -4,21 +4,21 @@ import personajes.Personaje;
 import estado.EstadoVeneno;
 
 /**
- * Arma legendaria que se obtiene como botín al derrotar a ciertos jefes. Aplica
+ * Arma legendaria que se obtiene como botin al derrotar a ciertos jefes. Aplica
  * daño extra y el estado alterado de veneno al golpear.
  * 
  * @author Ricardo Crespo y Fabio Rieker
  */
 public class ColmilloArana extends ArmaCuerpoACuerpo {
 	/**
-	 * Instancia el arma legendaria precargada con sus estadísticas inamovibles.
+	 * Instancia el arma legendaria precargada con sus estadisticas inamovibles.
 	 */
 	public ColmilloArana() {
 		super("Colmillo de Araña", 1, 4);
 	}
 
 	/**
-	 * Realiza la comprobación e inoculación del estado alterado Veneno sobre el
+	 * Realiza la comprobacion e inoculacion del estado alterado Veneno sobre el
 	 * receptor.
 	 * 
 	 * @param defensor Combatiente impactado por la cuchilla.

@@ -4,21 +4,21 @@ import armas.CategoriaArma;
 import armaduras.CategoriaArmadura;
 
 /**
- * Clase que representa a un héroe de tipo paladín. Es un personaje equilibrado
- * entre ataque físico y magia defensiva.
+ * Clase que representa a un heroe de tipo paladin. Es un personaje equilibrado
+ * entre ataque fisico y magia defensiva.
  * 
  * @author Ricardo Crespo y Fabio Rieker
  */
 public class Paladin extends Personaje {
 
 	/**
-	 * Crea un personaje paladín y le asigna sus limitaciones de equipo.
+	 * Crea un personaje paladin y le asigna sus limitaciones de equipo.
 	 * 
-	 * @param nombre  Nombre del héroe.
+	 * @param nombre  Nombre del heroe.
 	 * @param raza    Raza a la que pertenece.
 	 * @param fue     Fuerza base.
 	 * @param des     Destreza base.
-	 * @param con     Constitución base.
+	 * @param con     Constitucion base.
 	 * @param intel   Inteligencia base.
 	 * @param defBase Defensa inicial.
 	 */

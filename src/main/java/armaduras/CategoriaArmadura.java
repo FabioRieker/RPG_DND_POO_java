@@ -1,8 +1,8 @@
 package armaduras;
 
 /**
- * Enumeración que define los tipos de defensa que se pueden equipar. Se utiliza
- * para calcular la protección base de cada personaje.
+ * Enumeracion que define los tipos de defensa que se pueden equipar. Se utiliza
+ * para calcular la proteccion base de cada personaje.
  * 
  * @author Ricardo Crespo y Fabio Rieker
  */
@@ -20,7 +20,7 @@ public enum CategoriaArmadura {
 	 * 
 	 * @param nombre   El nombre base de la armadura.
 	 * @param defensa  Puntos de defensa que añade.
-	 * @param destreza Penalización o bonificación de velocidad asociada al tipo de
+	 * @param destreza Penalizacion o bonificacion de velocidad asociada al tipo de
 	 *                 armadura.
 	 */
 	CategoriaArmadura(String nombre, int defensa, int destreza) {

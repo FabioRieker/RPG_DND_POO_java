@@ -11,7 +11,7 @@ import personajes.Personaje;
 public class ArmaCuerpoACuerpo extends Arma {
 
 	/**
-	 * Constructor para un arma diseñada para el combate cerrado.
+	 * Constructor para un arma disenada para el combate cerrado.
 	 * 
 	 * @param nombre        Nombre identificador.
 	 * @param cantidadDados Sumatorio de dados base.
@@ -23,17 +23,17 @@ public class ArmaCuerpoACuerpo extends Arma {
 	}
 
 	/**
-	 * Añade el modificador de Fuerza al daño de la tirada.
+	 * añade el modificador de Fuerza al daño de la tirada.
 	 * 
-	 * @param atacante Personaje que asesta el golpe físico.
+	 * @param atacante Personaje que asesta el golpe fisico.
 	 * @param defensor Personaje receptor del ataque.
-	 * @return Daño procesado final.
+	 * @return daño procesado final.
 	 */
 	@Override
 	public int calcularDaño(Personaje atacante, Personaje defensor) {
 		// Tirada de arma + Modificador de Fuerza
 		int dañoBase = tirarDados();
-		// Se divide para equilibrar las estadísticas generales
+		// Se divide para equilibrar las estadisticas generales
 		int bonoFuerza = atacante.getFuerza() / 2;
 		return dañoBase + bonoFuerza;
 	}

@@ -29,7 +29,7 @@ public class Bomba extends Consumible {
 	 */
 	@Override
 	public void usar(Personaje usuario, Personaje objetivo) {
-		// Verifica si todavía disponemos de bombas
+		// Verifica si todavia disponemos de bombas
 		if (cantidad <= 0) {
 			System.out.println(motor.MotorCombate.ANSI_AMARILLO + "[SISTEMA] No quedan " + nombre + "."
 					+ motor.MotorCombate.ANSI_RESET);

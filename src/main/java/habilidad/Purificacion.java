@@ -10,7 +10,7 @@ import personajes.Personaje;
 public class Purificacion extends HechizoMagico {
 
 	/**
-	 * Construye los costes y características del hechizo Purificación.
+	 * Construye los costes y caracteristicas del hechizo Purificacion.
 	 */
 	public Purificacion() {
 		super("Purificación", 15, 0, 0, null);

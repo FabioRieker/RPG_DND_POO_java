@@ -1,15 +1,15 @@
 package habilidad;
 
 /**
- * Clase genérica para representar hechizos mágicos que solo requieren
- * la asignación de sus estadísticas básicas sin lógica adicional.
+ * Clase generica para representar hechizos magicos que solo requieren
+ * la asignacion de sus estadisticas basicas sin logica adicional.
  */
 public class HechizoMagicoGenerico extends HechizoMagico {
 
 	/**
-	 * Construye un hechizo mágico usando los datos predefinidos en el enum.
+	 * Construye un hechizo magico usando los datos predefinidos en el enum.
 	 * 
-	 * @param tipo El tipo de hechizo mágico a instanciar.
+	 * @param tipo El tipo de hechizo magico a instanciar.
 	 */
 	public HechizoMagicoGenerico(TipoHechizoMagicoSimple tipo) {
 		super(

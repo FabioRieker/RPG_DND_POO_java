@@ -1,15 +1,15 @@
 package habilidad;
 
 /**
- * Clase genérica para representar habilidades híbridas que solo requieren
- * la asignación de sus estadísticas básicas sin lógica adicional.
+ * Clase generica para representar habilidades hibridas que solo requieren
+ * la asignacion de sus estadisticas basicas sin logica adicional.
  */
 public class HabilidadHibridaGenerica extends HabilidadHibrida {
 
 	/**
-	 * Construye una habilidad híbrida usando los datos predefinidos en el enum.
+	 * Construye una habilidad hibrida usando los datos predefinidos en el enum.
 	 * 
-	 * @param tipo El tipo de habilidad híbrida a instanciar.
+	 * @param tipo El tipo de habilidad hibrida a instanciar.
 	 */
 	public HabilidadHibridaGenerica(TipoHabilidadHibridaSimple tipo) {
 		super(

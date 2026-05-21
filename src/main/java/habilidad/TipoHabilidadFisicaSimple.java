@@ -1,8 +1,8 @@
 package habilidad;
 
 /**
- * Enumerado que almacena los datos de las habilidades físicas simples
- * (aquellas que no requieren lógica adicional o sobrescribir métodos).
+ * Enumerado que almacena los datos de las habilidades fisicas simples
+ * (aquellas que no requieren logica adicional o sobrescribir metodos).
  */
 public enum TipoHabilidadFisicaSimple {
 	FINTA_RAPIDA("Finta Rápida", 10, 1, 4, AccionCombate.Estadistica.DESTREZA, null),

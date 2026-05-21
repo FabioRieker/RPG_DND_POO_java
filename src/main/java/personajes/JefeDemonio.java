@@ -13,12 +13,12 @@ import estado.EstadoFuria;
 public class JefeDemonio extends Jefe {
 
 	/**
-	 * Crea un Jefe Demonio con estadísticas base.
+	 * Crea un Jefe Demonio con estadisticas base.
 	 * 
 	 * @param nombre  Nombre del demonio.
 	 * @param fue     Fuerza.
 	 * @param des     Destreza.
-	 * @param con     Constitución.
+	 * @param con     Constitucion.
 	 * @param intel   Inteligencia.
 	 * @param defBase Defensa inicial sin equipamiento.
 	 */
@@ -30,7 +30,7 @@ public class JefeDemonio extends Jefe {
 	}
 
 	/**
-	 * Realiza un ataque ígneo que ignora parte de la defensa rival. Aplica el
+	 * Realiza un ataque igneo que ignora parte de la defensa rival. Aplica el
 	 * estado Quemadura al objetivo.
 	 * 
 	 * @param objetivo Personaje al que se ataca.

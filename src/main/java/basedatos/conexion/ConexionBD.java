@@ -18,7 +18,7 @@ public class ConexionBD {
         try {
             if (conexion == null || conexion.isClosed()) {
                 conexion = DriverManager.getConnection(URL, USUARIO, PASSWORD);
-                System.out.println("Conexión a MySQL establecida.");
+                // System.out.println("Conexion a MySQL establecida.");
             }
         } catch (SQLException e) {
             System.err.println("Error de conexión: " + e.getMessage());

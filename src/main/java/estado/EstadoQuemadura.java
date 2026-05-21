@@ -11,9 +11,9 @@ import personajes.Personaje;
 public class EstadoQuemadura extends Estado {
 
 	/**
-	 * Creación genérica del debuff quemadura.
+	 * Creacion generica del debuff quemadura.
 	 * 
-	 * @param turnos   Longitud que tendrá el timer interno.
+	 * @param turnos   Longitud que tendra el timer interno.
 	 * @param potencia Puntos netos perdidos.
 	 */
 	public EstadoQuemadura(int turnos, int potencia) {
@@ -23,7 +23,7 @@ public class EstadoQuemadura extends Estado {
 	/**
 	 * Produce la quita de salud pasiva.
 	 * 
-	 * @param obj Sujeto de pruebas que se está quemando.
+	 * @param obj Sujeto de pruebas que se esta quemando.
 	 */
 	@Override
 	public void alPasarTurnoEstado(Personaje obj) {

@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Sirve para crear directamente a los héroes iniciales sin picarlos a mano en
- * el test. Les pone las estadísticas, armas, armaduras y habilidades a cada
+ * Sirve para crear directamente a los heroes iniciales sin picarlos a mano en
+ * el test. Les pone las estadisticas, armas, armaduras y habilidades a cada
  * uno.
  * 
  * @author Ricardo Crespo y Fabio Rieker

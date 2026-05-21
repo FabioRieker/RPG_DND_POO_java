@@ -6,7 +6,7 @@ import estado.EstadoCongelado;
 import estado.EstadoRenovar;
 
 /**
- * Las habilidades mágicas que gastan maná y dependen siempre de la Inteligencia
+ * Las habilidades magicas que gastan mana y dependen siempre de la Inteligencia
  * del atacante.
  * 
  * @author Ricardo Crespo y Fabio Rieker
@@ -18,11 +18,11 @@ public abstract class HechizoMagico extends AccionCombate {
 	/**
 	 * Define un embrujo para su uso en combate.
 	 * 
-	 * @param nombre        Nombre de la invocación mágica.
-	 * @param costeMana     Puntos de maná a pagar por usarse.
-	 * @param dadosCantidad Resistencia innata o poderío general.
-	 * @param dadosCaras    Potencia base para el cálculo de daño curación.
-	 * @param efecto        Si aplica congelación, regeneración o quemadura.
+	 * @param nombre        Nombre de la invocacion magica.
+	 * @param costeMana     Puntos de mana a pagar por usarse.
+	 * @param dadosCantidad Resistencia innata o poderio general.
+	 * @param dadosCaras    Potencia base para el calculo de daño curacion.
+	 * @param efecto        Si aplica congelacion, regeneracion o quemadura.
 	 */
 	public HechizoMagico(String nombre, int costeMana, int dadosCantidad, int dadosCaras, String efecto) {
 		super(nombre, 0, costeMana, dadosCantidad, dadosCaras, Estadistica.INTELIGENCIA);
@@ -30,13 +30,13 @@ public abstract class HechizoMagico extends AccionCombate {
 	}
 
 	/**
-	 * Se ejecuta tras un éxito tirando habilidad, impactando con fuerza mágica al
+	 * Se ejecuta tras un exito tirando habilidad, impactando con fuerza magica al
 	 * objetivo. Contiene la sinergia oculta al prender fuego a alguien envenenado.
 	 * 
 	 * @param usuario  El conjurador.
-	 * @param objetivo Quién recibe la magia (enemigo o a veces él mismo si es
+	 * @param objetivo Quien recibe la magia (enemigo o a veces el mismo si es
 	 *                 cura).
-	 * @param bono     Bonificación extra de inteligencia añadida.
+	 * @param bono     Bonificacion extra de inteligencia añadida.
 	 */
 	@Override
 	protected void aplicarEfectoImpacto(Personaje usuario, Personaje objetivo, int bono) {
@@ -60,7 +60,7 @@ public abstract class HechizoMagico extends AccionCombate {
 	}
 
 	/**
-	 * Aplica el respectivo estado alterado mágico que produce el hechizo.
+	 * Aplica el respectivo estado alterado magico que produce el hechizo.
 	 * 
 	 * @param objetivo Revisor de las dolencias.
 	 */

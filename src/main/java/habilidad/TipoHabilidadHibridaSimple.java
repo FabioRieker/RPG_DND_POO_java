@@ -1,7 +1,7 @@
 package habilidad;
 
 /**
- * Enumerado que almacena los datos de las habilidades híbridas simples.
+ * Enumerado que almacena los datos de las habilidades hibridas simples.
  */
 public enum TipoHabilidadHibridaSimple {
 	EXPLOSION_ARCANA("Explosión Arcana", 15, 15, 3, 8, AccionCombate.Estadistica.INTELIGENCIA, Efecto.NINGUNO),

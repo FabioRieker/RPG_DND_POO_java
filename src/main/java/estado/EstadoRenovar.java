@@ -4,16 +4,16 @@ import personajes.Personaje;
 
 /**
  * Estado beneficioso pasivo que restaura pequeñas cantidades de vida
- * automáticamente.
+ * automaticamente.
  * 
  * @author Ricardo Crespo y Fabio Rieker
  */
 public class EstadoRenovar extends Estado {
 
 	/**
-	 * Inicia la sanación en el tiempo.
+	 * Inicia la sanacion en el tiempo.
 	 * 
-	 * @param turnos   Cuántas veces curará.
+	 * @param turnos   Cuantas veces curara.
 	 * @param potencia La cantidad que se inyecta en vida de forma directa.
 	 */
 	public EstadoRenovar(int turnos, int potencia) {
@@ -34,7 +34,7 @@ public class EstadoRenovar extends Estado {
 	}
 
 	/**
-	 * Imprime la conclusión del tiempo activo de este buff.
+	 * Imprime la conclusion del tiempo activo de este buff.
 	 * 
 	 * @param obj Objetivo amigo seleccionado previamente.
 	 */

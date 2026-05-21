@@ -10,7 +10,7 @@ import personajes.Personaje;
 public class MuroPiedra extends HechizoMagico {
 
 	/**
-	 * Construye los costes y características del Muro de Piedra.
+	 * Construye los costes y caracteristicas del Muro de Piedra.
 	 */
 	public MuroPiedra() {
 		super("Muro de Piedra", 15, 0, 0, null);

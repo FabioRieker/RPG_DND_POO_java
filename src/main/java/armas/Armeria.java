@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Catálogo general que instancia y guarda todas las armas disponibles en el
- * juego. Permite buscar la configuración de un arma por su nombre a lo largo de
+ * Catalogo general que instancia y guarda todas las armas disponibles en el
+ * juego. Permite buscar la configuracion de un arma por su nombre a lo largo de
  * la aventura.
  * 
  * @author Ricardo Crespo y Fabio Rieker
@@ -14,7 +14,7 @@ public class Armeria {
 	private Map<String, Arma> listaArmas = new HashMap<>();
 
 	/**
-	 * Inicia el repertorio con las instancias de cada arma estándar del sistema.
+	 * Inicia el repertorio con las instancias de cada arma estandar del sistema.
 	 */
 	public Armeria() {
 		listaArmas.put("Espada", new ArmaCuerpoACuerpo("Espada Larga", 1, 8));
@@ -30,11 +30,11 @@ public class Armeria {
 	}
 
 	/**
-	 * Recupera un arma estática o devuelve una instancia única de arma legendaria.
+	 * Recupera un arma estatica o devuelve una instancia unica de arma legendaria.
 	 * 
 	 * @param nombre Entrada exacta de texto con el nombre del modelo de arma.
-	 * @return Objeto físico del arma demandada.
-	 * @throws IllegalArgumentException si la búsqueda no encuentra coinicidencias.
+	 * @return Objeto fisico del arma demandada.
+	 * @throws IllegalArgumentException si la busqueda no encuentra coinicidencias.
 	 */
 	public Arma get(String nombre) {
 		// Distinguir objetos legendarios para devolver su clase personalizada
@@ -43,10 +43,10 @@ public class Armeria {
 		if (nombre.equals("Colmillo de Araña"))
 			return new ColmilloArana();
 
-		// Despachar una copia desde el catálogo de armas comunes
+		// Despachar una copia desde el catalogo de armas comunes
 		Arma armaEncontrada = listaArmas.get(nombre);
 
-		// Lanzar una excepción de advertencia si la cadena de texto no existe
+		// Lanzar una excepcion de advertencia si la cadena de texto no existe
 		if (armaEncontrada == null) {
 			throw new IllegalArgumentException("Arma no existe en la armeria: " + nombre);
 		}

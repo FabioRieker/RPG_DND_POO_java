@@ -10,8 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Clase base para todos los personajes del juego (héroes y enemigos). Define
- * sus atributos, equipo, recursos y acciones básicas en combate.
+ * Clase base para todos los personajes del juego (heroes y enemigos). Define
+ * sus atributos, equipo, recursos y acciones basicas en combate.
  * 
  * @author Ricardo Crespo y Fabio Rieker
  */
@@ -48,7 +48,7 @@ public abstract class Personaje {
 	 * @param tipoClase Rol o clase principal (ej. Guerrero, Jefe).
 	 * @param fue       Puntos iniciales de Fuerza.
 	 * @param des       Puntos iniciales de Destreza.
-	 * @param con       Puntos iniciales de Constitución.
+	 * @param con       Puntos iniciales de Constitucion.
 	 * @param intel     Puntos iniciales de Inteligencia.
 	 * @param defBase   Defensa pura inicial sin armaduras.
 	 */
@@ -63,7 +63,7 @@ public abstract class Personaje {
 		this.defensaBase = defBase;
 		this.vivo = true;
 
-		// Fórmulas de recursos adaptadas de D&D
+		// Formulas de recursos adaptadas de D&D
 		this.vidaMax = (this.constitucion * 3) + 25;
 		this.vidaActual = this.vidaMax;
 		this.manaMax = (this.inteligencia * 3) + 15;
@@ -77,9 +77,9 @@ public abstract class Personaje {
 		this.mensajePreparacion = "está preparándose...";
 	}
 
-	// --- SECCIÓN: INFORMACIÓN ---
+	// --- SECCION: INFORMACION ---
 	/**
-	 * Muestra toda la ficha de estadísticas del personaje en la consola.
+	 * Muestra toda la ficha de estadisticas del personaje en la consola.
 	 */
 	public void mostrarInfo() {
 		String B = motor.MotorCombate.ANSI_BEIGE;
@@ -144,7 +144,7 @@ public abstract class Personaje {
 
 	/**
 	 * Imprime una pequeña barra de vida y el estado del personaje. Pensado para
-	 * usarse rápido durante el combate.
+	 * usarse rapido durante el combate.
 	 */
 	public void mostrarInfoBreve() {
 		int celdasTotales = 10;
@@ -175,7 +175,7 @@ public abstract class Personaje {
 				+ motor.MotorCombate.ANSI_RESET);
 	}
 
-	// --- SECCIÓN: EQUIPO ---
+	// --- SECCION: EQUIPO ---
 	/**
 	 * Permite que el personaje equipe un arma si su clase lo permite.
 	 * 
@@ -214,7 +214,7 @@ public abstract class Personaje {
 		return this.armasPermitidas;
 	}
 
-	// --- SECCIÓN: ESTADÍSTICAS Y RECURSOS ---
+	// --- SECCION: ESTADISTICAS Y RECURSOS ---
 	public int getDefensaTotal() {
 		int total = defensaBase + armaduraEquipada.bonoDefensa;
 		if (this.posturaDefensiva) {
@@ -273,7 +273,7 @@ public abstract class Personaje {
 	/**
 	 * Comprueba si el personaje tiene puntos de vida.
 	 * 
-	 * @return true si tiene más de 0 HP.
+	 * @return true si tiene mas de 0 HP.
 	 */
 	public boolean estaVivo() {
 		return this.vidaActual > 0;
@@ -302,7 +302,7 @@ public abstract class Personaje {
 	}
 
 	/**
-	 * Cura vida al personaje sin sobrepasar su máximo de puntos.
+	 * Cura vida al personaje sin sobrepasar su maximo de puntos.
 	 * 
 	 * @param cantidad Puntos de vida a sumar.
 	 */
@@ -316,9 +316,9 @@ public abstract class Personaje {
 	}
 
 	/**
-	 * Restaura maná y energía al mismo tiempo.
+	 * Restaura mana y energia al mismo tiempo.
 	 * 
-	 * @param cantidad Puntos a rellenar en ambas estadísticas.
+	 * @param cantidad Puntos a rellenar en ambas estadisticas.
 	 */
 	public void recuperarRecursos(int cantidad) {
 		this.energiaActual += cantidad;
@@ -342,22 +342,30 @@ public abstract class Personaje {
 		this.manaActual -= mana;
 	}
 
-	// --- SECCIÓN: COMBATE ---
+	// le pone la vida que tenia guardada al cargar la partida
+	public void cargarEstadoVital(int vida, int mana, int energia) {
+		this.vidaActual = Math.max(0, vida);
+		this.manaActual = Math.max(0, mana);
+		this.energiaActual = Math.max(0, energia);
+		this.vivo = (this.vidaActual > 0);
+	}
+
+	// --- SECCION: COMBATE ---
 	/**
-	 * Realiza un ataque físico básico contra un objetivo. Si tira un 20 en un dado
-	 * virtual, es un golpe crítico y hace el doble de daño.
+	 * Realiza un ataque fisico basico contra un objetivo. Si tira un 20 en un dado
+	 * virtual, es un golpe critico y hace el doble de daño.
 	 * 
 	 * @param objetivo Enemigo que recibe el ataque.
 	 */
 	public void atacar(Personaje objetivo) {
-		// Comprueba que ambos personajes estén con vida
+		// Comprueba que ambos personajes esten con vida
 		if (this.vivo == false || objetivo.estaVivo() == false) {
 			return;
 		}
 
-		// Comprueba si sufre algún estado que le impide atacar
+		// Comprueba si sufre algun estado que le impide atacar
 
-		// Cálculo del daño base
+		// Calculo del daño base
 		int daño = 0;
 		// Suma bonificaciones de daño de estados como la Furia
 		int bonoDeEstados = this.getBonoDañoTotal();
@@ -394,7 +402,7 @@ public abstract class Personaje {
 			this.aplicarEfectoDeArma(objetivo);
 		}
 
-		// Aplica la reducción de vida
+		// Aplica la reduccion de vida
 		objetivo.recibirDaño(daño, false);
 	}
 
@@ -403,7 +411,7 @@ public abstract class Personaje {
 	 * Muestra si ha muerto en el proceso.
 	 * 
 	 * @param cantidad   Los puntos base de daño del ataque o efecto.
-	 * @param esDañoPuro Si es verdadero, el ataque ignora toda reducción de
+	 * @param esDanoPuro Si es verdadero, el ataque ignora toda reduccion de
 	 *                   armadura.
 	 */
 	public void recibirDaño(int cantidad, boolean esDañoPuro) {
@@ -411,7 +419,7 @@ public abstract class Personaje {
 			return;
 		}
 
-		// Permite que el daño puro ignore la mitigación de la armadura
+		// Permite que el daño puro ignore la mitigacion de la armadura
 		int dañoFinal;
 		if (esDañoPuro == true) {
 			dañoFinal = cantidad;
@@ -420,14 +428,14 @@ public abstract class Personaje {
 			dañoFinal = cantidad - mitigacion;
 		}
 
-		// Evita que un número negativo de daño cure al personaje
+		// Evita que un numero negativo de daño cure al personaje
 		if (dañoFinal < 0) {
 			dañoFinal = 0;
 		}
 
 		this.vidaActual = this.vidaActual - dañoFinal;
 
-		// Añade un prefijo especial para indicar la procedencia del daño
+		// añade un prefijo especial para indicar la procedencia del daño
 		String prefijo = "";
 		if (esDañoPuro == true) {
 			prefijo = "[PURO] ";
@@ -453,7 +461,7 @@ public abstract class Personaje {
 		return bonoTotal;
 	}
 
-	// --- SECCIÓN: ESTADOS ---
+	// --- SECCION: ESTADOS ---
 	/**
 	 * Agrega un estado alterado como veneno o quemadura si no lo tiene puesto.
 	 * 
@@ -465,7 +473,7 @@ public abstract class Personaje {
 		}
 	}
 
-	// Llama a la lógica de estado que tienen algunas armas
+	// Llama a la logica de estado que tienen algunas armas
 	private void aplicarEfectoDeArma(Personaje objetivo) {
 		if (this.armaEquipada != null) {
 			this.armaEquipada.aplicarEfectosEspeciales(objetivo);
@@ -506,7 +514,7 @@ public abstract class Personaje {
 		return estadosActivos;
 	}
 
-	// --- SECCIÓN: HABILIDADES ---
+	// --- SECCION: HABILIDADES ---
 	public ArrayList<AccionCombate> getHabilidades() {
 		return habilidades;
 	}

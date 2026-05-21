@@ -3,7 +3,7 @@ package estado;
 import personajes.Personaje;
 
 /**
- * Estado perjudicial que causa pérdida de vida constante sin mitigación de
+ * Estado perjudicial que causa perdida de vida constante sin mitigacion de
  * armadura.
  * 
  * @author Ricardo Crespo y Fabio Rieker
@@ -14,7 +14,7 @@ public class EstadoSangrado extends Estado {
 	 * Base del sangrado pasivo.
 	 * 
 	 * @param turnos   Rondes afectado.
-	 * @param potencia Reducción contínua perjudicial.
+	 * @param potencia Reduccion continua perjudicial.
 	 */
 	public EstadoSangrado(int turnos, int potencia) {
 		super("Sangrado", turnos, potencia);
@@ -23,7 +23,7 @@ public class EstadoSangrado extends Estado {
 	/**
 	 * Aplica daño puro con flag booleana `ignoraArmadura = true`.
 	 * 
-	 * @param obj Combatiente en cuestión.
+	 * @param obj Combatiente en cuestion.
 	 */
 	@Override
 	public void alPasarTurnoEstado(Personaje obj) {
@@ -35,7 +35,7 @@ public class EstadoSangrado extends Estado {
 	/**
 	 * Avisa mediante Sysout del cese del sangrado.
 	 * 
-	 * @param obj Combatiente en cuestión.
+	 * @param obj Combatiente en cuestion.
 	 */
 	@Override
 	public void alTerminarEstado(Personaje obj) {

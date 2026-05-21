@@ -5,19 +5,19 @@ import armaduras.CategoriaArmadura;
 import estado.EstadoVeneno;
 
 /**
- * Jefe de tipo Lich. Es un no-muerto que canaliza energía oscura y envenena.
+ * Jefe de tipo Lich. Es un no-muerto que canaliza energia oscura y envenena.
  * 
  * @author Ricardo Crespo y Fabio Rieker
  */
 public class JefeLich extends Jefe {
 
 	/**
-	 * Crea un Jefe Lich con estadísticas base.
+	 * Crea un Jefe Lich con estadisticas base.
 	 * 
 	 * @param nombre  Nombre del lich.
 	 * @param fue     Fuerza.
 	 * @param des     Destreza.
-	 * @param con     Constitución.
+	 * @param con     Constitucion.
 	 * @param intel   Inteligencia.
 	 * @param defBase Defensa inicial sin equipamiento.
 	 */
@@ -29,7 +29,7 @@ public class JefeLich extends Jefe {
 	}
 
 	/**
-	 * Un hechizo nigromántico que hace mucho daño y aplica Veneno.
+	 * Un hechizo nigromantico que hace mucho daño y aplica Veneno.
 	 * 
 	 * @param objetivo Enemigo que recibe la habilidad.
 	 */

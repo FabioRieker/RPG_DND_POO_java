@@ -12,7 +12,7 @@ public class EstadoVeneno extends Estado {
 	/**
 	 * Crea el debuff de estado de veneno.
 	 * 
-	 * @param turnos   Los turnos que durará el veneno.
+	 * @param turnos   Los turnos que durara el veneno.
 	 * @param potencia La cantidad de puntos de vida que resta por turno.
 	 */
 	public EstadoVeneno(int turnos, int potencia) {

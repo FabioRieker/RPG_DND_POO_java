@@ -1,6 +1,6 @@
 package habilidad;
 
-// Estados adicionales aplicables por habilidades híbridas
+// Estados adicionales aplicables por habilidades hibridas
 public enum Efecto {
 	NINGUNO, // Ningún efecto secundario
 	CURAR_VIDA, // Restaura puntos de vida basándose en el daño infligido

@@ -3,13 +3,13 @@ package habilidad;
 import personajes.Personaje;
 
 /**
- * Ataque letal que inflige más daño si el enemigo tiene poca vida.
+ * Ataque letal que inflige mas daño si el enemigo tiene poca vida.
  * 
  * @author Ricardo Crespo y Fabio Rieker
  */
 public class Ejecucion extends HabilidadFisica {
 	/**
-	 * Construye los costes y características de la Ejecución.
+	 * Construye los costes y caracteristicas de la Ejecucion.
 	 */
 	public Ejecucion() {
 		super("Ejecución", 40, 1, 12, Estadistica.FUERZA, null);

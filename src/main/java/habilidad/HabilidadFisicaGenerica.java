@@ -1,15 +1,15 @@
 package habilidad;
 
 /**
- * Clase genérica para representar habilidades físicas que solo requieren
- * la asignación de sus estadísticas básicas sin lógica adicional.
+ * Clase generica para representar habilidades fisicas que solo requieren
+ * la asignacion de sus estadisticas basicas sin logica adicional.
  */
 public class HabilidadFisicaGenerica extends HabilidadFisica {
 
 	/**
-	 * Construye una habilidad física usando los datos predefinidos en el enum.
+	 * Construye una habilidad fisica usando los datos predefinidos en el enum.
 	 * 
-	 * @param tipo El tipo de habilidad física a instanciar.
+	 * @param tipo El tipo de habilidad fisica a instanciar.
 	 */
 	public HabilidadFisicaGenerica(TipoHabilidadFisicaSimple tipo) {
 		super(

@@ -20,7 +20,7 @@ public abstract class Consumible {
 	 */
 	public Consumible(String nombre, int cantidad) {
 		this.nombre = nombre;
-		// Asigna 1 por defecto si la cantidad indicada es inválida
+		// Asigna 1 por defecto si la cantidad indicada es invalida
 		this.cantidad = cantidad > 0 ? cantidad : 1;
 	}
 
@@ -29,14 +29,14 @@ public abstract class Consumible {
 	 * 
 	 * @param usuario  Personaje que utiliza el objeto.
 	 * @param objetivo Personaje al que se le aplica (puede ser aliado o enemigo,
-	 *                 según el caso).
+	 *                 segun el caso).
 	 */
 	public abstract void usar(Personaje usuario, Personaje objetivo);
 
 	/**
 	 * Consulta la cantidad que queda.
 	 * 
-	 * @return Número de usos posibles.
+	 * @return Numero de usos posibles.
 	 */
 	public int getCantidad() {
 		return cantidad;

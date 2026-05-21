@@ -2,7 +2,7 @@ package personajes;
 
 /**
  * Clase abstracta para los Jefes del juego. Tienen habilidades especiales y
- * suelen ser más fuertes.
+ * suelen ser mas fuertes.
  * 
  * @author Ricardo Crespo y Fabio Rieker
  */
@@ -15,10 +15,10 @@ public abstract class Jefe extends Personaje {
 	 * 
 	 * @param nombre  Nombre del jefe.
 	 * @param raza    Raza a la que pertenece.
-	 * @param tipo    Tipo específico de jefe.
+	 * @param tipo    Tipo especifico de jefe.
 	 * @param fue     Fuerza inicial.
 	 * @param des     Destreza inicial.
-	 * @param con     Constitución inicial.
+	 * @param con     Constitucion inicial.
 	 * @param intel   Inteligencia inicial.
 	 * @param defBase Defensa base inicial sin armaduras.
 	 */
@@ -37,7 +37,7 @@ public abstract class Jefe extends Personaje {
 	}
 
 	/**
-	 * Ejecuta el ataque letal nativo o característico del jefe.
+	 * Ejecuta el ataque letal nativo o caracteristico del jefe.
 	 * 
 	 * @param objetivo Enemigo que recibe la habilidad especial.
 	 */

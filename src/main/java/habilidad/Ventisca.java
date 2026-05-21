@@ -5,14 +5,14 @@ import estado.EstadoCongelado;
 import java.util.ArrayList;
 
 /**
- * Magia de hielo de área que daña y congela a los enemigos.
+ * Magia de hielo de area que dana y congela a los enemigos.
  * 
  * @author Ricardo Crespo y Fabio Rieker
  */
 public class Ventisca extends HechizoMagico {
 
 	/**
-	 * Construye los costes y características de la Ventisca.
+	 * Construye los costes y caracteristicas de la Ventisca.
 	 */
 	public Ventisca() {
 		super("Ventisca", 40, 2, 6, null);
