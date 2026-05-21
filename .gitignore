@@ -15,3 +15,6 @@ target/
 .DS_Store
 Thumbs.db
 /bin1/
+
+# Archivos de IA / Entornos
+.omc/
