@@ -245,7 +245,7 @@ public class Main {
         List<Personaje> reserva = new ArrayList<>();
         Personaje[] heroes = listaHeroes.toArray(new Personaje[0]);
         GestorSalas gestorSalas = new GestorSalas();
-        
+
         // ponemos la vida si es partida cargada
         if (idPartidaActual != -1) {
             new basedatos.gestores.GestorPartidas().restaurarEstadoHeroes(idPartidaActual, heroes);
@@ -257,8 +257,10 @@ public class Main {
             gestorSalas.avanzarSala(idPartidaActual, salaActual); // Guardado en DB
 
             if (!MotorCombate.hayVivos(heroes)) {
-                System.out.println(MotorCombate.ANSI_ROJO + "EL EQUIPO HA MUERTO. FIN DE LA PARTIDA." + MotorCombate.ANSI_RESET);
-                System.out.println(MotorCombate.ANSI_AMARILLO + "Puedes reintentarlo cargando la partida en el menú." + MotorCombate.ANSI_RESET);
+                System.out.println(
+                        MotorCombate.ANSI_ROJO + "EL EQUIPO HA MUERTO. FIN DE LA PARTIDA." + MotorCombate.ANSI_RESET);
+                System.out.println(MotorCombate.ANSI_AMARILLO + "Puedes reintentarlo cargando la partida en el menú."
+                        + MotorCombate.ANSI_RESET);
                 break;
             }
 
@@ -276,7 +278,8 @@ public class Main {
                         + "[EVENTO] ¡Rescatáis a Kallista! Se une a vuestra reserva." + MotorCombate.ANSI_RESET);
                 reserva.add(FabricaHeroes.crearKallista());
                 new basedatos.gestores.GestorRecompensas().desbloquearLogro(idPartidaActual, 4);
-                System.out.println(MotorCombate.ANSI_MORADO + "[LOGRO DESBLOQUEADO] Un Nuevo Aliado." + MotorCombate.ANSI_RESET);
+                System.out.println(
+                        MotorCombate.ANSI_MORADO + "[LOGRO DESBLOQUEADO] Un Nuevo Aliado." + MotorCombate.ANSI_RESET);
             } else if (i == 7) {
                 System.out.println("¡BOOM! Una trampa de fuego estalla.");
                 for (Personaje h : heroes) {
@@ -291,7 +294,8 @@ public class Main {
                         h.curar(50);
                 }
                 new basedatos.gestores.GestorRecompensas().desbloquearLogro(idPartidaActual, 3);
-                System.out.println(MotorCombate.ANSI_MORADO + "[LOGRO DESBLOQUEADO] Campista Novato." + MotorCombate.ANSI_RESET);
+                System.out.println(
+                        MotorCombate.ANSI_MORADO + "[LOGRO DESBLOQUEADO] Campista Novato." + MotorCombate.ANSI_RESET);
                 if (!MotorCombate.gestionarCampamento(heroes, reserva)) {
                     break;
                 }
@@ -367,51 +371,61 @@ public class Main {
 
                 basedatos.gestores.GestorRecompensas gr = new basedatos.gestores.GestorRecompensas();
                 gr.desbloquearLogro(idPartidaActual, 10);
-                System.out.println(MotorCombate.ANSI_MORADO + "[LOGRO DESBLOQUEADO] Matadragones." + MotorCombate.ANSI_RESET);
-                
+                System.out.println(
+                        MotorCombate.ANSI_MORADO + "[LOGRO DESBLOQUEADO] Matadragones." + MotorCombate.ANSI_RESET);
+
                 // Verificar dificultad para Locura Absoluta (11)
                 int diffId = 2;
                 try (java.sql.Connection con = basedatos.conexion.ConexionBD.getConexion();
-                     java.sql.PreparedStatement ps = con.prepareStatement("SELECT dificultad_id FROM Partidas WHERE ID_partida = ?")) {
+                        java.sql.PreparedStatement ps = con
+                                .prepareStatement("SELECT dificultad_id FROM Partidas WHERE ID_partida = ?")) {
                     ps.setInt(1, idPartidaActual);
                     try (java.sql.ResultSet rs = ps.executeQuery()) {
-                        if (rs.next()) diffId = rs.getInt("dificultad_id");
+                        if (rs.next())
+                            diffId = rs.getInt("dificultad_id");
                     }
-                } catch (java.sql.SQLException e) {}
-                
+                } catch (java.sql.SQLException e) {
+                }
+
                 if (diffId == 3) {
                     gr.desbloquearLogro(idPartidaActual, 11);
-                    System.out.println(MotorCombate.ANSI_MORADO + "[LOGRO DESBLOQUEADO] Locura Absoluta." + MotorCombate.ANSI_RESET);
+                    System.out.println(MotorCombate.ANSI_MORADO + "[LOGRO DESBLOQUEADO] Locura Absoluta."
+                            + MotorCombate.ANSI_RESET);
                 }
 
                 // Actualizar DB para marcar partida como terminada
                 String sqlFin = "UPDATE Partidas SET estado = 'completada' WHERE ID_partida = ?";
-                try (java.sql.Connection con = basedatos.conexion.ConexionBD.getConexion(); java.sql.PreparedStatement ps = con.prepareStatement(sqlFin)) {
+                try (java.sql.Connection con = basedatos.conexion.ConexionBD.getConexion();
+                        java.sql.PreparedStatement ps = con.prepareStatement(sqlFin)) {
                     ps.setInt(1, idPartidaActual);
                     ps.executeUpdate();
                 } catch (java.sql.SQLException e) {
                     /* Ignore */ }
             }
-            
+
             // Logros de progreso
             if (i == 1 && MotorCombate.hayVivos(heroes)) {
                 new basedatos.gestores.GestorRecompensas().desbloquearLogro(idPartidaActual, 2);
-                System.out.println(MotorCombate.ANSI_MORADO + "[LOGRO DESBLOQUEADO] Primeros Pasos." + MotorCombate.ANSI_RESET);
+                System.out.println(
+                        MotorCombate.ANSI_MORADO + "[LOGRO DESBLOQUEADO] Primeros Pasos." + MotorCombate.ANSI_RESET);
             }
             if (puntuacionPartida > 1000) {
                 new basedatos.gestores.GestorRecompensas().desbloquearLogro(idPartidaActual, 6);
-                // System.out.println("[LOGRO DESBLOQUEADO] Verdugo de Monstruos."); // Omitimos print por spam
+                // System.out.println("[LOGRO DESBLOQUEADO] Verdugo de Monstruos."); // Omitimos
+                // print por spam
             }
-            
+
             // autoguardado para no repetir sala
             if (MotorCombate.hayVivos(heroes) && i < 20) {
-                System.out.println(MotorCombate.ANSI_VERDE_OSCURO + "Guardando partida automatica..." + MotorCombate.ANSI_RESET);
+                System.out.println(
+                        MotorCombate.ANSI_VERDE_OSCURO + "Guardando partida automatica..." + MotorCombate.ANSI_RESET);
                 salaActual = i + 1;
                 for (int k = 0; k < heroes.length; k++) {
                     if (heroes[k].estaVivo()) {
                         gestorSalas.avanzarSala(idPartidaActual, salaActual);
-                        new basedatos.gestores.GestorPartidas().guardarPartidaCompleta(idPartidaActual, salaActual, puntuacionPartida, (k + 1),
-                            heroes[k].getVidaActual(), heroes[k].getManaActual(), heroes[k].getEnergiaActual());
+                        new basedatos.gestores.GestorPartidas().guardarPartidaCompleta(idPartidaActual, salaActual,
+                                puntuacionPartida, (k + 1),
+                                heroes[k].getVidaActual(), heroes[k].getManaActual(), heroes[k].getEnergiaActual());
                     }
                 }
             }

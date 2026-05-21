@@ -11,7 +11,7 @@ import java.util.Scanner;
 
 /**
  * Clase principal que maneja los turnos e interacciones de la batalla. Controla
- * si actuan los monstruos o los aliados, los bufos de estado y el inventario
+ * si actúan los monstruos o los aliados, los bufos de estado y el inventario
  * del grupo.
  * 
  * @author Ricardo Crespo y Fabio Rieker
@@ -28,18 +28,18 @@ public class MotorCombate {
   public static final String ANSI_MORADO = "\u001B[35m";
   public static final String ANSI_CIAN = "\u001B[36m";
 
-  // Guardar quien ha sido el ultimo en pegarle al jefe para la venganza
+  // Guardar quién ha sido el último en pegarle al jefe para la venganza
   private static Personaje ultimoAtacanteJefe = null;
 
   public static boolean modoManual = false;
   public static Scanner sc = new Scanner(System.in);
   public static ArrayList<Consumible> inventarioGrupo = new ArrayList<>();
 
-  // Mochila comun con armas para todo el grupo
+  // Mochila común con armas para todo el grupo
   public static ArrayList<Arma> mochilaComun = new ArrayList<>();
 
   /**
-   * Metodo principal que inicia el combate contra una lista de enemigos. Gestiona
+   * Método principal que inicia el combate contra una lista de enemigos. Gestiona
    * el bucle de turnos hasta que uno de los dos bandos es derrotado.
    * 
    * @param heroes   Array que representa al equipo controlado por el jugador.
@@ -53,7 +53,7 @@ public class MotorCombate {
       vidasIniciales[i] = heroes[i].getVidaActual();
     }
 
-    // Arranca el bucle visual y logico del combate
+    // Arranca el bucle visual y lógico del combate
     System.out.println("\n" + ANSI_AZUL_MARINO + "===========================================");
     System.out.println("          [SISTEMA] ¡COMBATE COMIENZA!");
     System.out.println("===========================================" + ANSI_RESET);
@@ -62,7 +62,7 @@ public class MotorCombate {
     while (hayVivos(heroes) && hayVivos(enemigos) && turno <= 10) {
       System.out.println("\n" + ANSI_CIAN + "======= [TURNO " + turno + "] =======" + ANSI_RESET);
 
-      // Restar turnos de estados alterados a los heroes
+      // Restar turnos de estados alterados a los héroes
       for (int i = 0; i < heroes.length; i++) {
         Personaje h = heroes[i];
         if (h.estaVivo()) {
@@ -78,7 +78,7 @@ public class MotorCombate {
         }
       }
 
-      // Juntar heroes y enemigos en una lista para ver quien ataca primero
+      // Juntar héroes y enemigos en una lista para ver quién ataca primero
       ArrayList<Personaje> todos = new ArrayList<Personaje>();
 
       for (int i = 0; i < heroes.length; i++) {
@@ -95,7 +95,7 @@ public class MotorCombate {
         }
       }
 
-      // Ordenar a todos segun su destreza de mayor a menor
+      // Ordenar a todos según su destreza de mayor a menor
       todos.sort((p1, p2) -> Integer.compare(p2.getDestrezaTotal(), p1.getDestrezaTotal()));
 
       // Crear el formato de texto para imprimir el orden de ataque
@@ -103,7 +103,7 @@ public class MotorCombate {
       for (int i = 0; i < todos.size(); i++) {
         Personaje pActual = todos.get(i);
 
-        // añadir marca [H] para heroes o [E] para enemigos
+        // Añadir marca [H] para héroes o [E] para enemigos
         String marca = " [E]";
         for (int j = 0; j < heroes.length; j++) {
           if (heroes[j] == pActual) {
@@ -113,7 +113,7 @@ public class MotorCombate {
 
         listaOrdenada = listaOrdenada + pActual.getNombre() + marca;
 
-        // Poner coma de separacion si quedan mas luchadores
+        // Poner coma de separación si quedan más luchadores
         if (i < todos.size() - 1) {
           listaOrdenada = listaOrdenada + ", ";
         }
@@ -136,7 +136,7 @@ public class MotorCombate {
           continue;
         }
 
-        // Comprobar si le toca a un heroe o a un enemigo
+        // Comprobar si le toca a un héroe o a un enemigo
         boolean esHeroe = false;
         for (int j = 0; j < heroes.length; j++) {
           if (heroes[j] == p) {
@@ -154,7 +154,7 @@ public class MotorCombate {
           turnoEnemigo(p, heroes);
         }
 
-        // Pausa para que de tiempo a leer la consola
+        // Pausa para que dé tiempo a leer la consola
         try {
           Thread.sleep(800);
         } catch (InterruptedException ex) {
@@ -183,7 +183,7 @@ public class MotorCombate {
 
     if (hayVivos(heroes) == true) {
       System.out.println(ANSI_VERDE_OSCURO + "[SISTEMA] ¡VICTORIA! Los heroes han ganado." + ANSI_RESET);
-      // Dar botin de los monstruos que han muerto
+      // Dar botín de los monstruos que han muerto
       for (Personaje e : enemigos) {
         procesarAutoLoot(heroes, e);
         if (!e.estaVivo() && e.getTipoClase() == personajes.TipoClase.JEFE) {
@@ -244,14 +244,14 @@ public class MotorCombate {
   }
 
   /**
-   * Turno automatico de un heroe cuando no esta en modo manual. Decide si usa
+   * Turno automático de un héroe cuando no está en modo manual. Decide si usa
    * pociones, habilidades o ataca directamente.
    * 
    * @param p        El personaje que ataca.
    * @param enemigos Los enemigos a los que puede atacar.
    */
   private static void turnoHeroe(Personaje p, Personaje[] enemigos) {
-    // Logica matematica para cuando un heroe es controlado por la "ia"
+    // Lógica matemática para cuando un héroe es controlado por la "ia"
     boolean haUsadoItem = false;
     if (p.getVidaActual() < (p.getVidaMax() * 0.3)) {
       for (int j = 0; j < inventarioGrupo.size(); j++) {
@@ -303,7 +303,7 @@ public class MotorCombate {
               if (nHab.equals("Purificación") || nHab.equals("Muro de Piedra")) {
                 objHab = p;
               }
-              // Bloquear ataques de area porque causan problemas con los bucles actuales
+              // Bloquear ataques de área porque causan problemas con los bucles actuales
               else if (nHab.equals("Nube Tóxica") || nHab.equals("Ventisca")
                   || nHab.equals("Lluvia de Flechas") || nHab.equals("Rayo Encadenado")
                   || nHab.equals("Grito de Guerra")) {
@@ -327,13 +327,13 @@ public class MotorCombate {
 
   /**
    * Controla el turno de los enemigos. Decide si deciden curarse, usar
-   * habilidades o atacar a un heroe.
+   * habilidades o atacar a un héroe.
    * 
    * @param p      El enemigo que tiene el turno.
-   * @param heroes Los heroes aliados disponibles para atacar.
+   * @param heroes Los héroes aliados disponibles para atacar.
    */
   private static void turnoEnemigo(Personaje p, Personaje[] heroes) {
-    // Logica y variables del turno de la CPU enemiga
+    // Lógica y variables del turno de la CPU enemiga
     boolean haUsadoItem = false;
     if (p.getVidaActual() < (p.getVidaMax() * 0.3)) {
       for (int j = 0; j < p.getInventario().size(); j++) {
@@ -404,10 +404,10 @@ public class MotorCombate {
 
   // Calcular si los enemigos sueltan su arma al morir
   /**
-   * Calcula si un enemigo suelta un arma u objeto despues de morir. Si puede, se
-   * lo equipa automaticamente a un heroe o lo guarda en la mochila.
+   * Calcula si un enemigo suelta un arma u objeto después de morir. Si puede, se
+   * lo equipa automáticamente a un héroe o lo guarda en la mochila.
    * 
-   * @param heroes  Lista de heroes actuales.
+   * @param heroes  Lista de héroes actuales.
    * @param enemigo Enemigo que acaba de ser derrotado.
    */
   private static void procesarAutoLoot(Personaje[] heroes, Personaje enemigo) {
@@ -430,7 +430,7 @@ public class MotorCombate {
 
         boolean equipado = false;
         for (Personaje h : heroes) {
-          // Conceder el arma inmediatamente si el heroe esta desarmado y la domina
+          // Conceder el arma inmediatamente si el héroe está desarmado y la domina
           if (h.estaVivo() && h.getArma() == null && h.getArmasPermitidas().contains(loot.getCategoria())) {
             h.equiparArma(loot);
             equipado = true;
@@ -454,10 +454,10 @@ public class MotorCombate {
   }
 
   /**
-   * Comprueba si todavia quedan personajes con vida en un grupo.
+   * Comprueba si todavía quedan personajes con vida en un grupo.
    * 
    * @param grupo Array de personajes a revisar.
-   * @return true si queda alguno vivo, false si todos estan muertos.
+   * @return true si queda alguno vivo, false si todos están muertos.
    */
   public static boolean hayVivos(Personaje[] grupo) {
     for (int i = 0; i < grupo.length; i++) {
@@ -469,15 +469,15 @@ public class MotorCombate {
   }
 
   /**
-   * Logica para elegir al mejor objetivo al que atacar en el turno automatico.
-   * Valora estados de provocacion, quien fue el ultimo atacante o la vida maxima.
+   * Lógica para elegir al mejor objetivo al que atacar en el turno automático.
+   * Valora estados de provocación, quién fue el último atacante o la vida máxima.
    * 
    * @param atacante          Personaje que va a realizar el ataque.
-   * @param posiblesObjetivos Enemigos a los que podria atacar.
+   * @param posiblesObjetivos Enemigos a los que podría atacar.
    * @return Personaje elegido para recibir el impacto.
    */
   public static Personaje seleccionarObjetivoInteligente(Personaje atacante, Personaje[] posiblesObjetivos) {
-    // Mirar quien esta vivo para no atacar a muertos
+    // Mirar quién está vivo para no atacar a muertos
     ArrayList<Personaje> vivos = new ArrayList<Personaje>();
     for (int i = 0; i < posiblesObjetivos.length; i++) {
       if (posiblesObjetivos[i].estaVivo()) {
@@ -506,10 +506,10 @@ public class MotorCombate {
       }
     }
 
-    // Balance general de IA (25% fuerte / 25% aleatorio / 50% rematar debil)
+    // Balance general de IA (25% fuerte / 25% aleatorio / 50% rematar débil)
     double azar = Math.random() * 100;
 
-    // 25% ataque al tanque (Mas defensa)
+    // 25% ataque al tanque (Más defensa)
     if (azar <= 25) {
       Personaje tanque = vivos.get(0);
       for (int i = 1; i < vivos.size(); i++) {
@@ -519,12 +519,12 @@ public class MotorCombate {
       }
       return tanque;
     }
-    // (25% de lanzar golpe rapido totalmente al azar)
+    // (25% de lanzar golpe rápido totalmente al azar)
     else if (azar <= 50) {
       int index = (int) (Math.random() * vivos.size());
       return vivos.get(index);
     }
-    // (50% de seleccionar a la unidad mas herida)
+    // (50% de seleccionar a la unidad más herida)
     else {
       Personaje debil = vivos.get(0);
       for (int i = 1; i < vivos.size(); i++) {
@@ -537,13 +537,13 @@ public class MotorCombate {
   }
 
   /**
-   * Metodo alternativo guardado por si en un futuro hacemos habilidades
-   * aleatorias. Solo coge una victima viva al azar.
+   * Método alternativo guardado por si en un futuro hacemos habilidades
+   * aleatorias. Solo coge una víctima viva al azar.
    * 
-   * @param grupo Matriz de victimas de la que queremos extraer una diana.
+   * @param grupo Matriz de víctimas de la que queremos extraer una diana.
    * @return Personaje elegido aleatoriamente listo para ser atacado.
    */
-  // Metodo mantenido por si acaso, aunque no se use
+  // Método mantenido por si acaso, aunque no se use
   public static Personaje obtenerObjetivoAleatorio(Personaje[] grupo) {
     ArrayList<Personaje> vivos = new ArrayList<>();
     for (int i = 0; i < grupo.length; i++) {
@@ -559,11 +559,11 @@ public class MotorCombate {
   }
 
   /**
-   * Menu interactivo que aparece entre combates (y en ciertas paradas). Permite
+   * Menú interactivo que aparece entre combates (y en ciertas paradas). Permite
    * curarse, o cambiar titulares por reservas.
    * 
-   * @param titulares Los heroes que estan jugando ahora.
-   * @param reserva   Los heroes que estan en el banquillo.
+   * @param titulares Los héroes que están jugando ahora.
+   * @param reserva   Los héroes que están en el banquillo.
    */
   public static boolean gestionarCampamento(Personaje[] titulares, List<Personaje> reserva) {
     boolean salir = false;
@@ -632,7 +632,7 @@ public class MotorCombate {
           }
         }
       } else if (opt == 3) {
-        // dar armas a los compis
+        // dar armas a los heroes
         if (mochilaComun.isEmpty()) {
           System.out.println(ANSI_AMARILLO + "[SISTEMA] La armería del grupo está vacía." + ANSI_RESET);
           continue;
@@ -696,12 +696,12 @@ public class MotorCombate {
   }
 
   /**
-   * Menu de opciones para controlar manualmente a cada heroe en su turno. Muestra
+   * Menú de opciones para controlar manualmente a cada héroe en su turno. Muestra
    * comandos para ataque, magia y objetos.
    * 
-   * @param p        Heroe actual.
+   * @param p        Héroe actual.
    * @param enemigos Enemigos vivos.
-   * @param aliados  compañeros de equipo vivos.
+   * @param aliados  Compañeros de equipo vivos.
    */
   private static void turnoHeroeManual(Personaje p, Personaje[] enemigos, Personaje[] aliados) {
     boolean turnoCompletado = false;
@@ -843,7 +843,7 @@ public class MotorCombate {
             if (target > 0 && target <= vivosObj.size()) {
               objetoElegido.usar(p, vivosObj.get(target - 1));
 
-              // Borrar siempre objeto de la mochila comun si cae a cero
+              // Borrar siempre objeto de la mochila común si cae a cero
               if (objetoElegido.getCantidad() <= 0)
                 inventarioGrupo.remove(numeroObjeto - 1);
               turnoCompletado = true;

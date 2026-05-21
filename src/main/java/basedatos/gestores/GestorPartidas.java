@@ -30,7 +30,8 @@ public class GestorPartidas {
         return -1;
     }
 
-    // esto guarda todo a la vez para no perder datos
+    // Guarda la sala, los puntos y el estado del héroe de un
+    // solo golpe
     public boolean guardarPartidaCompleta(int idPartida, int idSalaActual, int puntuacion, int idHeroe, int vidaActual,
             int manaActual, int energiaActual) {
         Connection con = ConexionBD.getConexion();
@@ -96,7 +97,7 @@ public class GestorPartidas {
         }
     }
 
-    // funcion para cargar la vida de los heroes
+    // Restaura la vida, maná y energía de los héroes cargando la base de datos
     public void restaurarEstadoHeroes(int idPartida, personajes.Personaje[] heroes) {
         String sql = "SELECT id_personaje, vida_actual, mana_actual, energia_actual FROM Situacion_heroe WHERE id_partida = ?";
         try (Connection con = ConexionBD.getConexion();
