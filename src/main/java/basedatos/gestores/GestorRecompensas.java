@@ -11,6 +11,7 @@ import org.knowm.xchart.PieChart;
 import org.knowm.xchart.PieChartBuilder;
 import org.knowm.xchart.SwingWrapper;
 import motor.MotorCombate;
+
 /**
  * Controla el desbloqueo de logros, la suma de puntos y
  * la gestión del arsenal de armas que el jugador encuentra en su aventura.
@@ -19,16 +20,29 @@ import motor.MotorCombate;
  */
 public class GestorRecompensas {
 
+    public boolean usuarioYaTieneLogro(int idPartida, int idLogro) {
+        String sql = "SELECT 1 FROM Partida_Logros pl JOIN Partidas p ON pl.partida_id = p.ID_partida " +
+                     "WHERE p.usuario_id = (SELECT usuario_id FROM Partidas WHERE ID_partida = ?) AND pl.logro_id = ?";
+        try (Connection con = ConexionBD.getConexion(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, idPartida);
+            ps.setInt(2, idLogro);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next();
+            }
+        } catch (SQLException e) { return false; }
+    }
+
     /**
-     * Desbloquea un logro para una partida específica empleando INSERT IGNORE
-     * para evitar errores si el logro ya estaba desbloqueado previamente.
+     * Intenta desbloquear un logro para la partida actual.
      * 
-     * @param idPartida Identificador de la partida.
-     * @param idLogro   Identificador del logro a desbloquear.
-     * @return true si se ha insertado un nuevo logro, false si ya lo tenía o hubo
-     *         error.
+     * @param idPartida El ID de la partida.
+     * @param idLogro   El ID del logro a desbloquear.
+     * @return true si se desbloqueó por primera vez para este usuario, false en caso
+     *         contrario o si hubo un error.
      */
     public boolean desbloquearLogro(int idPartida, int idLogro) {
+        boolean yaLoTenia = usuarioYaTieneLogro(idPartida, idLogro);
+
         String sql = "INSERT IGNORE INTO Partida_Logros (partida_id, logro_id) VALUES (?, ?)";
         boolean insertado = false;
         try (Connection con = ConexionBD.getConexion();
@@ -43,23 +57,28 @@ public class GestorRecompensas {
             return false;
         }
 
-        // Comprobar logro 15 (Platinado) por código para evitar error 1442 de triggers en MySQL
+        // Comprobar logro 15 (Platinado) por código para evitar error 1442 de triggers
+        // en MySQL
         if (insertado && idLogro != 15) {
             String sqlCheck = "SELECT COUNT(DISTINCT pl.logro_id) FROM Partida_Logros pl " +
-                              "JOIN Partidas p ON pl.partida_id = p.ID_partida " +
-                              "WHERE p.usuario_id = (SELECT usuario_id FROM Partidas WHERE ID_partida = ?) " +
-                              "AND pl.logro_id != 15";
+                    "JOIN Partidas p ON pl.partida_id = p.ID_partida " +
+                    "WHERE p.usuario_id = (SELECT usuario_id FROM Partidas WHERE ID_partida = ?) " +
+                    "AND pl.logro_id != 15";
             try (Connection con = ConexionBD.getConexion();
-                 PreparedStatement psCheck = con.prepareStatement(sqlCheck)) {
-                 psCheck.setInt(1, idPartida);
-                 try (ResultSet rs = psCheck.executeQuery()) {
-                     if (rs.next() && rs.getInt(1) >= 21) {
-                         desbloquearLogro(idPartida, 15);
-                     }
-                 }
+                    PreparedStatement psCheck = con.prepareStatement(sqlCheck)) {
+                psCheck.setInt(1, idPartida);
+                try (ResultSet rs = psCheck.executeQuery()) {
+                    if (rs.next() && rs.getInt(1) >= 21) {
+                        desbloquearLogro(idPartida, 15);
+                    }
+                }
             } catch (SQLException e) {
-                 System.out.println("Error al comprobar logro platino: " + e.getMessage());
+                System.out.println("Error al comprobar logro platino: " + e.getMessage());
             }
+        }
+
+        if (yaLoTenia) {
+            return false; // Retornamos false para que no salte el pop-up por pantalla otra vez
         }
 
         return insertado;
@@ -288,10 +307,13 @@ public class GestorRecompensas {
     }
 
     /**
-     * Muestra una matriz de gráficos circulares (PieChart) usando la librería XChart.
-     * Calcula cuántos logros de cada tier se han obtenido para dibujar los porcentajes.
+     * Muestra una matriz de gráficos circulares (PieChart) usando la librería
+     * XChart.
+     * Calcula cuántos logros de cada tier se han obtenido para dibujar los
+     * porcentajes.
      */
-    private void mostrarGraficosLogros(ArrayList<InfoLogro> todosLosLogros, int[] idsBronce, int[] idsPlata, int[] idsOro, int[] idsPlatino) {
+    private void mostrarGraficosLogros(ArrayList<InfoLogro> todosLosLogros, int[] idsBronce, int[] idsPlata,
+            int[] idsOro, int[] idsPlatino) {
         // Contar obtenidos por tier usando un método de ayuda
         int obtBronce = this.contarLogrosObtenidos(idsBronce, todosLosLogros);
         int obtPlata = this.contarLogrosObtenidos(idsPlata, todosLosLogros);
@@ -336,6 +358,7 @@ public class GestorRecompensas {
 
         // Mostrar en ventana flotante de Swing
         new SwingWrapper<>(graficos).displayChartMatrix();
+
     }
 
     /**

@@ -212,15 +212,21 @@ public class MotorCombate {
     System.out.println("===========================================" + ANSI_RESET);
 
     if (hayVivos(heroes) == true) {
+      int puntosVictoria = (int)(100 * multiplicadorDificultad);
+      Main.puntuacionPartida += puntosVictoria;
       System.out.println(ANSI_VERDE_OSCURO + "[SISTEMA] ¡VICTORIA! Los heroes han ganado." + ANSI_RESET);
+      System.out.println(ANSI_CIAN + "[PUNTUACIÓN] Sala superada: +" + puntosVictoria + " pts" + ANSI_RESET);
       // Dar botín de los monstruos que han muerto
       for (Personaje e : enemigos) {
         procesarAutoLoot(heroes, e);
         if (!e.estaVivo() && e.getTipoClase() == personajes.TipoClase.JEFE) {
-          Main.puntuacionPartida += (int)(500 * multiplicadorDificultad);
-          new basedatos.gestores.GestorRecompensas().desbloquearLogro(Main.idPartidaActual, 1);
-          System.out.println(ANSI_MORADO + "[LOGRO DESBLOQUEADO] Asesino de Gigantes."
-              + " (Primer jefe derrotado)" + ANSI_RESET);
+          int puntosJefe = (int)(500 * multiplicadorDificultad);
+          Main.puntuacionPartida += puntosJefe;
+          System.out.println(ANSI_AMARILLO + "[PUNTUACIÓN] ¡Jefe derrotado! +" + puntosJefe + " pts" + ANSI_RESET);
+          if (new basedatos.gestores.GestorRecompensas().desbloquearLogro(Main.idPartidaActual, 1)) {
+              System.out.println(ANSI_MORADO + "[LOGRO DESBLOQUEADO] Asesino de Gigantes."
+                  + " (Primer jefe derrotado)" + ANSI_RESET);
+          }
         }
       }
     } else if (hayVivos(enemigos) == true) {
@@ -246,29 +252,39 @@ public class MotorCombate {
         } else {
           muertos++;
           dañoRecibido = true;
+          if (vidasIniciales[i] > 0) { // Si empezó vivo y ahora está muerto
+              int puntosPerdidos = (int)(50 * multiplicadorDificultad);
+              Main.puntuacionPartida -= puntosPerdidos;
+              if (Main.puntuacionPartida < 0) Main.puntuacionPartida = 0; // Evitamos puntuación negativa
+              System.out.println(ANSI_ROJO + "[PUNTUACIÓN] Baja de " + heroes[i].getNombre() + ": -" + puntosPerdidos + " pts" + ANSI_RESET);
+          }
         }
       }
 
       basedatos.gestores.GestorRecompensas gr = new basedatos.gestores.GestorRecompensas();
       if (!dañoRecibido) {
-        gr.desbloquearLogro(Main.idPartidaActual, 12);
-        System.out.println(ANSI_MORADO + "[LOGRO DESBLOQUEADO] Intocable."
-        + " (Victoria sin recibir ningun golpe)" + ANSI_RESET);
+        if (gr.desbloquearLogro(Main.idPartidaActual, 12)) {
+            System.out.println(ANSI_MORADO + "[LOGRO DESBLOQUEADO] Intocable."
+            + " (Victoria sin recibir ningun golpe)" + ANSI_RESET);
+        }
       }
       if (alguienAlBorde) {
-        gr.desbloquearLogro(Main.idPartidaActual, 8);
-        System.out.println(ANSI_MORADO + "[LOGRO DESBLOQUEADO] Al Borde del Abismo."
-        + " (Un heroe sobrevivio con 5 HP o menos)" + ANSI_RESET);
+        if (gr.desbloquearLogro(Main.idPartidaActual, 8)) {
+            System.out.println(ANSI_MORADO + "[LOGRO DESBLOQUEADO] Al Borde del Abismo."
+            + " (Un heroe termina un combate con 5 HP o menos)" + ANSI_RESET);
+        }
       }
       if (vivos == 1 && muertos >= 3) {
-        gr.desbloquearLogro(Main.idPartidaActual, 9);
-        System.out.println(ANSI_MORADO + "[LOGRO DESBLOQUEADO] El Ultimo en Pie."
-        + " (Solo 1 heroe vivo con 3 o mas caidos en combate)" + ANSI_RESET);
+        if (gr.desbloquearLogro(Main.idPartidaActual, 9)) {
+            System.out.println(ANSI_MORADO + "[LOGRO DESBLOQUEADO] El Ultimo en Pie."
+            + " (Solo 1 heroe vivo con 3 o mas caidos en combate)" + ANSI_RESET);
+        }
       }
       if (inventarioGrupo.size() >= 5) {
-        gr.desbloquearLogro(Main.idPartidaActual, 7);
-        System.out.println(ANSI_MORADO + "[LOGRO DESBLOQUEADO] Mochila Pesada."
-        + " (5 o mas armas acumuladas en la mochila comun)" + ANSI_RESET);
+        if (gr.desbloquearLogro(Main.idPartidaActual, 7)) {
+            System.out.println(ANSI_MORADO + "[LOGRO DESBLOQUEADO] Mochila Pesada."
+            + " (5 o mas armas acumuladas en la mochila comun)" + ANSI_RESET);
+        }
       }
       new basedatos.gestores.GestorPartidas().registrarLog(Main.idPartidaActual, turno, "Victoria en combate.");
     }

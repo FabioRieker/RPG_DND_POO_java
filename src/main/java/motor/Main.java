@@ -77,11 +77,10 @@ public class Main {
                             .println(MotorCombate.ANSI_ROJO + "[SISTEMA] Opción no válida." + MotorCombate.ANSI_RESET);
             }
         }
+
+        // Forzar cierre de hilos de interfaz gráfica que se queden colgados
+        System.exit(0);
     }
-
-    // --- METODOS DEL MENU ---
-
-    // --- BUCLE PRINCIPAL DEL JUEGO ---
 
     // --- BUCLE PRINCIPAL DEL JUEGO ---
 
@@ -208,9 +207,10 @@ public class Main {
                 System.out.println(MotorCombate.ANSI_MORADO
                         + "[EVENTO] ¡Rescatáis a Kallista! Se une a vuestra reserva." + MotorCombate.ANSI_RESET);
                 reserva.add(FabricaHeroes.crearKallista());
-                new basedatos.gestores.GestorRecompensas().desbloquearLogro(idPartidaActual, 4);
-                System.out.println(MotorCombate.ANSI_MORADO + "[LOGRO DESBLOQUEADO] Un Nuevo Aliado."
-                        + " (Kallista se ha unido a la reserva)" + MotorCombate.ANSI_RESET);
+                if (new basedatos.gestores.GestorRecompensas().desbloquearLogro(idPartidaActual, 4)) {
+                    System.out.println(MotorCombate.ANSI_MORADO + "[LOGRO DESBLOQUEADO] Un Nuevo Aliado."
+                            + " (Kallista se ha unido a la reserva)" + MotorCombate.ANSI_RESET);
+                }
             } else if (i == 7) {
                 System.out.println("¡BOOM! Una trampa de fuego estalla.");
                 int vivosAntesTrampa = 0;
@@ -316,9 +316,10 @@ public class Main {
                 System.out.println("===========================================" + MotorCombate.ANSI_RESET);
 
                 basedatos.gestores.GestorRecompensas gr = new basedatos.gestores.GestorRecompensas();
-                gr.desbloquearLogro(idPartidaActual, 10);
-                System.out.println(MotorCombate.ANSI_MORADO + "[LOGRO DESBLOQUEADO] Matadragones."
-                        + " (Aventura completada)" + MotorCombate.ANSI_RESET);
+                if (gr.desbloquearLogro(idPartidaActual, 10)) {
+                    System.out.println(MotorCombate.ANSI_MORADO + "[LOGRO DESBLOQUEADO] Matadragones."
+                            + " (Aventura completada)" + MotorCombate.ANSI_RESET);
+                }
 
                 // Verificar dificultad para Locura Absoluta (11)
                 int diffId = 2;
@@ -334,24 +335,28 @@ public class Main {
                 }
 
                 if (diffId == 1) {
-                    gr.desbloquearLogro(idPartidaActual, 18);
-                    System.out.println(MotorCombate.ANSI_MORADO + "[LOGRO DESBLOQUEADO] Paseo por el Parque."
-                            + " (Aventura completada en dificultad Facil)" + MotorCombate.ANSI_RESET);
+                    if (gr.desbloquearLogro(idPartidaActual, 18)) {
+                        System.out.println(MotorCombate.ANSI_MORADO + "[LOGRO DESBLOQUEADO] Paseo por el Parque."
+                                + " (Aventura completada en dificultad Facil)" + MotorCombate.ANSI_RESET);
+                    }
                 } else if (diffId == 2) {
-                    gr.desbloquearLogro(idPartidaActual, 19);
-                    System.out.println(MotorCombate.ANSI_MORADO + "[LOGRO DESBLOQUEADO] El Camino del Heroe."
-                            + " (Aventura completada en dificultad Normal)" + MotorCombate.ANSI_RESET);
+                    if (gr.desbloquearLogro(idPartidaActual, 19)) {
+                        System.out.println(MotorCombate.ANSI_MORADO + "[LOGRO DESBLOQUEADO] El Camino del Heroe."
+                                + " (Aventura completada en dificultad Normal)" + MotorCombate.ANSI_RESET);
+                    }
                 } else if (diffId == 3) {
-                    gr.desbloquearLogro(idPartidaActual, 11);
-                    System.out.println(MotorCombate.ANSI_MORADO + "[LOGRO DESBLOQUEADO] Elite de la Elite."
-                            + " (Aventura completada en dificultad Dificil)" + MotorCombate.ANSI_RESET);
+                    if (gr.desbloquearLogro(idPartidaActual, 11)) {
+                        System.out.println(MotorCombate.ANSI_MORADO + "[LOGRO DESBLOQUEADO] Elite de la Elite."
+                                + " (Aventura completada en dificultad Dificil)" + MotorCombate.ANSI_RESET);
+                    }
                 }
 
                 // Logro Impecable: cero bajas durante toda la aventura
                 if (bajasTotales == 0) {
-                    gr.desbloquearLogro(idPartidaActual, 20);
-                    System.out.println(MotorCombate.ANSI_MORADO + "[LOGRO DESBLOQUEADO] Impecable."
-                            + " (Ningún héroe cayó en toda la aventura)" + MotorCombate.ANSI_RESET);
+                    if (gr.desbloquearLogro(idPartidaActual, 20)) {
+                        System.out.println(MotorCombate.ANSI_MORADO + "[LOGRO DESBLOQUEADO] Impecable."
+                                + " (Ningún héroe cayó en toda la aventura)" + MotorCombate.ANSI_RESET);
+                    }
                 }
 
                 // Logro Con Refuerzos: Kallista y Kwai Chang en el equipo al final
@@ -364,9 +369,10 @@ public class Main {
                         hayKwai = true;
                 }
                 if (hayKallista && hayKwai) {
-                    gr.desbloquearLogro(idPartidaActual, 21);
-                    System.out.println(MotorCombate.ANSI_MORADO + "[LOGRO DESBLOQUEADO] Con Refuerzos."
-                            + " (Kallista y Kwai Chang terminaron la aventura en el equipo)" + MotorCombate.ANSI_RESET);
+                    if (gr.desbloquearLogro(idPartidaActual, 21)) {
+                        System.out.println(MotorCombate.ANSI_MORADO + "[LOGRO DESBLOQUEADO] Con Refuerzos."
+                                + " (Kallista y Kwai Chang terminaron la aventura en el equipo)" + MotorCombate.ANSI_RESET);
+                    }
                 }
 
                 // Logro El Ultimo Superviviente: exactamente 1 heroe vivo al final
@@ -376,9 +382,10 @@ public class Main {
                         vivosFinales++;
                 }
                 if (vivosFinales == 1) {
-                    gr.desbloquearLogro(idPartidaActual, 22);
-                    System.out.println(MotorCombate.ANSI_MORADO + "[LOGRO DESBLOQUEADO] El Ultimo Superviviente."
-                            + " (Solo un heroe llegó vivo al final)" + MotorCombate.ANSI_RESET);
+                    if (gr.desbloquearLogro(idPartidaActual, 22)) {
+                        System.out.println(MotorCombate.ANSI_MORADO + "[LOGRO DESBLOQUEADO] El Ultimo Superviviente."
+                                + " (Solo un heroe llegó vivo al final)" + MotorCombate.ANSI_RESET);
+                    }
                 }
 
                 // Actualizar DB para marcar partida como terminada
@@ -389,13 +396,18 @@ public class Main {
                     ps.executeUpdate();
                 } catch (java.sql.SQLException e) {
                     /* Ignore */ }
+                
+                // GUARDAR la partida completamente antes de salir
+                System.out.println(MotorCombate.ANSI_VERDE_OSCURO + "[SISTEMA] Guardando en modo automático..." + MotorCombate.ANSI_RESET);
+                MotorCombate.ejecutarGuardado(heroes, 20);
             }
 
             // Logros de progreso
             if (i == 1 && MotorCombate.hayVivos(heroes)) {
-                new basedatos.gestores.GestorRecompensas().desbloquearLogro(idPartidaActual, 2);
-                System.out.println(MotorCombate.ANSI_MORADO + "[LOGRO DESBLOQUEADO] Primeros Pasos."
-                        + " (Primera sala superada)" + MotorCombate.ANSI_RESET);
+                if (new basedatos.gestores.GestorRecompensas().desbloquearLogro(idPartidaActual, 2)) {
+                    System.out.println(MotorCombate.ANSI_MORADO + "[LOGRO DESBLOQUEADO] Primeros Pasos."
+                            + " (Primera sala superada)" + MotorCombate.ANSI_RESET);
+                }
             }
             // Logros de puntuacion (se comprueban cada sala, desbloquearLogro evita
             // duplicados)
@@ -431,7 +443,7 @@ public class Main {
             boolean esCombate = (i != 2 && i != 5 && i != 7 && i != 9 && i != 12 && i != 14 && i != 17 && i != 19);
             if (MotorCombate.hayVivos(heroes) && i < 20 && esCombate) {
                 if (!MotorCombate.modoManual || guardadoAuto) {
-                    System.out.println(MotorCombate.ANSI_VERDE_OSCURO + "Guardando partida automáticamente..."
+                    System.out.println(MotorCombate.ANSI_VERDE_OSCURO + "[SISTEMA] Guardando en modo automático..."
                             + MotorCombate.ANSI_RESET);
                     MotorCombate.ejecutarGuardado(heroes, i + 1);
                 } else if (guardadoManual) {

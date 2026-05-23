@@ -49,6 +49,10 @@ public class GestorPartidas {
             System.out.println("1. Fácil   (Vida y Daño de enemigos x0.6)");
             System.out.println("2. Normal  (Vida y Daño de enemigos x1.0)");
             System.out.println("3. Difícil (Vida y Daño de enemigos x1.5)");
+            System.out.println("   Sistema de puntuacion:");
+            System.out.println("   - Victoria en sala de combate: +60 / +100 / +150 pts");
+            System.out.println("   - Baja de heroe:               -30 /  -50 /  -75 pts");
+            System.out.println("   - Derrota de un jefe:         +300 / +500 / +750 pts");
             System.out.print(MotorCombate.ANSI_BEIGE + "> Elige una dificultad: " + MotorCombate.ANSI_RESET);
             if (MotorCombate.sc.hasNextInt()) {
                 dif = MotorCombate.sc.nextInt();
@@ -110,7 +114,7 @@ public class GestorPartidas {
     public int menuCargarPartida(int idUsuarioLogueado) {
         System.out.println(MotorCombate.ANSI_AZUL_MARINO + "\n=== [CARGAR PARTIDA] ===" + MotorCombate.ANSI_RESET);
         System.out.println("--- TUS PARTIDAS GUARDADAS ---");
-        String sql = "SELECT ID_partida, nombre_partida, sala_actual, puntuacion, estado FROM Partidas WHERE usuario_id = ?";
+        String sql = "SELECT ID_partida, nombre_partida, sala_actual, puntuacion, estado, dificultad_id FROM Partidas WHERE usuario_id = ?";
 
         Connection con = ConexionBD.getConexion();
         try (PreparedStatement ps = con.prepareStatement(sql)) {
@@ -123,8 +127,18 @@ public class GestorPartidas {
                     String tag = estadoP.equals("completada")
                             ? " " + MotorCombate.ANSI_ROJO + "(COMPLETADA)" + MotorCombate.ANSI_RESET
                             : "";
+                    int idDif = rs.getInt("dificultad_id");
+                    String difTexto = "";
+                    switch (idDif) {
+                        case 1: difTexto = MotorCombate.ANSI_VERDE_OSCURO + "[Fácil]" + MotorCombate.ANSI_RESET; break;
+                        case 2: difTexto = MotorCombate.ANSI_CIAN + "[Normal]" + MotorCombate.ANSI_RESET; break;
+                        case 3: difTexto = MotorCombate.ANSI_ROJO + "[Difícil]" + MotorCombate.ANSI_RESET; break;
+                        default: difTexto = "[?]"; break;
+                    }
+
                     System.out.println("ID: " + rs.getInt("ID_partida") +
                             " | Nombre: " + rs.getString("nombre_partida") +
+                            " | Dif: " + difTexto +
                             " | Sala: " + rs.getInt("sala_actual") +
                             " | Puntos: " + rs.getInt("puntuacion") + tag);
                 }
