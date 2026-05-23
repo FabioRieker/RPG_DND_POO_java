@@ -476,7 +476,7 @@ public class MotorCombate {
    */
   public static boolean hayVivos(Personaje[] grupo) {
     for (int i = 0; i < grupo.length; i++) {
-      if (grupo[i].estaVivo() == true) {
+      if (grupo[i] != null && grupo[i].estaVivo() == true) {
         return true;
       }
     }
