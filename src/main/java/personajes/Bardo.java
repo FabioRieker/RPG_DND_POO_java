@@ -25,8 +25,9 @@ public class Bardo extends Personaje {
 	public Bardo(String nombre, Raza raza, int fue, int des, int con, int intel, int defBase) {
 		super(nombre, raza, TipoClase.BARDO, fue, des, con, intel, defBase);
 
-		// Puede usar armas de cuerpo a cuerpo
+		// Puede usar armas de cuerpo a cuerpo y a distancia
 		this.armasPermitidas.add(CategoriaArma.melee);
+		this.armasPermitidas.add(CategoriaArma.distancia);
 		// Permite armaduras ligeras y medias
 		this.armadurasPermitidas.add(CategoriaArmadura.LIGERA);
 		this.armadurasPermitidas.add(CategoriaArmadura.MEDIA);

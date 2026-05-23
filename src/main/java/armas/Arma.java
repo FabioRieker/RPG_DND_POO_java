@@ -31,7 +31,8 @@ public abstract class Arma {
 		this.cantidadDados = cantidadDados;
 		this.carasDado = carasDado;
 		this.dado = new Random();
-		this.categoria = categoria; // Asignar la categoría para comprobar si la clase del personaje puede equipar el arma.
+		this.categoria = categoria; // Asignar categoría para comprobar posteriormente si la clase es apta para
+									// equipar el arma automáticamente
 	}
 
 	/**
@@ -82,6 +83,6 @@ public abstract class Arma {
 	 */
 	public void aplicarEfectosEspeciales(Personaje defensor) {
 		// Metodo opcional para aplicar estados alterados (no hacerlo abstracto previene
-		// Sobrecargar para armas genéricas sin atributos especiales)
+		// sobrecargar armas genericas)
 	}
 }

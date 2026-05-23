@@ -43,7 +43,7 @@ public class GestorPersonajes {
                 }
             }
         } catch (SQLException e) {
-            System.err.println(" Error al cargar estadísticas: " + e.getMessage());
+            System.out.println(" Error al cargar estadísticas: " + e.getMessage());
         }
         return stats;
     }
@@ -66,7 +66,7 @@ public class GestorPersonajes {
             }
             System.out.println("--------------------------------\n");
         } catch (SQLException e) {
-            System.err.println("Error al listar héroes: " + e.getMessage());
+            System.out.println("Error al listar héroes: " + e.getMessage());
         }
     }
 
@@ -86,7 +86,7 @@ public class GestorPersonajes {
                     return rs.getBoolean("es_monstruo");
             }
         } catch (SQLException e) {
-            System.err.println(" Error al verificar monstruo: " + e.getMessage());
+            System.out.println(" Error al verificar monstruo: " + e.getMessage());
         }
         return false;
     }

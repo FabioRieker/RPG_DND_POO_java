@@ -35,7 +35,7 @@ public class GestorInventario {
             ps.setInt(4, cantidadAñadir);
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            System.err.println("Error al añadir a la mochila: " + e.getMessage());
+            System.out.println("Error al añadir a la mochila: " + e.getMessage());
             return false;
         }
     }
@@ -65,7 +65,7 @@ public class GestorInventario {
             }
             return true;
         } catch (SQLException e) {
-            System.err.println("Error al consumir objeto: " + e.getMessage());
+            System.out.println("Error al consumir objeto: " + e.getMessage());
             return false;
         }
     }
@@ -90,7 +90,7 @@ public class GestorInventario {
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Error al leer inventario: " + e.getMessage());
+            System.out.println("Error al leer inventario: " + e.getMessage());
         }
         return inventario;
     }

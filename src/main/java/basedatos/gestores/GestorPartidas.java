@@ -33,7 +33,7 @@ public class GestorPartidas {
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Error al comprobar nombre de partida: " + e.getMessage());
+            System.out.println("Error al comprobar nombre de partida: " + e.getMessage());
         }
         return false;
     }
@@ -62,7 +62,7 @@ public class GestorPartidas {
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Error creando partida: " + e.getMessage());
+            System.out.println("Error creando partida: " + e.getMessage());
         }
         return -1;
     }
@@ -115,17 +115,17 @@ public class GestorPartidas {
             exito = true;
 
         } catch (SQLException e) {
-            System.err.println("Error crítico al guardar. Aplicando Rollback: " + e.getMessage());
+            System.out.println("Error crítico al guardar. Aplicando Rollback: " + e.getMessage());
             try {
                 con.rollback(); // Si algo falla, deshacemos todo para evitar datos corruptos
             } catch (SQLException ex) {
-                System.err.println("Error en el rollback: " + ex.getMessage());
+                System.out.println("Error en el rollback: " + ex.getMessage());
             }
         } finally {
             try {
                 con.setAutoCommit(true); // Devolvemos la conexión a su comportamiento normal
             } catch (SQLException e) {
-                e.printStackTrace();
+                System.out.println("Error de conexión: " + e.getMessage());
             }
         }
         return exito;
@@ -147,7 +147,7 @@ public class GestorPartidas {
             ps.setString(3, accion);
             ps.executeUpdate();
         } catch (SQLException e) {
-            System.err.println("Error guardando historial: " + e.getMessage());
+            System.out.println("Error guardando historial: " + e.getMessage());
         }
     }
 
@@ -175,7 +175,7 @@ public class GestorPartidas {
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Error restaurando estado de los héroes: " + e.getMessage());
+            System.out.println("Error restaurando estado de los héroes: " + e.getMessage());
         }
     }
 }

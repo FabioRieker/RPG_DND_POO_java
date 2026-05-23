@@ -5,6 +5,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.awt.Color;
+import org.knowm.xchart.CategoryChart;
+import org.knowm.xchart.CategoryChartBuilder;
+import org.knowm.xchart.SwingWrapper;
+import org.knowm.xchart.style.Styler;
+import motor.MotorCombate;
+import motor.Main;
 
 /**
  * Gestiona el alta, validación y eliminación de usuarios en la base de datos,
@@ -13,6 +21,107 @@ import java.sql.SQLException;
  * @author Ricardo Crespo y Fabio Rieker
  */
 public class GestorUsuarios {
+
+    /**
+     * Gestiona el bucle de interacción por consola para Iniciar Sesión o Registrarse.
+     * @return El ID del usuario una vez que ha iniciado sesión correctamente.
+     */
+    public int menuAcceso() {
+        int idUsuarioLogueado = -1;
+
+        System.out.println(MotorCombate.ANSI_AZUL_MARINO + "===========================================");
+        System.out.println("    [SISTEMA] IDENTIFICACIÓN");
+        System.out.println("===========================================" + MotorCombate.ANSI_RESET);
+
+        while (idUsuarioLogueado == -1) {
+            System.out.println("\n1. Iniciar Sesión");
+            System.out.println("2. Registrarse");
+            System.out.print(MotorCombate.ANSI_BEIGE + "> Elige una opción: " + MotorCombate.ANSI_RESET);
+
+            int optAcceso = 0;
+            if (MotorCombate.sc.hasNextInt()) {
+                optAcceso = MotorCombate.sc.nextInt();
+                MotorCombate.sc.nextLine();
+            } else {
+                MotorCombate.sc.nextLine(); // Limpiar buffer
+                System.out.println(MotorCombate.ANSI_ROJO + "[SISTEMA] Opción no válida." + MotorCombate.ANSI_RESET);
+                continue;
+            }
+
+            if (optAcceso != 1 && optAcceso != 2) {
+                System.out.println(MotorCombate.ANSI_ROJO + "[SISTEMA] Opción no válida." + MotorCombate.ANSI_RESET);
+                continue;
+            }
+
+            if (optAcceso == 1) {
+                System.out.println(MotorCombate.ANSI_AZUL_MARINO + "\n--- [LOGIN] ---" + MotorCombate.ANSI_RESET);
+                System.out.print(MotorCombate.ANSI_BEIGE + "Usuario: " + MotorCombate.ANSI_RESET);
+                String nombre = MotorCombate.sc.nextLine();
+                System.out.print(MotorCombate.ANSI_BEIGE + "Contraseña: " + MotorCombate.ANSI_RESET);
+                String pass = MotorCombate.sc.nextLine();
+
+                idUsuarioLogueado = this.validarLogin(nombre, pass);
+                if (idUsuarioLogueado == -1) {
+                    System.out.println(MotorCombate.ANSI_ROJO + "Credenciales incorrectas." + MotorCombate.ANSI_RESET);
+                } else {
+                    Main.nombreUsuarioLogueado = nombre;
+                    System.out.println(MotorCombate.ANSI_VERDE_OSCURO + "Acceso concedido. Bienvenido, " + nombre + "!"
+                            + MotorCombate.ANSI_RESET);
+                }
+            } else if (optAcceso == 2) {
+                System.out.println(MotorCombate.ANSI_AZUL_MARINO + "\n--- [REGISTRO] ---" + MotorCombate.ANSI_RESET);
+                String nombre;
+                while (true) {
+                    System.out.print(MotorCombate.ANSI_BEIGE + "Nuevo Usuario: " + MotorCombate.ANSI_RESET);
+                    nombre = MotorCombate.sc.nextLine();
+                    if (nombre.trim().isEmpty() || nombre.length() > 20) {
+                        System.out.println(MotorCombate.ANSI_ROJO
+                                + "[SISTEMA] El nombre debe tener entre 1 y 20 caracteres." + MotorCombate.ANSI_RESET);
+                    } else if (this.existeUsuario(nombre)) {
+                        System.out.println(MotorCombate.ANSI_ROJO
+                                + "[SISTEMA] Ese nombre de usuario ya está en uso." + MotorCombate.ANSI_RESET);
+                    } else {
+                        break;
+                    }
+                }
+
+                String pass;
+                while (true) {
+                    System.out.print(MotorCombate.ANSI_BEIGE + "Contraseña: " + MotorCombate.ANSI_RESET);
+                    pass = MotorCombate.sc.nextLine();
+                    if (pass.trim().isEmpty() || pass.length() > 50) {
+                        System.out.println(
+                                MotorCombate.ANSI_ROJO + "[SISTEMA] La contraseña debe tener entre 1 y 50 caracteres."
+                                        + MotorCombate.ANSI_RESET);
+                    } else {
+                        break;
+                    }
+                }
+
+                String email;
+                while (true) {
+                    System.out.print(MotorCombate.ANSI_BEIGE + "Email: " + MotorCombate.ANSI_RESET);
+                    email = MotorCombate.sc.nextLine();
+                    if (email.trim().isEmpty() || email.length() > 100) {
+                        System.out.println(MotorCombate.ANSI_ROJO
+                                + "[SISTEMA] El email debe tener entre 1 y 100 caracteres." + MotorCombate.ANSI_RESET);
+                    } else if (this.existeEmail(email)) {
+                        System.out.println(MotorCombate.ANSI_ROJO
+                                + "[SISTEMA] Ese email ya está registrado." + MotorCombate.ANSI_RESET);
+                    } else {
+                        break;
+                    }
+                }
+
+                int nuevoId = this.registrarUsuario(nombre, pass, email);
+                if (nuevoId != -1) {
+                    System.out.println(MotorCombate.ANSI_VERDE_OSCURO
+                            + "Cuenta creada con éxito. Ya puedes iniciar sesión." + MotorCombate.ANSI_RESET);
+                }
+            }
+        }
+        return idUsuarioLogueado;
+    }
 
     /**
      * Comprueba si un nombre de usuario ya está registrado en la base de datos.
@@ -31,7 +140,7 @@ public class GestorUsuarios {
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Error al comprobar usuario: " + e.getMessage());
+            System.out.println("Error al comprobar usuario: " + e.getMessage());
         }
         return false;
     }
@@ -53,7 +162,7 @@ public class GestorUsuarios {
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Error al comprobar email: " + e.getMessage());
+            System.out.println("Error al comprobar email: " + e.getMessage());
         }
         return false;
     }
@@ -82,7 +191,7 @@ public class GestorUsuarios {
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Error al registrar usuario: " + e.getMessage());
+            System.out.println("Error al registrar usuario: " + e.getMessage());
         }
         return -1;
     }
@@ -108,7 +217,7 @@ public class GestorUsuarios {
                     return rs.getInt("ID_usuario");
             }
         } catch (SQLException e) {
-            System.err.println("Error en login: " + e.getMessage());
+            System.out.println("Error en login: " + e.getMessage());
         }
         return -1;
     }
@@ -129,7 +238,7 @@ public class GestorUsuarios {
             ps.setInt(2, idUsuario);
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            System.err.println("Error al actualizar contraseña: " + e.getMessage());
+            System.out.println("Error al actualizar contraseña: " + e.getMessage());
             return false;
         }
     }
@@ -149,33 +258,120 @@ public class GestorUsuarios {
             ps.setInt(1, idUsuario);
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            System.err.println("Error al borrar cuenta: " + e.getMessage());
+            System.out.println("Error al borrar cuenta: " + e.getMessage());
             return false;
         }
     }
 
     /**
-     * Extrae y muestra por consola las 10 mejores puntuaciones históricas
-     * agrupadas por usuario para evitar duplicidades del mismo jugador.
+     * Extrae y muestra por consola las 10 mejores puntuaciones del juego.
+     * Cada entrada corresponde a una partida individual, por lo que un mismo
+     * usuario puede aparecer varias veces si tiene varias partidas bien puntuadas.
+     * Además, abre una ventana gráfica con un gráfico de barras coloreado por dificultad.
      */
     public void mostrarRankingGlobal() {
-        String sql = "SELECT u.nombre_usuario, MAX(p.puntuacion) as max_puntos " +
+        // Obtenemos todas las partidas ordenadas por puntuacion para recorrerlas
+        String sql = "SELECT u.nombre_usuario, p.nombre_partida, p.puntuacion, p.dificultad_id " +
                 "FROM Partidas p JOIN Usuarios u ON p.usuario_id = u.ID_usuario " +
-                "GROUP BY u.ID_usuario ORDER BY max_puntos DESC LIMIT 10";
+                "ORDER BY p.puntuacion DESC";
+
+        // Listas separadas por dificultad para los 3 gráficos (Top 5 cada una)
+        ArrayList<String> labelsFacil    = new ArrayList<>();
+        ArrayList<Integer> valoresFacil  = new ArrayList<>();
+        ArrayList<String> labelsNormal   = new ArrayList<>();
+        ArrayList<Integer> valoresNormal = new ArrayList<>();
+        ArrayList<String> labelsDificil   = new ArrayList<>();
+        ArrayList<Integer> valoresDificil = new ArrayList<>();
+
         try (Connection con = ConexionBD.getConexion();
                 PreparedStatement ps = con.prepareStatement(sql);
                 ResultSet rs = ps.executeQuery()) {
 
             System.out.println("\n=== RANKING GLOBAL TOP 10 ===");
             int pos = 1;
+            
             while (rs.next()) {
-                System.out.println(
-                        pos + ". " + rs.getString("nombre_usuario") + " - " + rs.getInt("max_puntos") + " pts");
+                int diffId = rs.getInt("dificultad_id");
+                int puntos = rs.getInt("puntuacion");
+                String colorDiff;
+                String nombreDiff;
+                
+                if (diffId == 1) {
+                    colorDiff = motor.MotorCombate.ANSI_VERDE_OSCURO;
+                    nombreDiff = "Facil";
+                } else if (diffId == 3) {
+                    colorDiff = motor.MotorCombate.ANSI_ROJO;
+                    nombreDiff = "Dificil";
+                } else {
+                    colorDiff = motor.MotorCombate.ANSI_CIAN;
+                    nombreDiff = "Normal";
+                }
+
+                // Imprimir por consola solo el TOP 10 absoluto
+                if (pos <= 10) {
+                    System.out.println(pos + ". " + rs.getString("nombre_usuario")
+                            + " | " + rs.getString("nombre_partida")
+                            + " - " + puntos + " pts"
+                            + " | " + colorDiff + nombreDiff + motor.MotorCombate.ANSI_RESET);
+                }
+
+                // Etiqueta para el eje X del grafico
+                String etiquetaGrafico = rs.getString("nombre_usuario") + " | " + rs.getString("nombre_partida");
+
+                // Clasificar en la lista de su dificultad (máximo 5)
+                if (diffId == 1 && labelsFacil.size() < 5) {
+                    labelsFacil.add(etiquetaGrafico);
+                    valoresFacil.add(puntos);
+                } else if (diffId == 3 && labelsDificil.size() < 5) {
+                    labelsDificil.add(etiquetaGrafico);
+                    valoresDificil.add(puntos);
+                } else if ((diffId == 2 || diffId > 3 || diffId < 1) && labelsNormal.size() < 5) {
+                    // diffId 2 es Normal
+                    labelsNormal.add(etiquetaGrafico);
+                    valoresNormal.add(puntos);
+                }
+
                 pos++;
             }
+            if (pos == 1) {
+                System.out.println("Aún no hay partidas registradas.");
+            }
             System.out.println("===================================\n");
+
         } catch (SQLException e) {
-            System.err.println("Error al cargar ranking: " + e.getMessage());
+            System.out.println("Error al cargar ranking: " + e.getMessage());
+            return;
+        }
+
+        // Crear matriz de gráficos
+        ArrayList<CategoryChart> graficos = new ArrayList<>();
+
+        if (!labelsFacil.isEmpty()) {
+            CategoryChart chartFacil = new CategoryChartBuilder().width(400).height(300).title("Top 5 - Fácil").xAxisTitle("Jugador | Partida").yAxisTitle("Puntos").theme(Styler.ChartTheme.GGPlot2).build();
+            chartFacil.getStyler().setLegendVisible(false);
+            chartFacil.getStyler().setXAxisLabelRotation(30);
+            chartFacil.addSeries("Facil", labelsFacil, valoresFacil).setFillColor(new Color(50, 180, 50));
+            graficos.add(chartFacil);
+        }
+
+        if (!labelsNormal.isEmpty()) {
+            CategoryChart chartNormal = new CategoryChartBuilder().width(400).height(300).title("Top 5 - Normal").xAxisTitle("Jugador | Partida").yAxisTitle("Puntos").theme(Styler.ChartTheme.GGPlot2).build();
+            chartNormal.getStyler().setLegendVisible(false);
+            chartNormal.getStyler().setXAxisLabelRotation(30);
+            chartNormal.addSeries("Normal", labelsNormal, valoresNormal).setFillColor(new Color(30, 144, 255));
+            graficos.add(chartNormal);
+        }
+
+        if (!labelsDificil.isEmpty()) {
+            CategoryChart chartDificil = new CategoryChartBuilder().width(400).height(300).title("Top 5 - Difícil").xAxisTitle("Jugador | Partida").yAxisTitle("Puntos").theme(Styler.ChartTheme.GGPlot2).build();
+            chartDificil.getStyler().setLegendVisible(false);
+            chartDificil.getStyler().setXAxisLabelRotation(30);
+            chartDificil.addSeries("Dificil", labelsDificil, valoresDificil).setFillColor(new Color(200, 50, 50));
+            graficos.add(chartDificil);
+        }
+
+        if (!graficos.isEmpty()) {
+            new SwingWrapper<>(graficos).displayChartMatrix();
         }
     }
 }

@@ -212,7 +212,14 @@ INSERT INTO `Logros` (`ID_logro`, `codigo`, `nombre`, `descripcion`, `requisito`
 (12, 'INTOCABLE', 'Intocable', 'Termina un combate sin que ningún héroe haya recibido ni un solo punto de daño.', 'Vidas intactas', 800, 'COMBATE'),
 (13, 'MAESTRO_ARMAS', 'Maestro de Armas', 'Cambia el arma de un héroe usando la opción \"Rearmarse\" en un campamento.', 'Equipar arma de mochila', 750, 'INVENTARIO'),
 (14, 'COLECCIONISTA', 'Coleccionista de Arsenal', 'Reúne 4 armas distintas en la mochila común en la misma partida.', '4 armas distintas en DB', 500, 'INVENTARIO'),
-(15, 'PLATINADO', 'Leyenda del Gremio', 'Consigue todos los demás logros del juego.', 'Obtener los 14 logros', 2000, 'META');
+(15, 'PLATINADO', 'Leyenda del Gremio', 'Consigue todos los demás logros del juego.', 'Obtener los 21 logros', 2000, 'META'),
+(16, 'VETERANO', 'Veterano', 'Acumula una puntuación superior a 1,500 puntos en una sola partida.', 'Más de 1500 puntos', 500, 'PROGRESO'),
+(17, 'LEYENDA', 'Leyenda', 'Acumula una puntuación superior a 3,000 puntos en una sola partida.', 'Más de 3000 puntos', 800, 'PROGRESO'),
+(18, 'PASEO_PARQUE', 'Paseo por el Parque', 'Completa la mazmorra entera en dificultad "Fácil".', 'Ganar en fácil', 500, 'PROGRESO'),
+(19, 'CAMINO_HEROE', 'El Camino del Héroe', 'Completa la mazmorra entera en dificultad "Normal".', 'Ganar en normal', 1000, 'PROGRESO'),
+(20, 'IMPECABLE', 'Impecable', 'Completa la aventura entera sin ninguna baja en el equipo.', '0 bajas en toda la partida', 1200, 'COMBATE'),
+(21, 'REFUERZOS', 'Con Refuerzos', 'Kallista y Kwai Chang terminaron la aventura en el equipo.', 'Kallista y Kwai vivos al ganar', 800, 'HISTORIA'),
+(22, 'SUPERVIVIENTE', 'El Último Superviviente', 'Solo un héroe llegó vivo al final de la aventura.', '1 héroe vivo al ganar', 1000, 'COMBATE');
 
 -- --------------------------------------------------------
 
@@ -336,28 +343,7 @@ INSERT INTO `Partida_Logros` (`ID_partida_logro`, `partida_id`, `logro_id`, `fec
 (64, 10, 14, '2026-05-21 16:36:19'),
 (69, 10, 3, '2026-05-21 16:36:19');
 
---
--- Disparadores `Partida_Logros`
---
-DROP TRIGGER IF EXISTS `trigger_platinado`;
-DELIMITER $$
-CREATE TRIGGER `trigger_platinado` AFTER INSERT ON `Partida_Logros` FOR EACH ROW BEGIN
-    DECLARE num_logros INT;
-    
-    
-    SELECT COUNT(DISTINCT pl.logro_id) INTO num_logros
-    FROM Partida_Logros pl
-    JOIN Partidas p ON pl.partida_id = p.ID_partida
-    WHERE p.usuario_id = (SELECT usuario_id FROM Partidas WHERE ID_partida = NEW.partida_id)
-      AND pl.logro_id != 15;
-      
-    IF num_logros >= 14 THEN
-        
-        INSERT IGNORE INTO Partida_Logros (partida_id, logro_id) VALUES (NEW.partida_id, 15);
-    END IF;
-END
-$$
-DELIMITER ;
+
 
 -- --------------------------------------------------------
 

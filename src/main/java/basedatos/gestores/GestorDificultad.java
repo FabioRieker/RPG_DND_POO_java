@@ -35,7 +35,7 @@ public class GestorDificultad {
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Error al obtener dificultad: " + e.getMessage());
+            System.out.println("Error al obtener dificultad: " + e.getMessage());
         }
         return multiplicador;
     }

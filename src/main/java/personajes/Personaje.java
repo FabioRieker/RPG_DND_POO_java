@@ -79,7 +79,8 @@ public abstract class Personaje {
 
 	// --- SECCION: INFORMACION ---
 	/**
-	 * Imprime en consola la ficha completa del personaje, incluyendo estadísticas vitales, 
+	 * Imprime en consola la ficha completa del personaje, incluyendo estadísticas
+	 * vitales,
 	 * equipo actual y estados alterados activos.
 	 */
 	public void mostrarInfo() {
@@ -185,7 +186,10 @@ public abstract class Personaje {
 	public void equiparArma(Arma arma) {
 		if (this.armasPermitidas.contains(arma.getCategoria())) {
 			this.armaEquipada = arma;
-			System.out.println("[SISTEMA] " + this.nombre + " se ha equipado " + arma.getNombre());
+			// Solo mostrar el mensaje si no está en modo silencioso
+			if (!motor.MotorCombate.silencioEquipamiento) {
+				System.out.println("[SISTEMA] " + this.nombre + " se ha equipado " + arma.getNombre());
+			}
 		} else {
 			System.out.println(motor.MotorCombate.ANSI_AMARILLO + "[SISTEMA] " + this.tipoClase + " " + this.nombre
 					+ " no sabe usar ese tipo de arma: " + arma.getCategoria() + motor.MotorCombate.ANSI_RESET);
@@ -200,7 +204,10 @@ public abstract class Personaje {
 	public void equiparArmadura(CategoriaArmadura categoria) {
 		if (this.armadurasPermitidas.contains(categoria)) {
 			this.armaduraEquipada = categoria;
-			System.out.println("[SISTEMA] " + this.nombre + " se ha equipado " + categoria.nombre);
+			// Solo mostrar el mensaje si no está en modo silencioso
+			if (!motor.MotorCombate.silencioEquipamiento) {
+				System.out.println("[SISTEMA] " + this.nombre + " se ha equipado " + categoria.nombre);
+			}
 		} else {
 			System.out.println(motor.MotorCombate.ANSI_AMARILLO + "[SISTEMA] " + this.tipoClase + " " + this.nombre
 					+ " no sabe usar ese tipo de armadura: " + categoria + motor.MotorCombate.ANSI_RESET);
@@ -428,7 +435,8 @@ public abstract class Personaje {
 			return;
 		}
 
-		// Si el que recibe el daño es un héroe, le aplicamos el multiplicador de dificultad
+		// Si el que recibe el daño es un héroe, le aplicamos el multiplicador de
+		// dificultad
 		if (this.esHeroe() && cantidad > 0) {
 			// Aplica el multiplicador de dificultad y garantiza un mínimo de 1 de daño.
 			double dañoConDificultad = cantidad * motor.MotorCombate.multiplicadorDificultad;

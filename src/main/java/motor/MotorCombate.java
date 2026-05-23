@@ -42,6 +42,9 @@ public class MotorCombate {
   // Difícil)
   public static double multiplicadorDificultad = 1.0;
 
+  // Si es true, suprime los mensajes de equipamiento al crear el equipo inicial
+  public static boolean silencioEquipamiento = false;
+
   /**
    * Método principal que inicia el combate contra una lista de enemigos. Gestiona
    * el bucle de turnos hasta que uno de los dos bandos es derrotado.
@@ -57,6 +60,12 @@ public class MotorCombate {
       vidasIniciales[i] = heroes[i].getVidaActual();
     }
 
+    // Pausa antes de mostrar el banner de inicio para separar del texto anterior
+    try {
+      Thread.sleep(600);
+    } catch (InterruptedException ex) {
+    }
+
     // Arranca el bucle visual y lógico del combate
     System.out.println("\n" + ANSI_AZUL_MARINO + "===========================================");
     System.out.println("          [SISTEMA] ¡COMBATE COMIENZA!");
@@ -64,6 +73,11 @@ public class MotorCombate {
 
     int turno = 1;
     while (hayVivos(heroes) && hayVivos(enemigos) && turno <= 10) {
+      try {
+        Thread.sleep(500);
+      } catch (InterruptedException ex) {
+      }
+
       System.out.println("\n" + ANSI_CIAN + "======= [TURNO " + turno + "] =======" + ANSI_RESET);
 
       // Restar turnos de estados alterados a los héroes
@@ -124,6 +138,11 @@ public class MotorCombate {
       }
 
       System.out.println(ANSI_CIAN + "[INICIATIVA] Orden: " + listaOrdenada + ANSI_RESET);
+
+      try {
+        Thread.sleep(700);
+      } catch (InterruptedException ex) {
+      }
 
       for (int i = 0; i < todos.size(); i++) {
         Personaje p = todos.get(i);
@@ -198,9 +217,10 @@ public class MotorCombate {
       for (Personaje e : enemigos) {
         procesarAutoLoot(heroes, e);
         if (!e.estaVivo() && e.getTipoClase() == personajes.TipoClase.JEFE) {
-          Main.puntuacionPartida += 500;
+          Main.puntuacionPartida += (int)(500 * multiplicadorDificultad);
           new basedatos.gestores.GestorRecompensas().desbloquearLogro(Main.idPartidaActual, 1);
-          System.out.println(ANSI_MORADO + "[LOGRO DESBLOQUEADO] ¡Has derrotado a un Jefe!" + ANSI_RESET);
+          System.out.println(ANSI_MORADO + "[LOGRO DESBLOQUEADO] Asesino de Gigantes."
+              + " (Primer jefe derrotado)" + ANSI_RESET);
         }
       }
     } else if (hayVivos(enemigos) == true) {
@@ -232,19 +252,23 @@ public class MotorCombate {
       basedatos.gestores.GestorRecompensas gr = new basedatos.gestores.GestorRecompensas();
       if (!dañoRecibido) {
         gr.desbloquearLogro(Main.idPartidaActual, 12);
-        System.out.println(ANSI_MORADO + "[LOGRO DESBLOQUEADO] Intocable." + ANSI_RESET);
+        System.out.println(ANSI_MORADO + "[LOGRO DESBLOQUEADO] Intocable."
+        + " (Victoria sin recibir ningun golpe)" + ANSI_RESET);
       }
       if (alguienAlBorde) {
         gr.desbloquearLogro(Main.idPartidaActual, 8);
-        System.out.println(ANSI_MORADO + "[LOGRO DESBLOQUEADO] Al Borde del Abismo." + ANSI_RESET);
+        System.out.println(ANSI_MORADO + "[LOGRO DESBLOQUEADO] Al Borde del Abismo."
+        + " (Un heroe sobrevivio con 5 HP o menos)" + ANSI_RESET);
       }
       if (vivos == 1 && muertos >= 3) {
         gr.desbloquearLogro(Main.idPartidaActual, 9);
-        System.out.println(ANSI_MORADO + "[LOGRO DESBLOQUEADO] El Último en Pie." + ANSI_RESET);
+        System.out.println(ANSI_MORADO + "[LOGRO DESBLOQUEADO] El Ultimo en Pie."
+        + " (Solo 1 heroe vivo con 3 o mas caidos en combate)" + ANSI_RESET);
       }
       if (inventarioGrupo.size() >= 5) {
         gr.desbloquearLogro(Main.idPartidaActual, 7);
-        System.out.println(ANSI_MORADO + "[LOGRO DESBLOQUEADO] Mochila Pesada." + ANSI_RESET);
+        System.out.println(ANSI_MORADO + "[LOGRO DESBLOQUEADO] Mochila Pesada."
+        + " (5 o mas armas acumuladas en la mochila comun)" + ANSI_RESET);
       }
       new basedatos.gestores.GestorPartidas().registrarLog(Main.idPartidaActual, turno, "Victoria en combate.");
     }
@@ -710,7 +734,8 @@ public class MotorCombate {
               mochilaComun.remove(numeroArma - 1);
               h.equiparArma(armaElegida);
               new basedatos.gestores.GestorRecompensas().desbloquearLogro(Main.idPartidaActual, 13);
-              System.out.println(ANSI_MORADO + "[LOGRO DESBLOQUEADO] Maestro de Armas." + ANSI_RESET);
+              System.out.println(ANSI_MORADO + "[LOGRO DESBLOQUEADO] Maestro de Armas."
+              + " (Arma cambiada desde la mochila comun en campamento)" + ANSI_RESET);
               if (aVieja != null) {
                 mochilaComun.add(aVieja);
                 System.out.println(ANSI_CIAN + "[SISTEMA] El " + aVieja.getNombre()

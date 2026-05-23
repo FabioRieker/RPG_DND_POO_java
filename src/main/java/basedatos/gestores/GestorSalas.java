@@ -36,7 +36,7 @@ public class GestorSalas {
             }
 
         } catch (SQLException e) {
-            System.err.println("Error al obtener tipo de sala: " + e.getMessage());
+            System.out.println("Error al obtener tipo de sala: " + e.getMessage());
         }
         return null;
     }
@@ -58,7 +58,7 @@ public class GestorSalas {
 
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            System.err.println("Error al avanzar sala: " + e.getMessage());
+            System.out.println("Error al avanzar sala: " + e.getMessage());
             return false;
         }
     }
@@ -83,7 +83,7 @@ public class GestorSalas {
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Error al obtener enemigos de sala: " + e.getMessage());
+            System.out.println("Error al obtener enemigos de sala: " + e.getMessage());
         }
         return enemigos;
     }

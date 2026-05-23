@@ -37,7 +37,7 @@ public class GestorEstadoHeroe {
 
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            System.err.println("Error al actualizar atributos vitales: " + e.getMessage());
+            System.out.println("Error al actualizar atributos vitales: " + e.getMessage());
             return false;
         }
     }
@@ -60,7 +60,7 @@ public class GestorEstadoHeroe {
 
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            System.err.println("Error al matar personaje: " + e.getMessage());
+            System.out.println("Error al matar personaje: " + e.getMessage());
             return false;
         }
     }
@@ -83,7 +83,7 @@ public class GestorEstadoHeroe {
 
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            System.err.println("Error al aplicar estado alterado: " + e.getMessage());
+            System.out.println("Error al aplicar estado alterado: " + e.getMessage());
             return false;
         }
     }
@@ -103,7 +103,7 @@ public class GestorEstadoHeroe {
 
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            System.err.println("Error al limpiar estados: " + e.getMessage());
+            System.out.println("Error al limpiar estados: " + e.getMessage());
             return false;
         }
     }

@@ -10,10 +10,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.ArrayList;
+import java.awt.Color;
+import org.knowm.xchart.PieChart;
+import org.knowm.xchart.PieChartBuilder;
+import org.knowm.xchart.SwingWrapper;
 
 /**
  * Clase principal que arranca el juego. Gestiona el Login, el Menu Principal,
  * la persistencia en base de datos y el bucle de las 20 salas.
+ * 
  * @author Ricardo Crespo y Fabio Rieker
  */
 public class Main {
@@ -24,6 +29,7 @@ public class Main {
     public static int idPartidaActual = -1;
     public static int salaActual = 1;
     public static int puntuacionPartida = 0;
+    public static int bajasTotales = 0; // Bajas acumuladas en toda la partida (para logro Impecable)
 
     public static void main(String[] args) {
 
@@ -32,97 +38,7 @@ public class Main {
         GestorUsuarios gestorUsuarios = new GestorUsuarios();
 
         // 1. BUCLE DE AUTENTICACION (LOGIN / REGISTRO)
-        System.out.println(MotorCombate.ANSI_AZUL_MARINO + "===========================================");
-        System.out.println("    [SISTEMA] IDENTIFICACIÓN");
-        System.out.println("===========================================" + MotorCombate.ANSI_RESET);
-
-        while (idUsuarioLogueado == -1) {
-            System.out.println("\n1. Iniciar Sesión");
-            System.out.println("2. Registrarse");
-            System.out.print(MotorCombate.ANSI_BEIGE + "> Elige una opción: " + MotorCombate.ANSI_RESET);
-
-            int optAcceso = 0;
-            if (MotorCombate.sc.hasNextInt()) {
-                optAcceso = MotorCombate.sc.nextInt();
-                MotorCombate.sc.nextLine();
-            } else {
-                MotorCombate.sc.nextLine(); // Limpiar buffer
-                System.out.println(MotorCombate.ANSI_ROJO + "[SISTEMA] Opción no válida." + MotorCombate.ANSI_RESET);
-                continue;
-            }
-
-            if (optAcceso != 1 && optAcceso != 2) {
-                System.out.println(MotorCombate.ANSI_ROJO + "[SISTEMA] Opción no válida." + MotorCombate.ANSI_RESET);
-                continue;
-            }
-
-            if (optAcceso == 1) {
-                System.out.println(MotorCombate.ANSI_AZUL_MARINO + "\n--- [LOGIN] ---" + MotorCombate.ANSI_RESET);
-                System.out.print(MotorCombate.ANSI_BEIGE + "Usuario: " + MotorCombate.ANSI_RESET);
-                String nombre = MotorCombate.sc.nextLine();
-                System.out.print(MotorCombate.ANSI_BEIGE + "Contraseña: " + MotorCombate.ANSI_RESET);
-                String pass = MotorCombate.sc.nextLine();
-
-                idUsuarioLogueado = gestorUsuarios.validarLogin(nombre, pass);
-                if (idUsuarioLogueado == -1) {
-                    System.out.println(MotorCombate.ANSI_ROJO + "Credenciales incorrectas." + MotorCombate.ANSI_RESET);
-                } else {
-                    nombreUsuarioLogueado = nombre;
-                    System.out.println(MotorCombate.ANSI_VERDE_OSCURO + "Acceso concedido. Bienvenido, " + nombre + "!"
-                            + MotorCombate.ANSI_RESET);
-                }
-            } else if (optAcceso == 2) {
-                System.out.println(MotorCombate.ANSI_AZUL_MARINO + "\n--- [REGISTRO] ---" + MotorCombate.ANSI_RESET);
-                String nombre;
-                while (true) {
-                    System.out.print(MotorCombate.ANSI_BEIGE + "Nuevo Usuario: " + MotorCombate.ANSI_RESET);
-                    nombre = MotorCombate.sc.nextLine();
-                    if (nombre.trim().isEmpty() || nombre.length() > 20) {
-                        System.out.println(MotorCombate.ANSI_ROJO
-                                + "[SISTEMA] El nombre debe tener entre 1 y 20 caracteres." + MotorCombate.ANSI_RESET);
-                    } else if (gestorUsuarios.existeUsuario(nombre)) {
-                        System.out.println(MotorCombate.ANSI_ROJO
-                                + "[SISTEMA] Ese nombre de usuario ya está en uso." + MotorCombate.ANSI_RESET);
-                    } else {
-                        break;
-                    }
-                }
-
-                String pass;
-                while (true) {
-                    System.out.print(MotorCombate.ANSI_BEIGE + "Contraseña: " + MotorCombate.ANSI_RESET);
-                    pass = MotorCombate.sc.nextLine();
-                    if (pass.trim().isEmpty() || pass.length() > 50) {
-                        System.out.println(
-                                MotorCombate.ANSI_ROJO + "[SISTEMA] La contraseña debe tener entre 1 y 50 caracteres."
-                                        + MotorCombate.ANSI_RESET);
-                    } else {
-                        break;
-                    }
-                }
-
-                String email;
-                while (true) {
-                    System.out.print(MotorCombate.ANSI_BEIGE + "Email: " + MotorCombate.ANSI_RESET);
-                    email = MotorCombate.sc.nextLine();
-                    if (email.trim().isEmpty() || email.length() > 100) {
-                        System.out.println(MotorCombate.ANSI_ROJO
-                                + "[SISTEMA] El email debe tener entre 1 y 100 caracteres." + MotorCombate.ANSI_RESET);
-                    } else if (gestorUsuarios.existeEmail(email)) {
-                        System.out.println(MotorCombate.ANSI_ROJO
-                                + "[SISTEMA] Ese email ya está registrado." + MotorCombate.ANSI_RESET);
-                    } else {
-                        break;
-                    }
-                }
-
-                int nuevoId = gestorUsuarios.registrarUsuario(nombre, pass, email);
-                if (nuevoId != -1) {
-                    System.out.println(MotorCombate.ANSI_VERDE_OSCURO
-                            + "Cuenta creada con éxito. Ya puedes iniciar sesión." + MotorCombate.ANSI_RESET);
-                }
-            }
-        }
+        idUsuarioLogueado = gestorUsuarios.menuAcceso();
 
         // 2. MENU PRINCIPAL
         boolean salirJuego = false;
@@ -169,7 +85,7 @@ public class Main {
     // --- METODOS DEL MENU ---
 
     /*
-     * Flujo de creación: pide nombre de la partida, selecciona dificultad global 
+     * Flujo de creación: pide nombre de la partida, selecciona dificultad global
      * y, si el usuario es Admin, pregunta por la sala de inicio (modo debug).
      */
     private static void configurarNuevaPartida() {
@@ -193,7 +109,8 @@ public class Main {
 
         int dif = 0;
         while (true) {
-            System.out.println(MotorCombate.ANSI_AZUL_MARINO + "\n=== [SELECCIÓN DE DIFICULTAD] ===" + MotorCombate.ANSI_RESET);
+            System.out.println(
+                    MotorCombate.ANSI_AZUL_MARINO + "\n=== [SELECCIÓN DE DIFICULTAD] ===" + MotorCombate.ANSI_RESET);
             System.out.println("1. Fácil   (Vida y Daño de enemigos x0.6)");
             System.out.println("2. Normal  (Vida y Daño de enemigos x1.0)");
             System.out.println("3. Difícil (Vida y Daño de enemigos x1.5)");
@@ -239,6 +156,7 @@ public class Main {
 
             salaActual = salaInicio;
             puntuacionPartida = 0;
+            bajasTotales = 0;
             System.out.println(MotorCombate.ANSI_VERDE_OSCURO + "\n¡Partida '" + nombrePartida + "' creada con éxito!"
                     + MotorCombate.ANSI_RESET);
             iniciarAventura();
@@ -246,13 +164,14 @@ public class Main {
     }
 
     /**
-     * Consulta las partidas activas del usuario logueado, permite seleccionar una 
-     * mediante su ID y restaura la sala, puntuación y dificultad antes de saltar a la aventura.
+     * Consulta las partidas activas del usuario logueado, permite seleccionar una
+     * mediante su ID y restaura la sala, puntuación y dificultad antes de saltar a
+     * la aventura.
      */
     private static void cargarPartidaGuardada() {
         System.out.println(MotorCombate.ANSI_AZUL_MARINO + "\n=== [CARGAR PARTIDA] ===" + MotorCombate.ANSI_RESET);
         System.out.println("--- TUS PARTIDAS GUARDADAS ---");
-        String sql = "SELECT ID_partida, nombre_partida, sala_actual, puntuacion FROM Partidas WHERE usuario_id = ? AND estado = 'activa'";
+        String sql = "SELECT ID_partida, nombre_partida, sala_actual, puntuacion, estado FROM Partidas WHERE usuario_id = ?";
 
         Connection con = ConexionBD.getConexion();
         try (PreparedStatement ps = con.prepareStatement(sql)) {
@@ -261,10 +180,14 @@ public class Main {
                 boolean hayPartidas = false;
                 while (rs.next()) {
                     hayPartidas = true;
+                    String estadoP = rs.getString("estado");
+                    String tag = estadoP.equals("completada")
+                            ? " " + MotorCombate.ANSI_ROJO + "(COMPLETADA)" + MotorCombate.ANSI_RESET
+                            : "";
                     System.out.println("ID: " + rs.getInt("ID_partida") +
                             " | Nombre: " + rs.getString("nombre_partida") +
                             " | Sala: " + rs.getInt("sala_actual") +
-                            " | Puntos: " + rs.getInt("puntuacion"));
+                            " | Puntos: " + rs.getInt("puntuacion") + tag);
                 }
                 if (!hayPartidas) {
                     System.out.println(
@@ -273,7 +196,7 @@ public class Main {
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Error al cargar partidas: " + e.getMessage());
+            System.out.println("Error al cargar partidas: " + e.getMessage());
         }
 
         int idElegido = 0;
@@ -292,12 +215,17 @@ public class Main {
 
         if (idElegido > 0) {
             // Recuperar datos de la partida elegida
-            String sqlCarga = "SELECT sala_actual, puntuacion, dificultad_id FROM Partidas WHERE ID_partida = ? AND usuario_id = ?";
+            String sqlCarga = "SELECT sala_actual, puntuacion, dificultad_id, estado FROM Partidas WHERE ID_partida = ? AND usuario_id = ?";
             try (PreparedStatement ps2 = con.prepareStatement(sqlCarga)) {
                 ps2.setInt(1, idElegido);
                 ps2.setInt(2, idUsuarioLogueado);
                 try (ResultSet rs2 = ps2.executeQuery()) {
                     if (rs2.next()) {
+                        if (rs2.getString("estado").equals("completada")) {
+                            System.out.println(MotorCombate.ANSI_ROJO
+                                    + "[SISTEMA] Esta aventura ya se completó. Enhorabuena!" + MotorCombate.ANSI_RESET);
+                            return;
+                        }
                         idPartidaActual = idElegido;
                         salaActual = rs2.getInt("sala_actual");
                         puntuacionPartida = rs2.getInt("puntuacion");
@@ -314,44 +242,212 @@ public class Main {
                     }
                 }
             } catch (SQLException e) {
-                System.err.println("Error: " + e.getMessage());
+                System.out.println("Error: " + e.getMessage());
             }
         }
     }
 
+    // Clase auxiliar para agrupar la información de cada logro (estilo 1º de DAM)
+    private static class InfoLogro {
+        int id;
+        String nombre;
+        String descripcion;
+        boolean obtenido;
+
+        public InfoLogro(int id, String nombre, String descripcion, boolean obtenido) {
+            this.id = id;
+            this.nombre = nombre;
+            this.descripcion = descripcion;
+            this.obtenido = obtenido;
+        }
+    }
+
     private static void mostrarMisLogros() {
-        System.out.println(
-                "\n" + MotorCombate.ANSI_MORADO + "=== MIS LOGROS DESBLOQUEADOS ===" + MotorCombate.ANSI_RESET);
-        String sql = "SELECT DISTINCT l.nombre, l.puntos FROM Partida_Logros pl " +
-                "JOIN Logros l ON pl.logro_id = l.ID_logro " +
-                "JOIN Partidas p ON pl.partida_id = p.ID_partida " +
-                "WHERE p.usuario_id = ?";
+        // Colores para cada tier de logros
+        String colorBronce = "\033[38;5;130m"; // Marron / Bronce
+        String colorPlata = "\033[37m"; // Gris claro -> Plata
+        String colorOro = "\033[93m"; // Amarillo brillante -> Oro
+        String colorPlatino = "\033[96m"; // Cian brillante -> Platino
+        String colorGris = "\033[90m"; // Gris oscuro -> no obtenido
+        String reset = MotorCombate.ANSI_RESET;
+
+        // IDs de cada logro agrupados por tier de dificultad
+        int[] idsBronce = { 2, 3, 4, 5, 6 };
+        int[] idsPlata = { 7, 8, 13, 14, 16, 18, 19 };
+        int[] idsOro = { 1, 9, 10, 11, 12, 17, 20, 21, 22 };
+        int[] idsPlatino = { 15 };
+
+        // Consulta: trae TODOS los logros y marca cuales tiene el usuario
+        // Se usa LEFT JOIN para que aparezcan también los no obtenidos
+        String sql = "SELECT l.ID_logro, l.nombre, l.descripcion, " +
+                "       CASE WHEN pl.logro_id IS NOT NULL THEN 1 ELSE 0 END AS desbloqueado " +
+                "FROM Logros l " +
+                "LEFT JOIN Partida_Logros pl " +
+                "       ON l.ID_logro = pl.logro_id " +
+                "      AND pl.partida_id IN (SELECT ID_partida FROM Partidas WHERE usuario_id = ?) " +
+                "GROUP BY l.ID_logro " +
+                "ORDER BY l.ID_logro";
+
+        System.out.println(MotorCombate.ANSI_MORADO + "\n=== MIS LOGROS ===" + reset);
+
         Connection con = ConexionBD.getConexion();
         try (PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, idUsuarioLogueado);
             try (ResultSet rs = ps.executeQuery()) {
-                boolean tieneLogros = false;
+
+                // Guardamos los logros en un ArrayList de objetos
+                ArrayList<InfoLogro> todosLosLogros = new ArrayList<>();
+
                 while (rs.next()) {
-                    tieneLogros = true;
-                    System.out.println("- " + rs.getString("nombre") + " (+" + rs.getInt("puntos") + " pts)");
+                    InfoLogro logro = new InfoLogro(
+                            rs.getInt("ID_logro"),
+                            rs.getString("nombre"),
+                            rs.getString("descripcion"),
+                            rs.getInt("desbloqueado") == 1);
+                    todosLosLogros.add(logro);
                 }
-                if (!tieneLogros) {
-                    System.out.println("Aún no has desbloqueado ningún logro. ¡Sigue jugando!");
+
+                // Contar cuantos ha desbloqueado el usuario
+                int desbloqueados = 0;
+                for (InfoLogro l : todosLosLogros) {
+                    if (l.obtenido)
+                        desbloqueados++;
                 }
+
+                // Imprimir cada tier en su color
+                imprimirTierLogros("BRONCE", colorBronce, idsBronce, todosLosLogros, colorGris, reset);
+                imprimirTierLogros("PLATA", colorPlata, idsPlata, todosLosLogros, colorGris, reset);
+                imprimirTierLogros("ORO", colorOro, idsOro, todosLosLogros, colorGris, reset);
+                imprimirTierLogros("PLATINO", colorPlatino, idsPlatino, todosLosLogros, colorGris, reset);
+
+                // Contador final
+                System.out.println();
+                System.out.println("Desbloqueados: " + desbloqueados + " / " + todosLosLogros.size());
+
+                // Mostrar gráficos en ventana flotante
+                mostrarGraficosLogros(todosLosLogros, idsBronce, idsPlata, idsOro, idsPlatino);
             }
         } catch (SQLException e) {
-            System.err.println("Error al cargar logros: " + e.getMessage());
+            System.out.println("Error al cargar logros: " + e.getMessage());
         }
-        System.out.println("Presiona ENTER para volver...");
+
+        System.out.println("\nPresiona ENTER para volver...");
         MotorCombate.sc.nextLine();
+    }
+
+    /**
+     * Imprime una seccion de logros de un tier concreto usando la lista de objetos.
+     * Los logros obtenidos aparecen en el color del tier con simbolo [v].
+     * Los no obtenidos aparecen en gris con [ ].
+     *
+     * @param nombreTier Nombre del tier (ej: "ORO").
+     * @param colorTier  Codigo ANSI del color del tier.
+     * @param idsTier    IDs de logros que pertenecen a este tier.
+     * @param logros     Lista de todos los logros como objetos.
+     * @param colorGris  Color para logros no obtenidos.
+     * @param reset      Codigo ANSI de reset.
+     */
+    private static void imprimirTierLogros(String nombreTier, String colorTier, int[] idsTier,
+            ArrayList<InfoLogro> logros, String colorGris, String reset) {
+
+        System.out.println("\n" + colorTier + "── " + nombreTier
+                + " ──────────────────────────────────" + reset);
+
+        // Buscar cada ID del tier en la lista de objetos
+        for (int t = 0; t < idsTier.length; t++) {
+            int idBuscado = idsTier[t];
+
+            for (InfoLogro logro : logros) {
+                if (logro.id == idBuscado) {
+                    if (logro.obtenido) {
+                        // Logro obtenido: color del tier y check
+                        System.out.println(colorTier + "  [v] " + logro.nombre
+                                + " (" + logro.descripcion + ")" + reset);
+                    } else {
+                        // Logro no obtenido: en gris para diferenciarlo
+                        System.out.println(colorGris + "  [ ] " + logro.nombre
+                                + " (" + logro.descripcion + ")" + reset);
+                    }
+                    break;
+                }
+            }
+        }
+    }
+
+    /**
+     * Muestra una matriz de gráficos circulares (PieChart) usando la librería XChart.
+     * Calcula cuántos logros de cada tier se han obtenido para dibujar los porcentajes.
+     */
+    private static void mostrarGraficosLogros(ArrayList<InfoLogro> todosLosLogros, int[] idsBronce, int[] idsPlata, int[] idsOro, int[] idsPlatino) {
+        // Contar obtenidos por tier usando un método de ayuda
+        int obtBronce = contarLogrosObtenidos(idsBronce, todosLosLogros);
+        int obtPlata = contarLogrosObtenidos(idsPlata, todosLosLogros);
+        int obtOro = contarLogrosObtenidos(idsOro, todosLosLogros);
+        int obtPlatino = contarLogrosObtenidos(idsPlatino, todosLosLogros);
+
+        // Crear los graficos de XChart
+        ArrayList<PieChart> graficos = new ArrayList<>();
+        Color colorBloqueado = new Color(60, 60, 60); // Gris oscuro para porciones no obtenidas
+
+        // Grafico Bronce
+        PieChart chartBronce = new PieChartBuilder().width(400).height(300).title("Logros Bronce").build();
+        chartBronce.addSeries("Obtenidos", obtBronce);
+        chartBronce.addSeries("Bloqueados", idsBronce.length - obtBronce);
+        chartBronce.getStyler().setSeriesColors(new Color[] { new Color(139, 69, 19), colorBloqueado });
+        chartBronce.getStyler().setLegendVisible(false);
+        graficos.add(chartBronce);
+
+        // Grafico Plata
+        PieChart chartPlata = new PieChartBuilder().width(400).height(300).title("Logros Plata").build();
+        chartPlata.addSeries("Obtenidos", obtPlata);
+        chartPlata.addSeries("Bloqueados", idsPlata.length - obtPlata);
+        chartPlata.getStyler().setSeriesColors(new Color[] { new Color(192, 192, 192), colorBloqueado });
+        chartPlata.getStyler().setLegendVisible(false);
+        graficos.add(chartPlata);
+
+        // Grafico Oro
+        PieChart chartOro = new PieChartBuilder().width(400).height(300).title("Logros Oro").build();
+        chartOro.addSeries("Obtenidos", obtOro);
+        chartOro.addSeries("Bloqueados", idsOro.length - obtOro);
+        chartOro.getStyler().setSeriesColors(new Color[] { new Color(255, 215, 0), colorBloqueado });
+        chartOro.getStyler().setLegendVisible(false);
+        graficos.add(chartOro);
+
+        // Grafico Platino
+        PieChart chartPlatino = new PieChartBuilder().width(400).height(300).title("Logros Platino").build();
+        chartPlatino.addSeries("Obtenidos", obtPlatino);
+        chartPlatino.addSeries("Bloqueados", idsPlatino.length - obtPlatino);
+        chartPlatino.getStyler().setSeriesColors(new Color[] { new Color(0, 255, 255), colorBloqueado });
+        chartPlatino.getStyler().setLegendVisible(false);
+        graficos.add(chartPlatino);
+
+        // Mostrar en ventana flotante de Swing
+        new SwingWrapper<>(graficos).displayChartMatrix();
+    }
+
+    /**
+     * Cuenta cuántos logros de un tier específico han sido obtenidos.
+     */
+    private static int contarLogrosObtenidos(int[] idsTier, ArrayList<InfoLogro> logros) {
+        int contador = 0;
+        for (int id : idsTier) {
+            for (InfoLogro l : logros) {
+                if (l.id == id && l.obtenido) {
+                    contador++;
+                }
+            }
+        }
+        return contador;
     }
 
     // --- BUCLE PRINCIPAL DEL JUEGO ---
 
     /*
-     * Bucle principal del juego. Gestiona eventos de historia estáticos (salas 2, 5, 7, etc.), 
+     * Bucle principal del juego. Gestiona eventos de historia estáticos (salas 2,
+     * 5, 7, etc.),
      * eventos de curación, reclutamientos y genera combates en el resto de salas.
-     * También controla los puntos de guardado y los reemplazos del equipo de reserva.
+     * También controla los puntos de guardado y los reemplazos del equipo de
+     * reserva.
      */
     private static void iniciarAventura() {
         boolean guardadoAuto = false;
@@ -470,14 +566,25 @@ public class Main {
                         + "[EVENTO] ¡Rescatáis a Kallista! Se une a vuestra reserva." + MotorCombate.ANSI_RESET);
                 reserva.add(FabricaHeroes.crearKallista());
                 new basedatos.gestores.GestorRecompensas().desbloquearLogro(idPartidaActual, 4);
-                System.out.println(
-                        MotorCombate.ANSI_MORADO + "[LOGRO DESBLOQUEADO] Un Nuevo Aliado." + MotorCombate.ANSI_RESET);
+                System.out.println(MotorCombate.ANSI_MORADO + "[LOGRO DESBLOQUEADO] Un Nuevo Aliado."
+                        + " (Kallista se ha unido a la reserva)" + MotorCombate.ANSI_RESET);
             } else if (i == 7) {
                 System.out.println("¡BOOM! Una trampa de fuego estalla.");
+                int vivosAntesTrampa = 0;
+                for (int j = 0; j < heroes.length; j++) {
+                    if (heroes[j].estaVivo())
+                        vivosAntesTrampa++;
+                }
                 for (Personaje h : heroes) {
                     if (h.estaVivo())
                         h.recibirDaño(12, true);
                 }
+                int vivosTrampa = 0;
+                for (int j = 0; j < heroes.length; j++) {
+                    if (heroes[j].estaVivo())
+                        vivosTrampa++;
+                }
+                bajasTotales += vivosAntesTrampa - vivosTrampa;
             } else if (i == 9) {
                 System.out.println(MotorCombate.ANSI_MORADO
                         + "[EVENTO] Llegáis a una fuente curativa. El grupo descansa." + MotorCombate.ANSI_RESET);
@@ -486,8 +593,12 @@ public class Main {
                         h.curar(50);
                 }
                 new basedatos.gestores.GestorRecompensas().desbloquearLogro(idPartidaActual, 3);
-                System.out.println(
-                        MotorCombate.ANSI_MORADO + "[LOGRO DESBLOQUEADO] Campista Novato." + MotorCombate.ANSI_RESET);
+                System.out.println(MotorCombate.ANSI_MORADO + "[LOGRO DESBLOQUEADO] Campista Novato."
+                        + " (Fuente curativa de la sala 9 alcanzada)" + MotorCombate.ANSI_RESET);
+                try {
+                    Thread.sleep(1500);
+                } catch (InterruptedException e) {
+                }
                 if (!MotorCombate.gestionarCampamento(heroes, reserva, guardadoAuto, guardadoManual, i)) {
                     break;
                 }
@@ -563,8 +674,8 @@ public class Main {
 
                 basedatos.gestores.GestorRecompensas gr = new basedatos.gestores.GestorRecompensas();
                 gr.desbloquearLogro(idPartidaActual, 10);
-                System.out.println(
-                        MotorCombate.ANSI_MORADO + "[LOGRO DESBLOQUEADO] Matadragones." + MotorCombate.ANSI_RESET);
+                System.out.println(MotorCombate.ANSI_MORADO + "[LOGRO DESBLOQUEADO] Matadragones."
+                        + " (Aventura completada)" + MotorCombate.ANSI_RESET);
 
                 // Verificar dificultad para Locura Absoluta (11)
                 int diffId = 2;
@@ -579,10 +690,52 @@ public class Main {
                 } catch (java.sql.SQLException e) {
                 }
 
-                if (diffId == 3) {
+                if (diffId == 1) {
+                    gr.desbloquearLogro(idPartidaActual, 18);
+                    System.out.println(MotorCombate.ANSI_MORADO + "[LOGRO DESBLOQUEADO] Paseo por el Parque."
+                            + " (Aventura completada en dificultad Facil)" + MotorCombate.ANSI_RESET);
+                } else if (diffId == 2) {
+                    gr.desbloquearLogro(idPartidaActual, 19);
+                    System.out.println(MotorCombate.ANSI_MORADO + "[LOGRO DESBLOQUEADO] El Camino del Heroe."
+                            + " (Aventura completada en dificultad Normal)" + MotorCombate.ANSI_RESET);
+                } else if (diffId == 3) {
                     gr.desbloquearLogro(idPartidaActual, 11);
-                    System.out.println(MotorCombate.ANSI_MORADO + "[LOGRO DESBLOQUEADO] Locura Absoluta."
-                            + MotorCombate.ANSI_RESET);
+                    System.out.println(MotorCombate.ANSI_MORADO + "[LOGRO DESBLOQUEADO] Elite de la Elite."
+                            + " (Aventura completada en dificultad Dificil)" + MotorCombate.ANSI_RESET);
+                }
+
+                // Logro Impecable: cero bajas durante toda la aventura
+                if (bajasTotales == 0) {
+                    gr.desbloquearLogro(idPartidaActual, 20);
+                    System.out.println(MotorCombate.ANSI_MORADO + "[LOGRO DESBLOQUEADO] Impecable."
+                            + " (Ningún héroe cayó en toda la aventura)" + MotorCombate.ANSI_RESET);
+                }
+
+                // Logro Con Refuerzos: Kallista y Kwai Chang en el equipo al final
+                boolean hayKallista = false;
+                boolean hayKwai = false;
+                for (int j = 0; j < heroes.length; j++) {
+                    if (heroes[j].estaVivo() && heroes[j].getNombre().equals("Kallista"))
+                        hayKallista = true;
+                    if (heroes[j].estaVivo() && heroes[j].getNombre().equals("Kwai Chang"))
+                        hayKwai = true;
+                }
+                if (hayKallista && hayKwai) {
+                    gr.desbloquearLogro(idPartidaActual, 21);
+                    System.out.println(MotorCombate.ANSI_MORADO + "[LOGRO DESBLOQUEADO] Con Refuerzos."
+                            + " (Kallista y Kwai Chang terminaron la aventura en el equipo)" + MotorCombate.ANSI_RESET);
+                }
+
+                // Logro El Ultimo Superviviente: exactamente 1 heroe vivo al final
+                int vivosFinales = 0;
+                for (int j = 0; j < heroes.length; j++) {
+                    if (heroes[j].estaVivo())
+                        vivosFinales++;
+                }
+                if (vivosFinales == 1) {
+                    gr.desbloquearLogro(idPartidaActual, 22);
+                    System.out.println(MotorCombate.ANSI_MORADO + "[LOGRO DESBLOQUEADO] El Ultimo Superviviente."
+                            + " (Solo un heroe llegó vivo al final)" + MotorCombate.ANSI_RESET);
                 }
 
                 // Actualizar DB para marcar partida como terminada
@@ -598,14 +751,31 @@ public class Main {
             // Logros de progreso
             if (i == 1 && MotorCombate.hayVivos(heroes)) {
                 new basedatos.gestores.GestorRecompensas().desbloquearLogro(idPartidaActual, 2);
-                System.out.println(
-                        MotorCombate.ANSI_MORADO + "[LOGRO DESBLOQUEADO] Primeros Pasos." + MotorCombate.ANSI_RESET);
+                System.out.println(MotorCombate.ANSI_MORADO + "[LOGRO DESBLOQUEADO] Primeros Pasos."
+                        + " (Primera sala superada)" + MotorCombate.ANSI_RESET);
             }
-            if (puntuacionPartida > 1000) {
-                new basedatos.gestores.GestorRecompensas().desbloquearLogro(idPartidaActual, 6);
-                // Ocultar mensaje repetitivo para evitar saturar la consola.
+            // Logros de puntuacion (se comprueban cada sala, desbloquearLogro evita
+            // duplicados)
+            if (puntuacionPartida > 500) {
+                if (new basedatos.gestores.GestorRecompensas().desbloquearLogro(idPartidaActual, 6)) {
+                    System.out.println(MotorCombate.ANSI_MORADO + "[LOGRO DESBLOQUEADO] Verdugo de Monstruos."
+                            + " (Superados los 500 puntos en esta partida)" + MotorCombate.ANSI_RESET);
+                }
             }
-            // Pausa para leer eventos que no son de combate (los combates ya pausan por sí solos).
+            if (puntuacionPartida > 1500) {
+                if (new basedatos.gestores.GestorRecompensas().desbloquearLogro(idPartidaActual, 16)) {
+                    System.out.println(MotorCombate.ANSI_MORADO + "[LOGRO DESBLOQUEADO] Veterano."
+                            + " (Superados los 1500 puntos en esta partida)" + MotorCombate.ANSI_RESET);
+                }
+            }
+            if (puntuacionPartida > 3000) {
+                if (new basedatos.gestores.GestorRecompensas().desbloquearLogro(idPartidaActual, 17)) {
+                    System.out.println(MotorCombate.ANSI_MORADO + "[LOGRO DESBLOQUEADO] Leyenda."
+                            + " (Superados los 3000 puntos en esta partida)" + MotorCombate.ANSI_RESET);
+                }
+            }
+            // Pausa para leer eventos que no son de combate (los combates ya pausan por sí
+            // solos).
             boolean esEventoPequeno = (i == 2 || i == 5 || i == 7 || i == 12 || i == 14 || i == 17);
             if (esEventoPequeno) {
                 try {
