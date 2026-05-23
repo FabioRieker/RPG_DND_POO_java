@@ -38,7 +38,8 @@ public class MotorCombate {
   // Mochila común con armas para todo el grupo
   public static ArrayList<Arma> mochilaComun = new ArrayList<>();
 
-  // Multiplicador de dificultad global (1.0 en Normal, 0.6 en Fácil, 1.5 en Difícil)
+  // Multiplicador de dificultad global (1.0 en Normal, 0.6 en Fácil, 1.5 en
+  // Difícil)
   public static double multiplicadorDificultad = 1.0;
 
   /**
@@ -178,7 +179,8 @@ public class MotorCombate {
       System.out.println("");
       turno++;
 
-      // Pausa para poder leer la tabla de estados antes del siguiente turno o resultado
+      // Pausa para poder leer la tabla de estados antes del siguiente turno o
+      // resultado
       try {
         Thread.sleep(1200);
       } catch (InterruptedException ex) {
@@ -251,7 +253,8 @@ public class MotorCombate {
     System.out.println("         [SISTEMA] COMBATE FINALIZADO");
     System.out.println("===========================================" + ANSI_RESET + "\n");
 
-    // Pausa grande para que el jugador pueda leer el botín y los logros antes de que salte la sala siguiente
+    // Pausa grande para que el jugador pueda leer el botín y los logros antes de
+    // que salte la sala siguiente
     try {
       Thread.sleep(2500);
     } catch (InterruptedException ex) {
@@ -558,7 +561,6 @@ public class MotorCombate {
    * @param grupo Matriz de víctimas de la que queremos extraer una diana.
    * @return Personaje elegido aleatoriamente listo para ser atacado.
    */
-  // Método mantenido por si acaso, aunque no se use
   public static Personaje obtenerObjetivoAleatorio(Personaje[] grupo) {
     ArrayList<Personaje> vivos = new ArrayList<>();
     for (int i = 0; i < grupo.length; i++) {
@@ -580,7 +582,8 @@ public class MotorCombate {
    * @param titulares Los héroes que están jugando ahora.
    * @param reserva   Los héroes que están en el banquillo.
    */
-  public static boolean gestionarCampamento(Personaje[] titulares, List<Personaje> reserva, boolean guardadoAuto, boolean guardadoManual, int salaActual) {
+  public static boolean gestionarCampamento(Personaje[] titulares, List<Personaje> reserva, boolean guardadoAuto,
+      boolean guardadoManual, int salaActual) {
     do {
       System.out.println(ANSI_CIAN
           + "\n[CAMPAMENTO] El fuego de campamento crepita. ¿Qué deseas hacer con el grupo?" + ANSI_RESET);
@@ -602,13 +605,16 @@ public class MotorCombate {
         String avisoCarga = " (Al cargar volverás a aparecer en este campamento)";
 
         if (guardadoAuto) {
-          System.out.println(ANSI_VERDE_OSCURO + "Guardando partida automatica antes de " + accionText + "..." + avisoCarga + ANSI_RESET);
+          System.out.println(ANSI_VERDE_OSCURO + "Guardando partida automatica antes de " + accionText + "..."
+              + avisoCarga + ANSI_RESET);
           ejecutarGuardado(titulares, salaActual);
         } else if (guardadoManual) {
-          System.out.println(ANSI_AZUL_MARINO + "\n¿Deseas guardar la partida antes de " + accionText + "?" + avisoCarga + " (1. Sí / 2. No)" + ANSI_RESET);
+          System.out.println(ANSI_AZUL_MARINO + "\n¿Deseas guardar la partida antes de " + accionText + "?" + avisoCarga
+              + " (1. Sí / 2. No)" + ANSI_RESET);
           System.out.print("> Elige: ");
           int optG = 2;
-          if (sc.hasNextInt()) optG = sc.nextInt();
+          if (sc.hasNextInt())
+            optG = sc.nextInt();
           sc.nextLine();
           if (optG == 1) {
             System.out.println(ANSI_AZUL_MARINO + "[SISTEMA] Guardando progreso de la aventura..." + ANSI_RESET);
@@ -616,7 +622,7 @@ public class MotorCombate {
             System.out.println(ANSI_VERDE_OSCURO + "[SISTEMA] ¡Partida guardada con éxito!" + ANSI_RESET);
           }
         }
-        
+
         if (opt == 1) {
           return true;
         } else {
@@ -667,7 +673,7 @@ public class MotorCombate {
           }
         }
       } else if (opt == 3) {
-        // dar armas a los heroes
+        // Asignar las armas seleccionadas a los héroes correspondientes
         if (mochilaComun.isEmpty()) {
           System.out.println(ANSI_AMARILLO + "[SISTEMA] La armería del grupo está vacía." + ANSI_RESET);
           continue;

@@ -18,12 +18,12 @@ public class ArmaCuerpoACuerpo extends Arma {
 	 * @param carasDado     Matriz o tipo de dado utilizado.
 	 */
 	public ArmaCuerpoACuerpo(String nombre, int cantidadDados, int carasDado) {
-		// La categoria de arma hace que se diferencie el tipo de arma
+		// Fija automáticamente la categoría como arma cuerpo a cuerpo.
 		super(nombre, cantidadDados, carasDado, CategoriaArma.melee);
 	}
 
 	/**
-	 * añade el modificador de Fuerza al daño de la tirada.
+	 * Añade el modificador de Fuerza al daño de la tirada.
 	 * 
 	 * @param atacante Personaje que asesta el golpe fisico.
 	 * @param defensor Personaje receptor del ataque.

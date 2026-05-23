@@ -500,17 +500,17 @@ CREATE TABLE `Usuarios` (
 --
 
 INSERT INTO `Usuarios` (`ID_usuario`, `nombre_usuario`, `contraseña`, `email`) VALUES
-(1, 'PruebaFabio', '1234', 'prueba'),
-(2, 'TestE2EUser', 'Pass1234', 'teste2e@test.com'),
-(3, 'E2E_TestUser', 'Pass1234', 'e2e_test@test.com'),
-(4, 'prueba67', '1234', 'hola'),
-(5, 'pepe ', '1234', '222'),
-(6, 'ffs<f', 'sfs<fes<', 'se<f'),
-(7, 'jaustur', 'fabiowappo', 'aghfusjgfyvfaejuy@adbvjcyansg.com'),
-(8, 'pipu', '1234', '123'),
+(1, 'PruebaFabio', '03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4', 'prueba'),
+(2, 'TestE2EUser', 'd3dec3f35387156495cbc21471313f87155f878f3435b693f50077c2be479033', 'teste2e@test.com'),
+(3, 'E2E_TestUser', 'd3dec3f35387156495cbc21471313f87155f878f3435b693f50077c2be479033', 'e2e_test@test.com'),
+(4, 'prueba67', '03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4', 'hola'),
+(5, 'pepe ', '03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4', '222'),
+(6, 'ffs<f', '1159e52d83bf6469d530c8d407366da107384076effce9811d60068438698361', 'se<f'),
+(7, 'jaustur', '5fa99ab263c6a027dc029325b2a4447ae440ac40507039a66fb1841c22dc6265', 'aghfusjgfyvfaejuy@adbvjcyansg.com'),
+(8, 'pipu', '03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4', '123'),
 (9, 'GERBASIO', 'ESPAÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑA', '22222'),
-(10, 'hola', 'hola', 'tuvieja'),
-(12, 'prueba78', '1234', 'ha');
+(10, 'hola', 'b221d9dbb083a7f33428d7c2a3c3198ae925614d70210e28716ccaa7cd4ddb79', 'tuvieja'),
+(12, 'prueba78', '03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4', 'ha');
 
 --
 -- Índices para tablas volcadas

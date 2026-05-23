@@ -6,9 +6,22 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Controla el desbloqueo de logros, la suma de puntos de galardón y 
+ * la gestión del arsenal de armas que el jugador encuentra en su aventura.
+ * 
+ * @author Ricardo Crespo y Fabio Rieker
+ */
 public class GestorRecompensas {
 
-    // Desbloquea un logro para una partida especifica
+    /**
+     * Desbloquea un logro para una partida específica empleando INSERT IGNORE
+     * para evitar errores si el logro ya estaba desbloqueado previamente.
+     * 
+     * @param idPartida Identificador de la partida.
+     * @param idLogro   Identificador del logro a desbloquear.
+     * @return true si se ha insertado un nuevo logro, false si ya lo tenía o hubo error.
+     */
     public boolean desbloquearLogro(int idPartida, int idLogro) {
         String sql = "INSERT IGNORE INTO Partida_Logros (partida_id, logro_id) VALUES (?, ?)";
         try (Connection con = ConexionBD.getConexion();
@@ -24,7 +37,14 @@ public class GestorRecompensas {
         }
     }
 
-    // añade un arma a la mochila, si ya existe en esa partida, suma la cantidad
+    /**
+     * Inserta un arma en la mochila de la partida, o incrementa su cantidad si ya la poseía.
+     * 
+     * @param idPartida Identificador de la partida.
+     * @param idArma    Identificador del arma obtenida.
+     * @param cantidad  Número de copias de ese arma a añadir.
+     * @return true si la operación en la BD tuvo éxito, false en caso de error.
+     */
     public boolean anadirArma(int idPartida, int idArma, int cantidad) {
         String sql = "INSERT INTO Mochila_Armas (id_partida, id_arma, cantidad) VALUES (?, ?, ?) " +
                 "ON DUPLICATE KEY UPDATE cantidad = cantidad + ?";
@@ -43,7 +63,12 @@ public class GestorRecompensas {
         }
     }
 
-    // Obtiene los puntos de un logro a traves de su ID
+    /**
+     * Consulta cuántos puntos de galardón otorga un logro específico.
+     * 
+     * @param idLogro Identificador del logro.
+     * @return Cantidad de puntos que otorga, o 0 si no se encuentra.
+     */
     public int obtenerPuntosLogro(int idLogro) {
         String sql = "SELECT puntos FROM Logros WHERE ID_logro = ?";
         try (Connection con = ConexionBD.getConexion();
@@ -62,7 +87,12 @@ public class GestorRecompensas {
         return 0; // Por defecto retorna 0 si no se encuentra
     }
 
-    // Verifica si el jugador tiene 4 o mas armas distintas y le da el logro
+    /**
+     * Comprueba el número de armas distintas en la mochila. Si el jugador ha
+     * reunido 4 o más armas diferentes, le otorga el logro "Coleccionista de Arsenal".
+     * 
+     * @param idPartida Identificador de la partida actual.
+     */
     public void verificarColeccionistaArmas(int idPartida) {
         String sql = "SELECT COUNT(DISTINCT id_arma) AS num_armas FROM Mochila_Armas WHERE id_partida = ?";
         try (Connection con = ConexionBD.getConexion();
@@ -79,6 +109,12 @@ public class GestorRecompensas {
         }
     }
 
+    /**
+     * Busca el identificador numérico de un arma por su nombre en texto.
+     * 
+     * @param nombre Nombre exacto del arma a buscar.
+     * @return El ID numérico del arma, o 1 (Arma base por defecto) si no se encuentra.
+     */
     public int obtenerIdArmaPorNombre(String nombre) {
         String sql = "SELECT ID_arma FROM Armas WHERE nombre = ?";
         try (Connection con = ConexionBD.getConexion();

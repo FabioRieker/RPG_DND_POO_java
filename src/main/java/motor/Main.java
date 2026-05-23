@@ -14,7 +14,7 @@ import java.util.ArrayList;
 /**
  * Clase principal que arranca el juego. Gestiona el Login, el Menu Principal,
  * la persistencia en base de datos y el bucle de las 20 salas.
- * * @author Ricardo Crespo y Fabio Rieker
+ * @author Ricardo Crespo y Fabio Rieker
  */
 public class Main {
 
@@ -168,6 +168,10 @@ public class Main {
 
     // --- METODOS DEL MENU ---
 
+    /*
+     * Flujo de creación: pide nombre de la partida, selecciona dificultad global 
+     * y, si el usuario es Admin, pregunta por la sala de inicio (modo debug).
+     */
     private static void configurarNuevaPartida() {
         System.out.println(MotorCombate.ANSI_AZUL_MARINO + "\n=== [NUEVA PARTIDA] ===" + MotorCombate.ANSI_RESET);
         GestorPartidas gp = new GestorPartidas();
@@ -201,7 +205,7 @@ public class Main {
                     break;
                 }
             } else {
-                MotorCombate.sc.nextLine(); // clear buffer
+                MotorCombate.sc.nextLine(); // Limpiar el buffer del Scanner.
             }
             System.out.println(MotorCombate.ANSI_ROJO + "[SISTEMA] Opción no válida." + MotorCombate.ANSI_RESET);
         }
@@ -220,7 +224,7 @@ public class Main {
                         break;
                     }
                 } else {
-                    MotorCombate.sc.nextLine(); // limpiar buffer
+                    MotorCombate.sc.nextLine(); // Limpiar el buffer del Scanner.
                 }
                 System.out.println(MotorCombate.ANSI_ROJO
                         + "[SISTEMA] Opción no válida. Introduce un número del 1 al 20." + MotorCombate.ANSI_RESET);
@@ -241,6 +245,10 @@ public class Main {
         }
     }
 
+    /**
+     * Consulta las partidas activas del usuario logueado, permite seleccionar una 
+     * mediante su ID y restaura la sala, puntuación y dificultad antes de saltar a la aventura.
+     */
     private static void cargarPartidaGuardada() {
         System.out.println(MotorCombate.ANSI_AZUL_MARINO + "\n=== [CARGAR PARTIDA] ===" + MotorCombate.ANSI_RESET);
         System.out.println("--- TUS PARTIDAS GUARDADAS ---");
@@ -340,6 +348,11 @@ public class Main {
 
     // --- BUCLE PRINCIPAL DEL JUEGO ---
 
+    /*
+     * Bucle principal del juego. Gestiona eventos de historia estáticos (salas 2, 5, 7, etc.), 
+     * eventos de curación, reclutamientos y genera combates en el resto de salas.
+     * También controla los puntos de guardado y los reemplazos del equipo de reserva.
+     */
     private static void iniciarAventura() {
         boolean guardadoAuto = false;
         boolean guardadoManual = true;
@@ -357,7 +370,7 @@ public class Main {
                 if (opt == 1 || opt == 2)
                     break;
             } else {
-                MotorCombate.sc.nextLine(); // clear buffer
+                MotorCombate.sc.nextLine(); // Limpiar el buffer del Scanner.
             }
             System.out.println(MotorCombate.ANSI_ROJO + "[SISTEMA] Opción no válida." + MotorCombate.ANSI_RESET);
         }
@@ -387,7 +400,7 @@ public class Main {
                     if (optGuardado == 1 || optGuardado == 2)
                         break;
                 } else {
-                    MotorCombate.sc.nextLine(); // clear buffer
+                    MotorCombate.sc.nextLine(); // Limpiar el buffer del Scanner.
                 }
                 System.out.println(MotorCombate.ANSI_ROJO + "[SISTEMA] Opción no válida." + MotorCombate.ANSI_RESET);
             }
@@ -508,7 +521,7 @@ public class Main {
                 MotorCombate.iniciarCombate(heroes, enemigos);
             }
 
-            // Logica de sustituciones (Intacta)
+            // Sustitucion automatica de heroes caidos por miembros de la reserva.
             for (int j = 0; j < heroes.length; j++) {
                 if (!heroes[j].estaVivo() && !reserva.isEmpty()) {
                     Personaje caido = heroes[j];
@@ -590,11 +603,9 @@ public class Main {
             }
             if (puntuacionPartida > 1000) {
                 new basedatos.gestores.GestorRecompensas().desbloquearLogro(idPartidaActual, 6);
-                // System.out.println("[LOGRO DESBLOQUEADO] Verdugo de Monstruos."); // Omitimos
-                // print por spam
+                // Ocultar mensaje repetitivo para evitar saturar la consola.
             }
-            // Pausa para leer eventos que no son de combate (los combates ya pausan por sí
-            // solos)
+            // Pausa para leer eventos que no son de combate (los combates ya pausan por sí solos).
             boolean esEventoPequeno = (i == 2 || i == 5 || i == 7 || i == 12 || i == 14 || i == 17);
             if (esEventoPequeno) {
                 try {
@@ -603,8 +614,7 @@ public class Main {
                 }
             }
 
-            // Guardado post-combate (salas de descanso y eventos pequeños no guardan el
-            // siguiente paso aquí)
+            // Solo guardar tras combates; salas de eventos no actualizan la sala en BD.
             boolean esCombate = (i != 2 && i != 5 && i != 7 && i != 9 && i != 12 && i != 14 && i != 17 && i != 19);
             if (MotorCombate.hayVivos(heroes) && i < 20 && esCombate) {
                 if (!MotorCombate.modoManual || guardadoAuto) {

@@ -8,8 +8,22 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Administra la mochila de consumibles de una partida específica,
+ * permitiendo añadir nuevos objetos, consumirlos y listar el inventario actual.
+ * 
+ * @author Ricardo Crespo y Fabio Rieker
+ */
 public class GestorInventario {
 
+    /**
+     * Inserta un consumible en la mochila de la partida, o incrementa su cantidad si ya existía.
+     * 
+     * @param idPartida      Identificador de la partida actual.
+     * @param idConsumible   Identificador del objeto consumible a añadir.
+     * @param cantidadAñadir Número de unidades a sumar al inventario.
+     * @return true si la operación se completó correctamente, false en caso de error.
+     */
     public boolean anadirConsumible(int idPartida, int idConsumible, int cantidadAñadir) {
         String sql = "INSERT INTO Mochila_Consumibles (id_partida, id_consumible, cantidad) " +
                 "VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE cantidad = cantidad + ?";
@@ -26,6 +40,14 @@ public class GestorInventario {
         }
     }
 
+    /**
+     * Reduce en 1 la cantidad de un consumible en la mochila. 
+     * Si la cantidad llega a 0, elimina el registro completo para mantener la base de datos limpia.
+     * 
+     * @param idPartida    Identificador de la partida.
+     * @param idConsumible Identificador del objeto a consumir.
+     * @return true si se pudo consumir (había stock), false si ocurrió un error.
+     */
     public boolean consumirObjeto(int idPartida, int idConsumible) {
         String sqlUpdate = "UPDATE Mochila_Consumibles SET cantidad = cantidad - 1 " +
                 "WHERE id_partida = ? AND id_consumible = ? AND cantidad > 0";
@@ -48,6 +70,12 @@ public class GestorInventario {
         }
     }
 
+    /**
+     * Obtiene la lista completa de consumibles disponibles para una partida concreta.
+     * 
+     * @param idPartida Identificador de la partida.
+     * @return Un mapa (Map) donde la clave es el nombre del consumible y el valor es la cantidad disponible.
+     */
     public Map<String, Integer> obtenerInventario(int idPartida) {
         String sql = "SELECT c.nombre, m.cantidad FROM Mochila_Consumibles m " +
                 "JOIN Consumibles c ON m.id_consumible = c.ID_consumible " +

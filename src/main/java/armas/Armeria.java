@@ -25,8 +25,7 @@ public class Armeria {
 		listaArmas.put("Ballesta", new ArmaADistancia("Ballesta Pesada", 1, 10));
 		listaArmas.put("Jabalina", new ArmaADistancia("Jabalina de Caza", 1, 6));
 		listaArmas.put("Cetro", new ArmaADistancia("Cetro de Almas", 2, 10));
-		listaArmas.put("Garras Reales", new ArmaCuerpoACuerpo("Garras Reales", 2, 8)); // Arma exclusiva de los jefes
-																						// enemigos
+		listaArmas.put("Garras Reales", new ArmaCuerpoACuerpo("Garras Reales", 2, 8)); // Arma exclusiva de los jefes enemigos.
 	}
 
 	/**

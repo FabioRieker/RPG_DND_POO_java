@@ -3,6 +3,8 @@ package habilidad;
 /**
  * Clase generica para representar habilidades hibridas que solo requieren
  * la asignacion de sus estadisticas basicas sin logica adicional.
+ * 
+ * @author Ricardo Crespo y Fabio Rieker
  */
 public class HabilidadHibridaGenerica extends HabilidadHibrida {
 

@@ -22,7 +22,7 @@ public class ArmaADistancia extends Arma {
 	}
 
 	/**
-	 * añade el modificador de Destreza al resultado del dado base.
+	 * Añade el modificador de Destreza al resultado del dado base.
 	 * 
 	 * @param atacante Personaje que ejecuta el letal.
 	 * @param defensor Personaje objetivo del disparo.

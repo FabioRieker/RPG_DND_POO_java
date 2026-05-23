@@ -8,9 +8,20 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Facilita la consulta de la configuración de las 20 salas del juego,
+ * obteniendo el tipo de sala y recuperando los identificadores de los enemigos.
+ * 
+ * @author Ricardo Crespo y Fabio Rieker
+ */
 public class GestorSalas {
 
-    // Obtiene el tipo de sala basado en su ID
+    /**
+     * Consulta el tipo de una sala por su ID (por ejemplo: 'combate', 'descanso', 'jefe').
+     *
+     * @param idSala Identificador de la sala.
+     * @return El tipo de sala como texto, o null si no se encuentra.
+     */
     public String obtenerTipoSala(int idSala) {
         String sql = "SELECT tipo FROM Salas WHERE ID_sala = ?";
         try (Connection con = ConexionBD.getConexion();
@@ -30,7 +41,13 @@ public class GestorSalas {
         return null;
     }
 
-    // Avanza la sala actual de la partida
+    /**
+     * Actualiza el número de la sala actual de una partida para registrar el avance del jugador.
+     *
+     * @param idPartida  Identificador de la partida.
+     * @param nuevaSala  Número de la sala a la que avanza el jugador.
+     * @return true si la actualización fue correcta, false en caso de error.
+     */
     public boolean avanzarSala(int idPartida, int nuevaSala) {
         String sql = "UPDATE Partidas SET sala_actual = ? WHERE ID_partida = ?";
         try (Connection con = ConexionBD.getConexion();
@@ -46,7 +63,12 @@ public class GestorSalas {
         }
     }
 
-    // Obtiene la lista de ID de enemigos en una sala especifica
+    /**
+     * Obtiene la lista de identificadores de los personajes enemigos presentes en una sala.
+     *
+     * @param idSala Identificador de la sala.
+     * @return Lista de IDs de enemigos, o una lista vacía si la sala no tiene ninguno.
+     */
     public List<Integer> obtenerEnemigosSala(int idSala) {
         List<Integer> enemigos = new ArrayList<>();
         String sql = "SELECT id_personaje FROM Gestor_Personajes WHERE id_sala = ?";

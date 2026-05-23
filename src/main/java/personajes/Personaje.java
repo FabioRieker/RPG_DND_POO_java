@@ -79,7 +79,8 @@ public abstract class Personaje {
 
 	// --- SECCION: INFORMACION ---
 	/**
-	 * Muestra toda la ficha de estadisticas del personaje en la consola.
+	 * Imprime en consola la ficha completa del personaje, incluyendo estadísticas vitales, 
+	 * equipo actual y estados alterados activos.
 	 */
 	public void mostrarInfo() {
 		String B = motor.MotorCombate.ANSI_BEIGE;
@@ -350,7 +351,7 @@ public abstract class Personaje {
 		this.manaActual -= mana;
 	}
 
-	// le pone la vida que tenia guardada al cargar la partida
+	// Restaura la vida almacenada previamente al cargar la partida.
 	public void cargarEstadoVital(int vida, int mana, int energia) {
 		this.vidaActual = Math.max(0, vida);
 		this.manaActual = Math.max(0, mana);
@@ -429,7 +430,7 @@ public abstract class Personaje {
 
 		// Si el que recibe el daño es un héroe, le aplicamos el multiplicador de dificultad
 		if (this.esHeroe() && cantidad > 0) {
-			// Multiplico el daño por la dificultad y lo paso a int (casting) porque la vida no usa decimales. Aseguro un mínimo de 1.
+			// Aplica el multiplicador de dificultad y garantiza un mínimo de 1 de daño.
 			double dañoConDificultad = cantidad * motor.MotorCombate.multiplicadorDificultad;
 			cantidad = Math.max(1, (int) dañoConDificultad);
 		}
@@ -450,7 +451,7 @@ public abstract class Personaje {
 
 		this.vidaActual = this.vidaActual - dañoFinal;
 
-		// añade un prefijo especial para indicar la procedencia del daño
+		// Añade un prefijo especial para indicar la procedencia del daño.
 		String prefijo = "";
 		if (esDañoPuro == true) {
 			prefijo = "[PURO] ";

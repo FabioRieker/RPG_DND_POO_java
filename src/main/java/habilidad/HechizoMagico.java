@@ -101,7 +101,12 @@ public abstract class HechizoMagico extends AccionCombate {
 		}
 	}
 
-	// Ejecuta contra varios objetivos a la vez
+	/**
+	 * Ejecuta el hechizo contra cada personaje de la lista de objetivos.
+	 *
+	 * @param usuario   Personaje que lanza el hechizo.
+	 * @param objetivos Lista de objetivos a los que se aplica.
+	 */
 	public void ejecutar(Personaje usuario, java.util.ArrayList<Personaje> objetivos) {
 		for (Personaje objetivo : objetivos) {
 			ejecutar(usuario, objetivo);

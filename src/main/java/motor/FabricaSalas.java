@@ -13,6 +13,14 @@ import armas.Armeria;
 public class FabricaSalas {
 	private static Armeria armeria = new Armeria();
 
+	/**
+	 * Construye y devuelve una instancia de la Sala correspondiente al número indicado.
+	 * Asigna automáticamente los enemigos, equipamiento y atributos correctos
+	 * para que el MotorCombate pueda utilizarlos.
+	 * 
+	 * @param numero Identificador de la sala (1-20).
+	 * @return Objeto Sala instanciado con sus enemigos listos para la batalla.
+	 */
 	public static Sala generarSala(int numero) {
 		Sala sala = new Sala(numero);
 		switch (numero) {

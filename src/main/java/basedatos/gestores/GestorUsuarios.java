@@ -6,9 +6,20 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Gestiona el alta, validación y eliminación de usuarios en la base de datos,
+ * así como la visualización del ranking global de puntuaciones.
+ * 
+ * @author Ricardo Crespo y Fabio Rieker
+ */
 public class GestorUsuarios {
 
-    // Comprueba si un usuario ya existe en la base de datos
+    /**
+     * Comprueba si un nombre de usuario ya está registrado en la base de datos.
+     * 
+     * @param nombre El nombre de usuario a verificar.
+     * @return true si el usuario existe, false en caso contrario.
+     */
     public boolean existeUsuario(String nombre) {
         String sql = "SELECT COUNT(*) FROM Usuarios WHERE nombre_usuario = ?";
         try (Connection con = ConexionBD.getConexion();
@@ -25,7 +36,12 @@ public class GestorUsuarios {
         return false;
     }
 
-    // Comprueba si un email ya existe en la base de datos
+    /**
+     * Comprueba si una dirección de correo electrónico ya está registrada.
+     * 
+     * @param email El email a verificar.
+     * @return true si el email ya está en uso, false en caso contrario.
+     */
     public boolean existeEmail(String email) {
         String sql = "SELECT COUNT(*) FROM Usuarios WHERE email = ?";
         try (Connection con = ConexionBD.getConexion();
@@ -42,7 +58,14 @@ public class GestorUsuarios {
         return false;
     }
 
-    // Registra un nuevo usuario en la base de datos
+    /**
+     * Registra un nuevo jugador en la base de datos.
+     * 
+     * @param nombre   Nombre de usuario deseado (debe ser único).
+     * @param password Contraseña de la cuenta.
+     * @param email    Correo electrónico (debe ser único).
+     * @return El ID autogenerado por MySQL si el registro es exitoso, o -1 si hubo un error.
+     */
     public int registrarUsuario(String nombre, String password, String email) {
         String sql = "INSERT INTO Usuarios (nombre_usuario, contraseña, email) VALUES (?, ?, ?)";
         try (Connection con = ConexionBD.getConexion();
@@ -64,7 +87,13 @@ public class GestorUsuarios {
         return -1;
     }
 
-    // Valida las credenciales de login y devuelve el ID del usuario
+    /**
+     * Comprueba las credenciales del usuario para permitir el acceso al juego.
+     * 
+     * @param nombre   Nombre de usuario.
+     * @param password Contraseña asociada a la cuenta.
+     * @return El ID del usuario si las credenciales son correctas, o -1 si fallan.
+     */
     public int validarLogin(String nombre, String password) {
 
         String sql = "SELECT ID_usuario FROM Usuarios WHERE nombre_usuario = ? AND contraseña = ?";
@@ -84,7 +113,13 @@ public class GestorUsuarios {
         return -1;
     }
 
-    // Actualiza la contrasena de un usuario
+    /**
+     * Modifica la contraseña de un usuario existente buscando por su ID.
+     * 
+     * @param idUsuario     Identificador del usuario en la base de datos.
+     * @param nuevaPassword Nueva contraseña a establecer.
+     * @return true si la actualización fue exitosa, false si falló.
+     */
     public boolean actualizarContraseña(int idUsuario, String nuevaPassword) {
         String sql = "UPDATE Usuarios SET contraseña = ? WHERE ID_usuario = ?";
         try (Connection con = ConexionBD.getConexion();
@@ -99,7 +134,13 @@ public class GestorUsuarios {
         }
     }
 
-    // Borra la cuenta de un usuario (elimina en cascada sus partidas)
+    /**
+     * Elimina permanentemente la cuenta de un usuario.
+     * Esta acción también elimina en cascada todas sus partidas asociadas por integridad referencial.
+     * 
+     * @param idUsuario Identificador del usuario a borrar.
+     * @return true si el borrado fue exitoso, false en caso de error.
+     */
     public boolean borrarCuenta(int idUsuario) {
         String sql = "DELETE FROM Usuarios WHERE ID_usuario = ?";
         try (Connection con = ConexionBD.getConexion();
@@ -113,7 +154,10 @@ public class GestorUsuarios {
         }
     }
 
-    // Muestra por consola el Top 10 de mejores puntuaciones historicas
+    /**
+     * Extrae y muestra por consola las 10 mejores puntuaciones históricas
+     * agrupadas por usuario para evitar duplicidades del mismo jugador.
+     */
     public void mostrarRankingGlobal() {
         String sql = "SELECT u.nombre_usuario, MAX(p.puntuacion) as max_puntos " +
                 "FROM Partidas p JOIN Usuarios u ON p.usuario_id = u.ID_usuario " +

@@ -18,6 +18,12 @@ public class FabricaHeroes {
 
 	private static Armeria armeria = new Armeria();
 
+	/**
+	 * Crea y devuelve el equipo inicial de cuatro héroes con sus estadísticas, armas,
+	 * armaduras y habilidades ya configuradas.
+	 *
+	 * @return Lista con los cuatro personajes del grupo inicial.
+	 */
 	public static List<Personaje> crearEquipoInicial() {
 		List<Personaje> equipo = new ArrayList<>();
 
@@ -66,6 +72,11 @@ public class FabricaHeroes {
 		return equipo;
 	}
 
+	/**
+	 * Crea el personaje de reserva Kallista, una Bruja Tiefling con habilidades oscuras.
+	 *
+	 * @return Personaje Kallista listo para unirse al grupo.
+	 */
 	public static Personaje crearKallista() {
 		Brujo kallista = new Brujo("Kallista", Raza.TIEFLING, 8, 14, 14, 18, 14);
 		kallista.equiparArmadura(CategoriaArmadura.LIGERA);
@@ -76,6 +87,11 @@ public class FabricaHeroes {
 		return kallista;
 	}
 
+	/**
+	 * Crea el personaje de reserva Kwai Chang, un Monje centrado en velocidad y golpes híbridos.
+	 *
+	 * @return Personaje Kwai Chang listo para unirse al grupo.
+	 */
 	public static Personaje crearMonjeKwai() {
 		Monje kwai = new Monje("Kwai Chang", Raza.HUMANO, 14, 16, 12, 10, 12);
 		// Requisito de la propia clase Monje: No portan armaduras pesadas ni ligeras
@@ -84,6 +100,11 @@ public class FabricaHeroes {
 		return kwai;
 	}
 
+	/**
+	 * Crea el personaje de reserva Lulu Nightingale, una Bardo especializada en apoyo.
+	 *
+	 * @return Personaje Lulu listo para unirse al grupo.
+	 */
 	public static Personaje crearBardoLulu() {
 		Bardo lulu = new Bardo("Lulu Nightingale", Raza.MEDIANO, 10, 14, 12, 16, 10);
 		lulu.equiparArmadura(CategoriaArmadura.MEDIA);

@@ -4,6 +4,12 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+/**
+ * Proporciona y administra la conexión única con la base de datos MySQL,
+ * garantizando un único punto de acceso para todas las operaciones del juego.
+ * 
+ * @author Ricardo Crespo y Fabio Rieker
+ */
 public class ConexionBD {
     private static final String URL = "jdbc:mysql://127.0.0.1:3307/rpg_dnd";
     private static final String USUARIO = "root";
@@ -18,7 +24,6 @@ public class ConexionBD {
         try {
             if (conexion == null || conexion.isClosed()) {
                 conexion = DriverManager.getConnection(URL, USUARIO, PASSWORD);
-                // System.out.println("Conexion a MySQL establecida.");
             }
         } catch (SQLException e) {
             System.err.println("Error de conexión: " + e.getMessage());

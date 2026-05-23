@@ -13,7 +13,8 @@ public class GestorUsuariosTest {
     @BeforeEach
     public void setUp() {
         gestor = new GestorUsuarios();
-        // Genera identificador unico mediante timestamp para evadir restricciones de duplicados
+        // Genera identificador unico mediante timestamp para evitar que el test falle
+        // por usuario duplicado
         nombreAleatorio = "TestUser_" + System.currentTimeMillis();
     }
 
@@ -22,10 +23,11 @@ public class GestorUsuariosTest {
         String pwd = "PasswordSegura123";
         String email = nombreAleatorio + "@test.com";
 
-        // Ejecuta registro en la base de datos (Retorna -1 en caso de error de conexion)
+        // Ejecuta registro en la base de datos, devuelve -1 en caso de error de
+        // conexion
         int idRegistro = gestor.registrarUsuario(nombreAleatorio, pwd, email);
-        
-        // Evita fallos de asercion si el motor de bases de datos se encuentra apagado
+
+        // Evita fallos si el motor de bases de datos se encuentra apagado
         if (idRegistro == -1) {
             fail("No se pudo registrar el usuario. Comprueba si MySQL / XAMPP está encendido.");
             return;
@@ -33,10 +35,10 @@ public class GestorUsuariosTest {
 
         assertTrue(idRegistro > 0, "El ID de registro debería ser un número positivo válido.");
 
-        // Ejecuta inicio de sesion empleando las credenciales recien creadas
+        // Ejecuta inicio de sesion usando las credenciales recien creadas
         int idLogin = gestor.validarLogin(nombreAleatorio, pwd);
 
-        // Comprueba integridad de datos comparando claves primarias
+        // Comprueba que los datos del usuario se mantienen tras el registro y el login
         assertEquals(idRegistro, idLogin, "El ID devuelto por el login debe coincidir con el del registro.");
     }
 }

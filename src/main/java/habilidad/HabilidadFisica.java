@@ -86,6 +86,12 @@ public abstract class HabilidadFisica extends AccionCombate {
 		}
 	}
 
+	/**
+	 * Ejecuta la habilidad contra cada personaje de la lista de objetivos.
+	 *
+	 * @param usuario   Personaje que usa la habilidad.
+	 * @param objetivos Lista de objetivos a los que se aplica.
+	 */
 	public void ejecutar(Personaje usuario, java.util.ArrayList<Personaje> objetivos) {
 		for (Personaje objetivo : objetivos) {
 			ejecutar(usuario, objetivo);
