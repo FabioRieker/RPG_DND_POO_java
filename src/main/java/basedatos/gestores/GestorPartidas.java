@@ -6,6 +6,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import motor.MotorCombate;
+import motor.Main;
+
 /**
  * Maneja el ciclo de vida de las partidas, desde su creación inicial hasta
  * el guardado de progreso y la restauración del estado de los héroes.
@@ -13,6 +16,177 @@ import java.sql.SQLException;
  * @author Ricardo Crespo y Fabio Rieker
  */
 public class GestorPartidas {
+
+    /**
+     * Flujo interactivo por consola para crear una nueva partida.
+     * Pide nombre, dificultad y si es admin la sala de inicio.
+     * Guarda el progreso inicial y configura el estado estático en Main.
+     * 
+     * @param idUsuarioLogueado ID del usuario actual.
+     * @param nombreUsuarioLogueado Nombre del usuario (para comprobar si es Admin).
+     * @return El ID de la partida generada o -1 en caso de fallo.
+     */
+    public int menuNuevaPartida(int idUsuarioLogueado, String nombreUsuarioLogueado) {
+        System.out.println(MotorCombate.ANSI_AZUL_MARINO + "\n=== [NUEVA PARTIDA] ===" + MotorCombate.ANSI_RESET);
+        String nombrePartida;
+        while (true) {
+            System.out.print(MotorCombate.ANSI_BEIGE + "Introduce un nombre para tu partida: " + MotorCombate.ANSI_RESET);
+            nombrePartida = MotorCombate.sc.nextLine();
+            if (nombrePartida.trim().isEmpty() || nombrePartida.length() > 100) {
+                System.out.println(MotorCombate.ANSI_ROJO + "[SISTEMA] El nombre debe tener entre 1 y 100 caracteres."
+                        + MotorCombate.ANSI_RESET);
+            } else if (this.existeNombrePartida(nombrePartida, idUsuarioLogueado)) {
+                System.out.println(MotorCombate.ANSI_ROJO + "[SISTEMA] Ya tienes una partida con ese nombre."
+                        + MotorCombate.ANSI_RESET);
+            } else {
+                break;
+            }
+        }
+
+        int dif = 0;
+        while (true) {
+            System.out.println(MotorCombate.ANSI_AZUL_MARINO + "\n=== [SELECCIÓN DE DIFICULTAD] ===" + MotorCombate.ANSI_RESET);
+            System.out.println("1. Fácil   (Vida y Daño de enemigos x0.6)");
+            System.out.println("2. Normal  (Vida y Daño de enemigos x1.0)");
+            System.out.println("3. Difícil (Vida y Daño de enemigos x1.5)");
+            System.out.print(MotorCombate.ANSI_BEIGE + "> Elige una dificultad: " + MotorCombate.ANSI_RESET);
+            if (MotorCombate.sc.hasNextInt()) {
+                dif = MotorCombate.sc.nextInt();
+                MotorCombate.sc.nextLine();
+                if (dif >= 1 && dif <= 3) {
+                    break;
+                }
+            } else {
+                MotorCombate.sc.nextLine(); // Limpiar el buffer del Scanner.
+            }
+            System.out.println(MotorCombate.ANSI_ROJO + "[SISTEMA] Opción no válida." + MotorCombate.ANSI_RESET);
+        }
+
+        int salaInicio = 1;
+
+        // Modo debug solo para admin
+        if (nombreUsuarioLogueado.equalsIgnoreCase("Admin")) {
+            while (true) {
+                System.out.print(MotorCombate.ANSI_MORADO
+                        + "> [MODO DIOS] ¿En qué sala quieres empezar, Admin? (1-20): " + MotorCombate.ANSI_RESET);
+                if (MotorCombate.sc.hasNextInt()) {
+                    salaInicio = MotorCombate.sc.nextInt();
+                    MotorCombate.sc.nextLine();
+                    if (salaInicio >= 1 && salaInicio <= 20) {
+                        break;
+                    }
+                } else {
+                    MotorCombate.sc.nextLine(); // Limpiar el buffer del Scanner.
+                }
+                System.out.println(MotorCombate.ANSI_ROJO
+                        + "[SISTEMA] Opción no válida. Introduce un número del 1 al 20." + MotorCombate.ANSI_RESET);
+            }
+        }
+
+        int nuevaIdPartida = this.crearNuevaPartida(nombrePartida, idUsuarioLogueado, dif);
+
+        if (nuevaIdPartida != -1) {
+            double multiplicador = new GestorDificultad().obtenerMultiplicador(dif);
+            MotorCombate.multiplicadorDificultad = multiplicador;
+
+            Main.salaActual = salaInicio;
+            Main.puntuacionPartida = 0;
+            Main.bajasTotales = 0;
+            System.out.println(MotorCombate.ANSI_VERDE_OSCURO + "\n¡Partida '" + nombrePartida + "' creada con éxito!"
+                    + MotorCombate.ANSI_RESET);
+        }
+        
+        return nuevaIdPartida;
+    }
+
+    /**
+     * Consulta las partidas activas del usuario logueado, permite seleccionar una
+     * mediante su ID y restaura la sala, puntuación y dificultad antes de saltar a
+     * la aventura.
+     * 
+     * @param idUsuarioLogueado ID del usuario actual.
+     * @return El ID de la partida cargada, o -1 si falla o se cancela.
+     */
+    public int menuCargarPartida(int idUsuarioLogueado) {
+        System.out.println(MotorCombate.ANSI_AZUL_MARINO + "\n=== [CARGAR PARTIDA] ===" + MotorCombate.ANSI_RESET);
+        System.out.println("--- TUS PARTIDAS GUARDADAS ---");
+        String sql = "SELECT ID_partida, nombre_partida, sala_actual, puntuacion, estado FROM Partidas WHERE usuario_id = ?";
+
+        Connection con = ConexionBD.getConexion();
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, idUsuarioLogueado);
+            try (ResultSet rs = ps.executeQuery()) {
+                boolean hayPartidas = false;
+                while (rs.next()) {
+                    hayPartidas = true;
+                    String estadoP = rs.getString("estado");
+                    String tag = estadoP.equals("completada")
+                            ? " " + MotorCombate.ANSI_ROJO + "(COMPLETADA)" + MotorCombate.ANSI_RESET
+                            : "";
+                    System.out.println("ID: " + rs.getInt("ID_partida") +
+                            " | Nombre: " + rs.getString("nombre_partida") +
+                            " | Sala: " + rs.getInt("sala_actual") +
+                            " | Puntos: " + rs.getInt("puntuacion") + tag);
+                }
+                if (!hayPartidas) {
+                    System.out.println(
+                            MotorCombate.ANSI_ROJO + "No tienes partidas guardadas." + MotorCombate.ANSI_RESET);
+                    return -1;
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al cargar partidas: " + e.getMessage());
+            return -1;
+        }
+
+        int idElegido = 0;
+        while (true) {
+            System.out.print(MotorCombate.ANSI_BEIGE + "\n> Escribe el ID de la partida a cargar (0 para cancelar): "
+                    + MotorCombate.ANSI_RESET);
+            if (MotorCombate.sc.hasNextInt()) {
+                idElegido = MotorCombate.sc.nextInt();
+                MotorCombate.sc.nextLine();
+                break;
+            } else {
+                MotorCombate.sc.nextLine();
+                System.out.println(MotorCombate.ANSI_ROJO + "[SISTEMA] Opción no válida." + MotorCombate.ANSI_RESET);
+            }
+        }
+
+        if (idElegido > 0) {
+            // Recuperar datos de la partida elegida
+            String sqlCarga = "SELECT sala_actual, puntuacion, dificultad_id, estado FROM Partidas WHERE ID_partida = ? AND usuario_id = ?";
+            try (PreparedStatement ps2 = con.prepareStatement(sqlCarga)) {
+                ps2.setInt(1, idElegido);
+                ps2.setInt(2, idUsuarioLogueado);
+                try (ResultSet rs2 = ps2.executeQuery()) {
+                    if (rs2.next()) {
+                        if (rs2.getString("estado").equals("completada")) {
+                            System.out.println(MotorCombate.ANSI_ROJO
+                                    + "[SISTEMA] Esta aventura ya se completó. Enhorabuena!" + MotorCombate.ANSI_RESET);
+                            return -1;
+                        }
+                        
+                        Main.salaActual = rs2.getInt("sala_actual");
+                        Main.puntuacionPartida = rs2.getInt("puntuacion");
+                        int diffId = rs2.getInt("dificultad_id");
+                        double multiplicador = new GestorDificultad().obtenerMultiplicador(diffId);
+                        MotorCombate.multiplicadorDificultad = multiplicador;
+
+                        System.out.println(MotorCombate.ANSI_VERDE_OSCURO + "Partida cargada. Retomando desde la sala "
+                                + Main.salaActual + "..." + MotorCombate.ANSI_RESET);
+                        return idElegido;
+                    } else {
+                        System.out.println(MotorCombate.ANSI_ROJO + "[SISTEMA] ID de partida no válido o no te pertenece."
+                                + MotorCombate.ANSI_RESET);
+                    }
+                }
+            } catch (SQLException e) {
+                System.out.println("Error: " + e.getMessage());
+            }
+        }
+        return -1;
+    }
 
     /**
      * Comprueba si un usuario ya tiene una partida con el mismo nombre.
