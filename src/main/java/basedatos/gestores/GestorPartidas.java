@@ -28,7 +28,7 @@ public class GestorPartidas {
 
     // Crea el registro inicial de una partida nueva
     public int crearNuevaPartida(String nombrePartida, int idUsuario, int idDificultad) {
-        String sql = "INSERT INTO Partidas (nombre_partida, usuario_id, dificultad_id, estado) VALUES (?, ?, ?, 'activa')";
+        String sql = "INSERT INTO Partidas (nombre_partida, usuario_id, dificultad_id, estado, sala_actual) VALUES (?, ?, ?, 'activa', 1)";
         try (Connection con = ConexionBD.getConexion();
                 PreparedStatement ps = con.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
 
