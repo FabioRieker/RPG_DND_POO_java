@@ -189,8 +189,11 @@ public class Main {
 
         int dif = 0;
         while (true) {
-            System.out.println("Selecciona Dificultad: 1. Fácil | 2. Normal | 3. Difícil");
-            System.out.print(MotorCombate.ANSI_BEIGE + "> Dificultad: " + MotorCombate.ANSI_RESET);
+            System.out.println(MotorCombate.ANSI_AZUL_MARINO + "\n=== [SELECCIÓN DE DIFICULTAD] ===" + MotorCombate.ANSI_RESET);
+            System.out.println("1. Fácil   (Vida y Daño de enemigos x0.6)");
+            System.out.println("2. Normal  (Vida y Daño de enemigos x1.0)");
+            System.out.println("3. Difícil (Vida y Daño de enemigos x1.5)");
+            System.out.print(MotorCombate.ANSI_BEIGE + "> Elige una dificultad: " + MotorCombate.ANSI_RESET);
             if (MotorCombate.sc.hasNextInt()) {
                 dif = MotorCombate.sc.nextInt();
                 MotorCombate.sc.nextLine();
@@ -227,6 +230,9 @@ public class Main {
         idPartidaActual = gp.crearNuevaPartida(nombrePartida, idUsuarioLogueado, dif);
 
         if (idPartidaActual != -1) {
+            double multiplicador = new GestorDificultad().obtenerMultiplicador(dif);
+            MotorCombate.multiplicadorDificultad = multiplicador;
+
             salaActual = salaInicio;
             puntuacionPartida = 0;
             System.out.println(MotorCombate.ANSI_VERDE_OSCURO + "\n¡Partida '" + nombrePartida + "' creada con éxito!"
@@ -278,7 +284,7 @@ public class Main {
 
         if (idElegido > 0) {
             // Recuperar datos de la partida elegida
-            String sqlCarga = "SELECT sala_actual, puntuacion FROM Partidas WHERE ID_partida = ? AND usuario_id = ?";
+            String sqlCarga = "SELECT sala_actual, puntuacion, dificultad_id FROM Partidas WHERE ID_partida = ? AND usuario_id = ?";
             try (PreparedStatement ps2 = con.prepareStatement(sqlCarga)) {
                 ps2.setInt(1, idElegido);
                 ps2.setInt(2, idUsuarioLogueado);
@@ -287,6 +293,10 @@ public class Main {
                         idPartidaActual = idElegido;
                         salaActual = rs2.getInt("sala_actual");
                         puntuacionPartida = rs2.getInt("puntuacion");
+                        int diffId = rs2.getInt("dificultad_id");
+                        double multiplicador = new GestorDificultad().obtenerMultiplicador(diffId);
+                        MotorCombate.multiplicadorDificultad = multiplicador;
+
                         System.out.println(MotorCombate.ANSI_VERDE_OSCURO + "Partida cargada. Retomando desde la sala "
                                 + salaActual + "..." + MotorCombate.ANSI_RESET);
                         iniciarAventura();

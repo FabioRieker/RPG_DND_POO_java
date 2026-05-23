@@ -38,6 +38,9 @@ public class MotorCombate {
   // Mochila común con armas para todo el grupo
   public static ArrayList<Arma> mochilaComun = new ArrayList<>();
 
+  // Multiplicador de dificultad global (1.0 en Normal, 0.6 en Fácil, 1.5 en Difícil)
+  public static double multiplicadorDificultad = 1.0;
+
   /**
    * Método principal que inicia el combate contra una lista de enemigos. Gestiona
    * el bucle de turnos hasta que uno de los dos bandos es derrotado.

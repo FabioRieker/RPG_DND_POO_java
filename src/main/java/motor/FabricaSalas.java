@@ -93,6 +93,17 @@ public class FabricaSalas {
 				sala.agregarEnemigo(dragon);
 				break;
 		}
+
+		// Aplicar multiplicador de dificultad a la vida de los enemigos de la sala
+		for (Personaje enemigo : sala.getEnemigos()) {
+			// Saco la nueva vida en double y la paso a int (casting) porque la vida es un número entero. Garantizo mínimo 1 HP.
+			double vidaAjustada = enemigo.getVidaMax() * MotorCombate.multiplicadorDificultad;
+			int nuevaVidaMax = Math.max(1, (int) vidaAjustada);
+			
+			enemigo.setVidaMax(nuevaVidaMax);
+			enemigo.setVidaActual(nuevaVidaMax);
+		}
+
 		return sala;
 	}
 }

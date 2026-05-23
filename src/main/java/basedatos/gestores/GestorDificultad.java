@@ -8,10 +8,11 @@ import java.sql.SQLException;
 
 public class GestorDificultad {
 
-    // Devuelve los multiplicadores [vida, daño] buscando por el ID de dificultad
-    public float[] obtenerMultiplicadores(int idDificultad) {
-        String sql = "SELECT mult_vida, mult_dano FROM Dificultades WHERE ID_dificultad = ?";
-        float[] multiplicadores = { 1.0f, 1.0f }; // Valores base por defecto
+    // Devuelve el multiplicador de dificultad buscando por el ID
+    // Como en la BD mult_vida y mult_dano son iguales, nos vale con coger uno
+    public double obtenerMultiplicador(int idDificultad) {
+        String sql = "SELECT mult_vida FROM Dificultades WHERE ID_dificultad = ?";
+        double multiplicador = 1.0; // Valor base por defecto (Normal)
 
         try (Connection con = ConexionBD.getConexion();
                 PreparedStatement ps = con.prepareStatement(sql)) {
@@ -19,13 +20,12 @@ public class GestorDificultad {
             ps.setInt(1, idDificultad);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    multiplicadores[0] = rs.getFloat("mult_vida");
-                    multiplicadores[1] = rs.getFloat("mult_dano");
+                    multiplicador = rs.getDouble("mult_vida");
                 }
             }
         } catch (SQLException e) {
             System.err.println("error al obtener dificultad: " + e.getMessage());
         }
-        return multiplicadores;
+        return multiplicador;
     }
 }

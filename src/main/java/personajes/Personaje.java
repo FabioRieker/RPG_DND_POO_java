@@ -258,6 +258,14 @@ public abstract class Personaje {
 		return vidaMax;
 	}
 
+	public void setVidaMax(int vidaMax) {
+		this.vidaMax = vidaMax;
+	}
+
+	public void setVidaActual(int vidaActual) {
+		this.vidaActual = vidaActual;
+	}
+
 	public TipoClase getTipoClase() {
 		return this.tipoClase;
 	}
@@ -417,6 +425,13 @@ public abstract class Personaje {
 	public void recibirDaño(int cantidad, boolean esDañoPuro) {
 		if (this.vivo == false) {
 			return;
+		}
+
+		// Si el que recibe el daño es un héroe, le aplicamos el multiplicador de dificultad
+		if (this.esHeroe() && cantidad > 0) {
+			// Multiplico el daño por la dificultad y lo paso a int (casting) porque la vida no usa decimales. Aseguro un mínimo de 1.
+			double dañoConDificultad = cantidad * motor.MotorCombate.multiplicadorDificultad;
+			cantidad = Math.max(1, (int) dañoConDificultad);
 		}
 
 		// Permite que el daño puro ignore la mitigacion de la armadura
