@@ -565,8 +565,7 @@ public class MotorCombate {
    * @param titulares Los héroes que están jugando ahora.
    * @param reserva   Los héroes que están en el banquillo.
    */
-  public static boolean gestionarCampamento(Personaje[] titulares, List<Personaje> reserva) {
-    boolean salir = false;
+  public static boolean gestionarCampamento(Personaje[] titulares, List<Personaje> reserva, boolean guardadoAuto, boolean guardadoManual, int salaActual) {
     do {
       System.out.println(ANSI_CIAN
           + "\n[CAMPAMENTO] El fuego de campamento crepita. ¿Qué deseas hacer con el grupo?" + ANSI_RESET);
@@ -583,11 +582,29 @@ public class MotorCombate {
       }
       sc.nextLine();
 
-      if (opt == 1) {
-        return true;
-      } else if (opt == 5) {
-        System.out.println(ANSI_BEIGE + "[SISTEMA] Saliendo de la aventura..." + ANSI_RESET);
-        return false;
+      if (opt == 1 || opt == 5) {
+        if (guardadoAuto) {
+          System.out.println(ANSI_VERDE_OSCURO + "Guardando partida automatica antes de salir del campamento..." + ANSI_RESET);
+          ejecutarGuardado(titulares, salaActual);
+        } else if (guardadoManual) {
+          System.out.println(ANSI_AZUL_MARINO + "\n¿Deseas guardar la partida antes de abandonar el campamento? (1. Sí / 2. No)" + ANSI_RESET);
+          System.out.print("> Elige: ");
+          int optG = 2;
+          if (sc.hasNextInt()) optG = sc.nextInt();
+          sc.nextLine();
+          if (optG == 1) {
+            System.out.println(ANSI_AZUL_MARINO + "[SISTEMA] Guardando progreso de la aventura..." + ANSI_RESET);
+            ejecutarGuardado(titulares, salaActual);
+            System.out.println(ANSI_VERDE_OSCURO + "[SISTEMA] ¡Partida guardada con éxito!" + ANSI_RESET);
+          }
+        }
+        
+        if (opt == 1) {
+          return true;
+        } else {
+          System.out.println(ANSI_BEIGE + "[SISTEMA] Saliendo de la aventura..." + ANSI_RESET);
+          return false;
+        }
       } else if (opt == 2) {
         // Ejecutar entrada/salida de personajes de la partida
         if (reserva.isEmpty()) {
@@ -683,16 +700,22 @@ public class MotorCombate {
         }
       } else if (opt == 4) {
         System.out.println(ANSI_AZUL_MARINO + "[SISTEMA] Guardando progreso de la aventura..." + ANSI_RESET);
-        basedatos.gestores.GestorPartidas gp = new basedatos.gestores.GestorPartidas();
-        for (int i = 0; i < titulares.length; i++) {
-          if (titulares[i].estaVivo()) {
-            gp.guardarPartidaCompleta(Main.idPartidaActual, Main.salaActual, Main.puntuacionPartida, (i + 1),
-                titulares[i].getVidaActual(), titulares[i].getManaActual(), titulares[i].getEnergiaActual());
-          }
-        }
+        ejecutarGuardado(titulares, salaActual);
         System.out.println(ANSI_VERDE_OSCURO + "[SISTEMA] ¡Partida guardada con éxito!" + ANSI_RESET);
       }
     } while (true);
+  }
+
+  public static void ejecutarGuardado(Personaje[] titulares, int salaDestino) {
+    basedatos.gestores.GestorSalas gestorSalas = new basedatos.gestores.GestorSalas();
+    gestorSalas.avanzarSala(Main.idPartidaActual, salaDestino);
+    basedatos.gestores.GestorPartidas gp = new basedatos.gestores.GestorPartidas();
+    for (int k = 0; k < titulares.length; k++) {
+      if (titulares[k].estaVivo()) {
+        gp.guardarPartidaCompleta(Main.idPartidaActual, salaDestino, Main.puntuacionPartida, (k + 1),
+            titulares[k].getVidaActual(), titulares[k].getManaActual(), titulares[k].getEnergiaActual());
+      }
+    }
   }
 
   /**

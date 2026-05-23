@@ -127,11 +127,21 @@ public class Main {
         int dif = MotorCombate.sc.nextInt();
         MotorCombate.sc.nextLine();
 
+        // Para pruebas, recordar borrar
+        System.out.print("> [DEBUG] ¿En qué sala quieres empezar? (Por defecto 1): ");
+        int salaInicio = 1;
+        if (MotorCombate.sc.hasNextInt()) {
+            salaInicio = MotorCombate.sc.nextInt();
+            if (salaInicio < 1 || salaInicio > 20)
+                salaInicio = 1;
+        }
+        MotorCombate.sc.nextLine();
+
         GestorPartidas gp = new GestorPartidas();
         idPartidaActual = gp.crearNuevaPartida(nombrePartida, idUsuarioLogueado, dif);
 
         if (idPartidaActual != -1) {
-            salaActual = 1;
+            salaActual = salaInicio;
             puntuacionPartida = 0;
             iniciarAventura();
         }
@@ -222,6 +232,9 @@ public class Main {
     // --- BUCLE PRINCIPAL DEL JUEGO ---
 
     private static void iniciarAventura() {
+        boolean guardadoAuto = false;
+        boolean guardadoManual = true;
+
         System.out.println(MotorCombate.ANSI_AZUL_MARINO + "\n===========================================");
         System.out.println("    [SISTEMA] Selecciona el modo de juego:");
         System.out.println("    1. Modo Automático (La IA controla todo)");
@@ -232,6 +245,8 @@ public class Main {
             int opt = MotorCombate.sc.nextInt();
             if (opt == 2) {
                 MotorCombate.modoManual = true;
+            } else {
+                MotorCombate.modoManual = false;
             }
             // Dar 5 pociones al grupo en ambos modos
             for (int j = 0; j < 5; j++) {
@@ -239,6 +254,31 @@ public class Main {
             }
         }
         MotorCombate.sc.nextLine();
+
+        if (MotorCombate.modoManual) {
+            System.out.println(MotorCombate.ANSI_AZUL_MARINO + "\n===========================================");
+            System.out.println("    [SISTEMA] Selecciona el modo de guardado:");
+            System.out.println("    1. Guardado Automático (Tras combates y campamentos)");
+            System.out.println("    2. Guardado Manual (Pregunta tras combates y campamentos)");
+            System.out.println("===========================================" + MotorCombate.ANSI_RESET);
+            System.out.print("> Elige una opción: ");
+            int optGuardado = 2;
+            if (MotorCombate.sc.hasNextInt()) {
+                optGuardado = MotorCombate.sc.nextInt();
+            }
+            MotorCombate.sc.nextLine();
+            if (optGuardado == 1) {
+                guardadoAuto = true;
+                guardadoManual = false;
+            } else {
+                guardadoAuto = false;
+                guardadoManual = true;
+            }
+        } else {
+            // Modo Automático (Combate) por defecto guarda manualmente solo en campamentos
+            guardadoAuto = false;
+            guardadoManual = true;
+        }
 
         // Crear el equipo que lucha y preparar la reserva
         List<Personaje> listaHeroes = FabricaHeroes.crearEquipoInicial();
@@ -296,7 +336,7 @@ public class Main {
                 new basedatos.gestores.GestorRecompensas().desbloquearLogro(idPartidaActual, 3);
                 System.out.println(
                         MotorCombate.ANSI_MORADO + "[LOGRO DESBLOQUEADO] Campista Novato." + MotorCombate.ANSI_RESET);
-                if (!MotorCombate.gestionarCampamento(heroes, reserva)) {
+                if (!MotorCombate.gestionarCampamento(heroes, reserva, guardadoAuto, guardadoManual, i)) {
                     break;
                 }
             } else if (i == 12) {
@@ -317,7 +357,7 @@ public class Main {
                         h.recuperarRecursos(100);
                     }
                 }
-                if (!MotorCombate.gestionarCampamento(heroes, reserva)) {
+                if (!MotorCombate.gestionarCampamento(heroes, reserva, guardadoAuto, guardadoManual, i)) {
                     break;
                 }
             } else {
@@ -415,19 +455,32 @@ public class Main {
                 // print por spam
             }
 
-            // autoguardado para no repetir sala
-            if (MotorCombate.hayVivos(heroes) && i < 20) {
-                System.out.println(
-                        MotorCombate.ANSI_VERDE_OSCURO + "Guardando partida automatica..." + MotorCombate.ANSI_RESET);
-                salaActual = i + 1;
-                for (int k = 0; k < heroes.length; k++) {
-                    if (heroes[k].estaVivo()) {
-                        gestorSalas.avanzarSala(idPartidaActual, salaActual);
-                        new basedatos.gestores.GestorPartidas().guardarPartidaCompleta(idPartidaActual, salaActual,
-                                puntuacionPartida, (k + 1),
-                                heroes[k].getVidaActual(), heroes[k].getManaActual(), heroes[k].getEnergiaActual());
+            // Guardado post-combate (salas de descanso y eventos pequeños no guardan el
+            // siguiente paso aquí)
+            boolean esCombate = (i != 2 && i != 5 && i != 7 && i != 9 && i != 12 && i != 14 && i != 17 && i != 19);
+            if (MotorCombate.hayVivos(heroes) && i < 20 && esCombate) {
+                if (MotorCombate.modoManual) {
+                    if (guardadoAuto) {
+                        System.out.println(MotorCombate.ANSI_VERDE_OSCURO + "Guardando partida automatica..."
+                                + MotorCombate.ANSI_RESET);
+                        MotorCombate.ejecutarGuardado(heroes, i + 1);
+                    } else if (guardadoManual) {
+                        System.out.println(MotorCombate.ANSI_AZUL_MARINO
+                                + "\n¿Deseas guardar la partida? (1. Sí / 2. No)" + MotorCombate.ANSI_RESET);
+                        System.out.print("> Elige: ");
+                        int optG = 2;
+                        if (MotorCombate.sc.hasNextInt()) {
+                            optG = MotorCombate.sc.nextInt();
+                        }
+                        MotorCombate.sc.nextLine();
+                        if (optG == 1) {
+                            MotorCombate.ejecutarGuardado(heroes, i + 1);
+                            System.out.println(MotorCombate.ANSI_VERDE_OSCURO + "¡Partida guardada con éxito!"
+                                    + MotorCombate.ANSI_RESET);
+                        }
                     }
                 }
+                // En modo automático de combate no se guarda tras combates, solo en campamentos
             }
         }
 
