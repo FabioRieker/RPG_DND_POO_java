@@ -20,6 +20,7 @@ public class Main {
 
     // --- VARIABLES GLOBALES DE PERSISTENCIA ---
     public static int idUsuarioLogueado = -1;
+    public static String nombreUsuarioLogueado = "";
     public static int idPartidaActual = -1;
     public static int salaActual = 1;
     public static int puntuacionPartida = 0;
@@ -43,8 +44,17 @@ public class Main {
             int optAcceso = 0;
             if (MotorCombate.sc.hasNextInt()) {
                 optAcceso = MotorCombate.sc.nextInt();
+                MotorCombate.sc.nextLine();
+            } else {
+                MotorCombate.sc.nextLine(); // Limpiar buffer
+                System.out.println(MotorCombate.ANSI_ROJO + "[SISTEMA] Opción no válida." + MotorCombate.ANSI_RESET);
+                continue;
             }
-            MotorCombate.sc.nextLine();
+
+            if (optAcceso != 1 && optAcceso != 2) {
+                System.out.println(MotorCombate.ANSI_ROJO + "[SISTEMA] Opción no válida." + MotorCombate.ANSI_RESET);
+                continue;
+            }
 
             if (optAcceso == 1) {
                 System.out.print("Usuario: ");
@@ -54,19 +64,55 @@ public class Main {
 
                 idUsuarioLogueado = gestorUsuarios.validarLogin(nombre, pass);
                 if (idUsuarioLogueado == -1) {
-                    System.out
-                            .println(MotorCombate.ANSI_ROJO + "Credenciales incorrectas." + MotorCombate.ANSI_RESET);
+                    System.out.println(MotorCombate.ANSI_ROJO + "Credenciales incorrectas." + MotorCombate.ANSI_RESET);
                 } else {
-                    System.out.println(MotorCombate.ANSI_VERDE_OSCURO + "Acceso concedido. Bienvenido, " + nombre
-                            + "!" + MotorCombate.ANSI_RESET);
+                    nombreUsuarioLogueado = nombre;
+                    System.out.println(MotorCombate.ANSI_VERDE_OSCURO + "Acceso concedido. Bienvenido, " + nombre + "!"
+                            + MotorCombate.ANSI_RESET);
                 }
             } else if (optAcceso == 2) {
-                System.out.print("Nuevo Usuario: ");
-                String nombre = MotorCombate.sc.nextLine();
-                System.out.print("Contraseña: ");
-                String pass = MotorCombate.sc.nextLine();
-                System.out.print("Email: ");
-                String email = MotorCombate.sc.nextLine();
+                String nombre;
+                while (true) {
+                    System.out.print("Nuevo Usuario: ");
+                    nombre = MotorCombate.sc.nextLine();
+                    if (nombre.trim().isEmpty() || nombre.length() > 20) {
+                        System.out.println(MotorCombate.ANSI_ROJO
+                                + "[SISTEMA] El nombre debe tener entre 1 y 20 caracteres." + MotorCombate.ANSI_RESET);
+                    } else if (gestorUsuarios.existeUsuario(nombre)) {
+                        System.out.println(MotorCombate.ANSI_ROJO
+                                + "[SISTEMA] Ese nombre de usuario ya está en uso." + MotorCombate.ANSI_RESET);
+                    } else {
+                        break;
+                    }
+                }
+
+                String pass;
+                while (true) {
+                    System.out.print("Contraseña: ");
+                    pass = MotorCombate.sc.nextLine();
+                    if (pass.trim().isEmpty() || pass.length() > 50) {
+                        System.out.println(
+                                MotorCombate.ANSI_ROJO + "[SISTEMA] La contraseña debe tener entre 1 y 50 caracteres."
+                                        + MotorCombate.ANSI_RESET);
+                    } else {
+                        break;
+                    }
+                }
+
+                String email;
+                while (true) {
+                    System.out.print("Email: ");
+                    email = MotorCombate.sc.nextLine();
+                    if (email.trim().isEmpty() || email.length() > 100) {
+                        System.out.println(MotorCombate.ANSI_ROJO
+                                + "[SISTEMA] El email debe tener entre 1 y 100 caracteres." + MotorCombate.ANSI_RESET);
+                    } else if (gestorUsuarios.existeEmail(email)) {
+                        System.out.println(MotorCombate.ANSI_ROJO
+                                + "[SISTEMA] Ese email ya está registrado." + MotorCombate.ANSI_RESET);
+                    } else {
+                        break;
+                    }
+                }
 
                 int nuevoId = gestorUsuarios.registrarUsuario(nombre, pass, email);
                 if (nuevoId != -1) {
@@ -111,7 +157,8 @@ public class Main {
                     System.out.println("Cerrando los portales... ¡Hasta la próxima aventura!");
                     break;
                 default:
-                    System.out.println(MotorCombate.ANSI_ROJO + "Opción inválida." + MotorCombate.ANSI_RESET);
+                    System.out
+                            .println(MotorCombate.ANSI_ROJO + "[SISTEMA] Opción no válida." + MotorCombate.ANSI_RESET);
             }
         }
     }
@@ -119,25 +166,52 @@ public class Main {
     // --- METODOS DEL MENU ---
 
     private static void configurarNuevaPartida() {
-        System.out.print("\nIntroduce un nombre para tu partida: ");
-        String nombrePartida = MotorCombate.sc.nextLine();
-
-        System.out.println("Selecciona Dificultad: 1. Fácil | 2. Normal | 3. Difícil");
-        System.out.print("> Dificultad: ");
-        int dif = MotorCombate.sc.nextInt();
-        MotorCombate.sc.nextLine();
-
-        // Para pruebas, recordar borrar
-        System.out.print("> [DEBUG] ¿En qué sala quieres empezar? (Por defecto 1): ");
-        int salaInicio = 1;
-        if (MotorCombate.sc.hasNextInt()) {
-            salaInicio = MotorCombate.sc.nextInt();
-            if (salaInicio < 1 || salaInicio > 20)
-                salaInicio = 1;
-        }
-        MotorCombate.sc.nextLine();
-
         GestorPartidas gp = new GestorPartidas();
+        String nombrePartida;
+        while (true) {
+            System.out.print("\nIntroduce un nombre para tu partida: ");
+            nombrePartida = MotorCombate.sc.nextLine();
+            if (nombrePartida.trim().isEmpty() || nombrePartida.length() > 100) {
+                System.out.println(MotorCombate.ANSI_ROJO + "[SISTEMA] El nombre debe tener entre 1 y 100 caracteres."
+                        + MotorCombate.ANSI_RESET);
+            } else if (gp.existeNombrePartida(nombrePartida, idUsuarioLogueado)) {
+                System.out.println(MotorCombate.ANSI_ROJO + "[SISTEMA] Ya tienes una partida con ese nombre."
+                        + MotorCombate.ANSI_RESET);
+            } else {
+                break;
+            }
+        }
+
+        int dif = 0;
+        while (true) {
+            System.out.println("Selecciona Dificultad: 1. Fácil | 2. Normal | 3. Difícil");
+            System.out.print("> Dificultad: ");
+            if (MotorCombate.sc.hasNextInt()) {
+                dif = MotorCombate.sc.nextInt();
+                MotorCombate.sc.nextLine();
+                if (dif >= 1 && dif <= 3) {
+                    break;
+                }
+            } else {
+                MotorCombate.sc.nextLine(); // clear buffer
+            }
+            System.out.println(MotorCombate.ANSI_ROJO + "[SISTEMA] Opción no válida." + MotorCombate.ANSI_RESET);
+        }
+
+        int salaInicio = 1;
+
+        // Modo debug solo para admin
+        if (nombreUsuarioLogueado.equalsIgnoreCase("Admin")) {
+            System.out.print("> [MODO DIOS] ¿En qué sala quieres empezar, Admin? (Por defecto 1): ");
+            if (MotorCombate.sc.hasNextInt()) {
+                salaInicio = MotorCombate.sc.nextInt();
+                if (salaInicio < 1 || salaInicio > 20) {
+                    salaInicio = 1;
+                }
+            }
+            MotorCombate.sc.nextLine();
+        }
+
         idPartidaActual = gp.crearNuevaPartida(nombrePartida, idUsuarioLogueado, dif);
 
         if (idPartidaActual != -1) {
@@ -240,20 +314,30 @@ public class Main {
         System.out.println("    1. Modo Automático (La IA controla todo)");
         System.out.println("    2. Modo Manual (Control total de Héroes)");
         System.out.println("===========================================" + MotorCombate.ANSI_RESET);
-        System.out.print("> Elige una opción: ");
-        if (MotorCombate.sc.hasNextInt()) {
-            int opt = MotorCombate.sc.nextInt();
-            if (opt == 2) {
-                MotorCombate.modoManual = true;
+
+        int opt = 0;
+        while (true) {
+            System.out.print("> Elige una opción: ");
+            if (MotorCombate.sc.hasNextInt()) {
+                opt = MotorCombate.sc.nextInt();
+                MotorCombate.sc.nextLine();
+                if (opt == 1 || opt == 2)
+                    break;
             } else {
-                MotorCombate.modoManual = false;
+                MotorCombate.sc.nextLine(); // clear buffer
             }
-            // Dar 5 pociones al grupo en ambos modos
-            for (int j = 0; j < 5; j++) {
-                MotorCombate.inventarioGrupo.add(new consumibles.PocionCuracion(1));
-            }
+            System.out.println(MotorCombate.ANSI_ROJO + "[SISTEMA] Opción no válida." + MotorCombate.ANSI_RESET);
         }
-        MotorCombate.sc.nextLine();
+
+        if (opt == 2) {
+            MotorCombate.modoManual = true;
+        } else {
+            MotorCombate.modoManual = false;
+        }
+        // Dar 5 pociones al grupo en ambos modos
+        for (int j = 0; j < 5; j++) {
+            MotorCombate.inventarioGrupo.add(new consumibles.PocionCuracion(1));
+        }
 
         if (MotorCombate.modoManual) {
             System.out.println(MotorCombate.ANSI_AZUL_MARINO + "\n===========================================");
@@ -261,12 +345,21 @@ public class Main {
             System.out.println("    1. Guardado Automático (Tras combates y campamentos)");
             System.out.println("    2. Guardado Manual (Pregunta tras combates y campamentos)");
             System.out.println("===========================================" + MotorCombate.ANSI_RESET);
-            System.out.print("> Elige una opción: ");
-            int optGuardado = 2;
-            if (MotorCombate.sc.hasNextInt()) {
-                optGuardado = MotorCombate.sc.nextInt();
+
+            int optGuardado = 0;
+            while (true) {
+                System.out.print("> Elige una opción: ");
+                if (MotorCombate.sc.hasNextInt()) {
+                    optGuardado = MotorCombate.sc.nextInt();
+                    MotorCombate.sc.nextLine();
+                    if (optGuardado == 1 || optGuardado == 2)
+                        break;
+                } else {
+                    MotorCombate.sc.nextLine(); // clear buffer
+                }
+                System.out.println(MotorCombate.ANSI_ROJO + "[SISTEMA] Opción no válida." + MotorCombate.ANSI_RESET);
             }
-            MotorCombate.sc.nextLine();
+
             if (optGuardado == 1) {
                 guardadoAuto = true;
                 guardadoManual = false;
@@ -284,7 +377,6 @@ public class Main {
         List<Personaje> listaHeroes = FabricaHeroes.crearEquipoInicial();
         List<Personaje> reserva = new ArrayList<>();
         Personaje[] heroes = listaHeroes.toArray(new Personaje[0]);
-        GestorSalas gestorSalas = new GestorSalas();
 
         // ponemos la vida si es partida cargada
         if (idPartidaActual != -1) {
@@ -294,7 +386,6 @@ public class Main {
         // Bucle que recorre las salas de la mazmorra (EMPIEZA DESDE salaActual)
         for (int i = salaActual; i <= 20; i++) {
             salaActual = i; // Sincronizamos la global
-            gestorSalas.avanzarSala(idPartidaActual, salaActual); // Guardado en DB
 
             if (!MotorCombate.hayVivos(heroes)) {
                 System.out.println(
@@ -453,6 +544,15 @@ public class Main {
                 new basedatos.gestores.GestorRecompensas().desbloquearLogro(idPartidaActual, 6);
                 // System.out.println("[LOGRO DESBLOQUEADO] Verdugo de Monstruos."); // Omitimos
                 // print por spam
+            }
+            // Pausa para leer eventos que no son de combate (los combates ya pausan por sí
+            // solos)
+            boolean esEventoPequeno = (i == 2 || i == 5 || i == 7 || i == 12 || i == 14 || i == 17);
+            if (esEventoPequeno) {
+                try {
+                    Thread.sleep(2500);
+                } catch (InterruptedException e) {
+                }
             }
 
             // Guardado post-combate (salas de descanso y eventos pequeños no guardan el

@@ -8,6 +8,24 @@ import java.sql.SQLException;
 
 public class GestorPartidas {
 
+    // Comprueba si un usuario ya tiene una partida con el mismo nombre
+    public boolean existeNombrePartida(String nombrePartida, int idUsuario) {
+        String sql = "SELECT COUNT(*) FROM Partidas WHERE nombre_partida = ? AND usuario_id = ?";
+        try (Connection con = ConexionBD.getConexion();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, nombrePartida);
+            ps.setInt(2, idUsuario);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al comprobar nombre de partida: " + e.getMessage());
+        }
+        return false;
+    }
+
     // Crea el registro inicial de una partida nueva
     public int crearNuevaPartida(String nombrePartida, int idUsuario, int idDificultad) {
         String sql = "INSERT INTO Partidas (nombre_partida, usuario_id, dificultad_id, estado) VALUES (?, ?, ?, 'activa')";
@@ -64,7 +82,6 @@ public class GestorPartidas {
 
             con.commit(); // Si todo va bien, guardamos definitivamente
             exito = true;
-            System.out.println("Partida guardada con éxito en la base de datos.");
 
         } catch (SQLException e) {
             System.err.println("Error crítico al guardar. Aplicando Rollback: " + e.getMessage());

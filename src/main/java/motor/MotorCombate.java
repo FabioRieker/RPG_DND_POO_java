@@ -174,6 +174,12 @@ public class MotorCombate {
 
       System.out.println("");
       turno++;
+
+      // Pausa para poder leer la tabla de estados antes del siguiente turno o resultado
+      try {
+        Thread.sleep(1200);
+      } catch (InterruptedException ex) {
+      }
     }
 
     // Imprimir ganador y recoger recompensas al acabar la pelea
@@ -241,6 +247,12 @@ public class MotorCombate {
     System.out.println("\n" + ANSI_AZUL_MARINO + "===========================================");
     System.out.println("         [SISTEMA] COMBATE FINALIZADO");
     System.out.println("===========================================" + ANSI_RESET + "\n");
+
+    // Pausa grande para que el jugador pueda leer el botín y los logros antes de que salte la sala siguiente
+    try {
+      Thread.sleep(2500);
+    } catch (InterruptedException ex) {
+    }
   }
 
   /**
@@ -583,11 +595,14 @@ public class MotorCombate {
       sc.nextLine();
 
       if (opt == 1 || opt == 5) {
+        String accionText = (opt == 1) ? "avanzar a la siguiente sala" : "salir al Menú Principal";
+        String avisoCarga = " (Al cargar volverás a aparecer en este campamento)";
+
         if (guardadoAuto) {
-          System.out.println(ANSI_VERDE_OSCURO + "Guardando partida automatica antes de salir del campamento..." + ANSI_RESET);
+          System.out.println(ANSI_VERDE_OSCURO + "Guardando partida automatica antes de " + accionText + "..." + avisoCarga + ANSI_RESET);
           ejecutarGuardado(titulares, salaActual);
         } else if (guardadoManual) {
-          System.out.println(ANSI_AZUL_MARINO + "\n¿Deseas guardar la partida antes de abandonar el campamento? (1. Sí / 2. No)" + ANSI_RESET);
+          System.out.println(ANSI_AZUL_MARINO + "\n¿Deseas guardar la partida antes de " + accionText + "?" + avisoCarga + " (1. Sí / 2. No)" + ANSI_RESET);
           System.out.print("> Elige: ");
           int optG = 2;
           if (sc.hasNextInt()) optG = sc.nextInt();

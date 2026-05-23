@@ -8,6 +8,40 @@ import java.sql.SQLException;
 
 public class GestorUsuarios {
 
+    // Comprueba si un usuario ya existe en la base de datos
+    public boolean existeUsuario(String nombre) {
+        String sql = "SELECT COUNT(*) FROM Usuarios WHERE nombre_usuario = ?";
+        try (Connection con = ConexionBD.getConexion();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, nombre);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al comprobar usuario: " + e.getMessage());
+        }
+        return false;
+    }
+
+    // Comprueba si un email ya existe en la base de datos
+    public boolean existeEmail(String email) {
+        String sql = "SELECT COUNT(*) FROM Usuarios WHERE email = ?";
+        try (Connection con = ConexionBD.getConexion();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, email);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al comprobar email: " + e.getMessage());
+        }
+        return false;
+    }
+
     // Registra un nuevo usuario en la base de datos
     public int registrarUsuario(String nombre, String password, String email) {
         String sql = "INSERT INTO Usuarios (nombre_usuario, contraseña, email) VALUES (?, ?, ?)";
